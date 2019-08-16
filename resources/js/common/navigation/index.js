@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { logout } from '../../modules/auth/service'
-
+import { collapseSidebar, uncollapseSidebar } from '../../layout/store/actions';
+import { Icon } from 'antd';
 // import components
 import { Link } from 'react-router-dom'
 import { Navbar, NavbarToggler } from 'reactstrap';
@@ -15,6 +16,7 @@ class Navigation extends Component {
     isAuthenticated: PropTypes.bool.isRequired,
     user: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    layout: PropTypes.string.isRequired,
   }
   
   constructor(props) {
@@ -47,10 +49,17 @@ class Navigation extends Component {
     
     this.props.dispatch(logout())
   }
+  handleLayoutChange = () => {
+    if(this.props.layout.sidebarCollapsed){
+      return this.props.dispatch(uncollapseSidebar())
+    }
+    return this.props.dispatch(collapseSidebar())
+  } 
   
   render() {
     return (
       <Navbar className="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+        <span onClick={this.handleLayoutChange}><Icon type="menu" /></span>
         <Link to="/" className="navbar-brand">MOEEN.ME</Link>
         <NavbarToggler className="navbar-toggler d-lg-none" onClick={this.toggleNavbar} />
         {
@@ -70,7 +79,8 @@ class Navigation extends Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    user: state.user
+    user: state.user,
+    layout: state.layout,
   }
 }
 

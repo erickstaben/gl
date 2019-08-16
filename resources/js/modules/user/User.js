@@ -14,6 +14,7 @@ class User extends Model {
     this.email = props.email || ''
     this.phone = props.phone || ''
     this.about = props.about || ''
+    this.authority = props.authority || 'admin' //change to guest on prod
   }
 }
 

@@ -6,7 +6,7 @@ Homestead.json
 Homestead.yaml
 .env
 _ide_helper.php
-
+/public/*.js
 /public/storage
 /public/hot
 /public/js/
@@ -14,3 +14,4 @@ _ide_helper.php
 /public/fonts/
 /public/mix-manifest.json
 /*.log
+public/*.js

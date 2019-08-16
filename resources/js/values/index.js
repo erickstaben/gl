@@ -1,4 +1,4 @@
-const APP_TITLE = 'Your Blog Name'
+const APP_TITLE = 'FitHub'
 
 export {
     APP_TITLE,

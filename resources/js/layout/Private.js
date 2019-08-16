@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import Navigation from '../common/navigation/index'
 import ScrollTop from '../common/scroll-top/index'
 import Footer from '../common/footer/index'
+import Sidebar from '../common/sidebar/index'
 
 const containerStyle = {
   paddingTop: '3.5rem',
@@ -18,10 +19,17 @@ const propTypes = {
 
 function PrivateLayout({ children }) {
   return <div style={containerStyle}>
-    <Navigation/>
+    <div>
+      <Navigation/>
+    </div>
     <main style={{ minHeight: '100vh'}}>
-      { children }
-      <ScrollTop />
+      <div  className={'fithub-content-container'}>
+        <Sidebar/> 
+        <div>        
+          { children }
+        </div>   
+        <ScrollTop />    
+      </div>
     </main>
     <Footer/>
   </div>

@@ -9,6 +9,8 @@ export default [
   {
     path: '/login',
     exact: true,
+    title: 'Login',
+    showInMenu: false,
     component: Loadable({
       loader: () => import('./pages/login/index'),
       loading: LoadingComponent,
@@ -17,6 +19,8 @@ export default [
   {
     path: '/register',
     exact: true,
+    title: 'Registro',
+    showInMenu: false,
     component: Loadable({
       loader: () => import('./pages/register/index'),
       loading: LoadingComponent,

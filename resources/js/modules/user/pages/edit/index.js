@@ -14,9 +14,10 @@ import User from '../../User'
 import Page from './Page'
 
 // map store state as properties of the component
-const mapStateToProps = state => {
+const mapStateToProps = ({user,loading}) => {
   return {
-    user: new User(state.user)
+    user: new User(user),
+    savingInProgress: loading.effects['userUpdate'],
   }
 }
 

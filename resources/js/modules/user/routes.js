@@ -8,7 +8,7 @@ export default [
   {
     path: '/users/:id/edit',
     exact: true,
-    auth: true,
+    auth: true,   
     component: Loadable({
       loader: () => import('./pages/edit/index'),
       loading: LoadingComponent,
