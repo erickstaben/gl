@@ -1,6 +1,6 @@
 // import lib
 import Loadable from 'react-loadable'
-
+import React from 'react'
 // import components
 import LoadingComponent from '../../common/loader/index'
 

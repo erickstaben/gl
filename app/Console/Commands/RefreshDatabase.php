@@ -63,7 +63,7 @@ class RefreshDatabase extends Command
             file_get_contents($this->laravel->environmentFilePath())
         ));
     }
-
+ 
     /**
      * Get a regex pattern that will match env APP_KEY with any random key.
      *

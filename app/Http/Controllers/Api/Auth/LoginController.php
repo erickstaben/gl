@@ -19,7 +19,6 @@ class LoginController extends Controller
         ]);
         try {
             $http = new Client;
-
             $response = $http->post(env('APP_URL') . '/oauth/token', [
                 'form_params' => [
                     'grant_type' => 'password',
@@ -31,8 +30,9 @@ class LoginController extends Controller
                     'scope' => '',
                 ],
             ]);
-
-            return json_decode((string)$response->getBody(), true);
+            $res = json_decode((string)$response->getBody(),1);
+            $res['id']= 1;
+            return response()->json($res);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'invalid_credentials',
