@@ -1,5 +1,5 @@
 {
-  "name": "fit-hub",
+  "name": "gl",
   "version": "v1.0.0",
   "scripts": {
     "dev": "npm run development",
@@ -10,7 +10,7 @@
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
-  "author": "Moeen Basra",
+  "author": "Erick Staben",
   "license": "ISC",
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",

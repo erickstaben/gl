@@ -60,6 +60,15 @@ class ResponseServiceProvider extends ServiceProvider
         return $factory->make($customFormat,$http_status);
         });
 
+        $factory->macro('api_unauthenticated', function ($message = 'Não autenticado',$http_status = 200,$ok = false) use ($factory) {
+            $customFormat = [
+                'ok' => $ok,
+                'message' => $message,
+                'status' => $http_status,
+            ];
+        return $factory->make($customFormat,$http_status);
+        });
+
 
     }
 

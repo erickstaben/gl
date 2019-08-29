@@ -1,0 +1,106 @@
+@import '~antd/es/style/themes/default.less';
+@import '../../../../utils/variables.less';
+
+.card{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 16px;
+    padding: @default-padding 16px;
+    background-color: white;
+    border-radius: @default-border-radius; 
+    box-shadow: @default-box-shadow;
+    cursor: pointer;
+    .cardHeader{
+        display: flex;
+        flex-direction: row ;
+        align-items: center;
+        .progressBar{
+            flex-grow: 0;
+            width: 50px;
+        }
+        .title{
+            display: grid;
+            flex-grow: 5;
+            .cardCNPJ{
+                color: @font-description-color;
+                font-size: @font-description-size;
+                font-family: cursive;
+            }
+            .cardName{
+                font-weight: bold;
+                font-size: @font-description-size + 2;
+                font-family: cursive;
+            }
+        }  
+        .showMore{          
+            width: 26px;     
+            margin-left: 4px;
+            font-size: @default-icon-size;
+        }  
+    }
+    
+    .cardActions{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 16px;
+        .calendarShow{
+            display: flex;
+            align-items: center;
+            width: 82px;
+            height: 30px;
+            padding: @default-padding;
+            color: @default-text-color;
+            background-color: @primary-color;
+            border-radius: @default-border-radius;
+            i{
+                margin-right: 4px;
+                font-size: @default-icon-small;
+            }
+            span{
+                overflow: hidden;                
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            span:hover{
+                overflow: visible;
+            }
+        }
+        .membersShow{
+            margin-left: 8px;
+            background-color: @secondary-active-color;
+            span{
+                flex-grow: 1;
+                max-width: 32px;
+                font-size: @font-description-size + 2;
+                text-align: center;
+            }
+        }
+        .checkListShow{
+            display: flex;
+            align-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            margin-left: 8px;
+            border: 1px solid @secondary-active-color;
+            border-radius: 100%;
+            span{
+                width: 100%;
+                color: @secondary-active-color;
+                font-size: 10px;
+                text-align: center;
+            }
+        }
+        .moveArrow{
+            flex-grow: 2;
+            margin-right: 5px;
+            margin-left: 8px;
+            font-size: @default-icon-small;
+            text-align: right;
+        }
+    }
+}
+
+

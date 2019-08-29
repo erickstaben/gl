@@ -11,6 +11,6 @@
 |
 */
 
-Route::get( '/{any}', function () {
-    return view('index');
-})->where('any', '.*');
+Route::get( '/', function () {
+    return file_get_contents(base_path() . './public/dist/index.html');
+});

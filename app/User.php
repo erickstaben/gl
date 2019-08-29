@@ -32,6 +32,8 @@ class User extends Authenticatable
         'is_admin' => 'boolean',
     ];
 
+    
+
     /**
      * The relation between user and articles
      *
@@ -40,5 +42,24 @@ class User extends Authenticatable
     public function articles()
     {
         return $this->hasMany(Article::class);
+    }
+    public function recurrentCards(){
+        return $this->hasMany('App\RecurrentCard');
+    }
+
+    public function notifications(){
+        return $this->hasMany('App\Notification');
+    }
+
+    public function cards(){
+        return $this->hasMany('App\Card','creator_id');
+    }
+
+    public function pipes(){
+        return $this->belongsToMany('App\Pipe')->withPivot(['is_favorite']);
+    }
+
+    public function assignedCards(){
+        return $this->belongsToMany('App\Card','card_user');
     }
 }
