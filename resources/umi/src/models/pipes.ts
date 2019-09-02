@@ -1,8 +1,8 @@
 
 import { Effect } from 'dva';
-import { fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow } from '@/services/pipes';
+import { fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow, fCardMove } from '@/services/pipes';
 
-import { PipeInterface, ID } from './database';
+import { PipeInterface, ID, CardInterface } from './database';
 import { Action, Reducer, PayloadInterface } from './connect';
 
 interface PipesOverviewInterface {
@@ -11,7 +11,15 @@ interface PipesOverviewInterface {
   id: ID;
   is_favorite ?: boolean;
 }
-
+interface InnerPhase {
+  index: number;
+  id: ID;
+}
+interface CardMovePayload{
+  card: CardInterface;
+  oldPhase: InnerPhase;
+  newPhase: InnerPhase;
+}
 export interface PipeConfigInterface {
   notifications: boolean
 }
@@ -34,6 +42,7 @@ export interface ModelType {
     pipeConfig: Effect;
     pipesOverview: Effect;
     pipeShow: Effect;
+    cardMove: Effect;
   };
   reducers: {
     rPipeCreate: Reducer<PipesModelState, Action<any>>;
@@ -42,6 +51,7 @@ export interface ModelType {
     rPipeConfig: Reducer<PipesModelState, Action<PayloadInterface>>;
     rPipesOverview: Reducer<PipesModelState, Action<PipesOverviewInterface>>;
     rPipeShow: Reducer<PipesModelState, Action<PipeInterface>>;
+    rCardMove: Reducer<PipesModelState, Action<CardMovePayload>>;
   };
 }
 
@@ -104,6 +114,19 @@ const Model: ModelType = {
         });
       }
     },
+    *cardMove({ payload }, { call, put }){
+      yield put({
+        type: 'rCardMove',
+        payload: payload,
+      });
+      const response = yield call(fCardMove, payload);
+      if (response.ok && response.data) {
+        yield put({
+          type: 'rCardMove',
+          payload: payload,
+        });
+      }      
+    }
   },
 
   reducers: {
@@ -156,6 +179,22 @@ const Model: ModelType = {
         loaded: payload,
       };
     },
+    rCardMove(state: any, { payload }: Action<CardMovePayload>) {
+      const { card, oldPhase, newPhase } = payload
+      console.log(card, oldPhase, newPhase)
+      const newPhases = state.loaded.phases;
+      newPhases[oldPhase.index].cards = newPhases[oldPhase.index].cards.filter((c: CardInterface) => c.id !== card.id)
+      newPhases[newPhase.index].cards.push(card)
+      console.log(newPhases,'oioi')
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          phases: newPhases,
+        }
+      };
+    },
+    
   },
 };
 

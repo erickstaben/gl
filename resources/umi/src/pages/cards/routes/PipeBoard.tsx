@@ -8,26 +8,52 @@ import { PhaseLane, PipeContainer, ActionCard, EndCard } from '../components'
 import { ConnectState } from '@/models/connect';
 
 import { PhaseInterface, ID } from '@/models/database';
+import { PhaseInnerProps } from '../components/PhaseLane/PhaseLane';
 
+const getPhaseProps = (phaseIndex: number, phases: Array<PhaseInterface>):PhaseInnerProps => {
+  const previousPhase = phaseIndex !== 0 ? {
+    index: phaseIndex - 1,
+    id: phases[phaseIndex - 1].id
+  } : undefined
+  const phaseInfo = {
+    index: phaseIndex,
+    id: phases[phaseIndex].id
+  }
+  const nextPhase = (phases.length - 1 !== phaseIndex) ? {
+    index: phaseIndex + 1,
+    id: phases[phaseIndex + 1].id,
+  }: undefined; 
+  return {
+    previousPhase,
+    phaseInfo,
+    nextPhase,
+  }
+}
 const renderPhases = (phases: PhaseInterface[], toggleModal:Function):React.ReactChild[] => orderBy(phases, ['order']).map((phase, phaseIndex) => {
-    if (!phase.is_final) {
-      return (
-        <PhaseLane key={phaseIndex} index={phaseIndex} phase_id={phase.id}>
-          {phase.cards ? phase.cards.map((card, cardIndex) => (
-              <ActionCard toggleModal={toggleModal} card={card}/>
-            )) : null}
-        </PhaseLane>
-      )
-    }
-
-      return (
-        <PhaseLane key={phaseIndex} index={phaseIndex} phase_id={phase.id}>
-          {phase.cards ? phase.cards.map((card, cardIndex) => (
-              <EndCard toggleModal={toggleModal} card={card}/>
-            )) : null}
-        </PhaseLane>
-      )
-  })
+  const phaseProps = getPhaseProps(phaseIndex,phases)
+  if (!phase.is_final) {
+    return (
+      <PhaseLane
+        key={phaseIndex} 
+        {...phaseProps}
+      >
+        {phase.cards ? phase.cards.map((card, cardIndex) => (
+          <ActionCard {...phaseProps} toggleModal={toggleModal} card={card}/>
+          )) : null}
+      </PhaseLane>
+    )
+  }
+  return (
+    <PhaseLane 
+      key={phaseIndex} 
+      {...phaseProps}
+    >
+      {phase.cards ? phase.cards.map((card, cardIndex) => (
+        <EndCard {...phaseProps} toggleModal={toggleModal} card={card}/>
+        )) : null}
+    </PhaseLane>
+  )
+})
 interface Props {
   match: {
     params: {

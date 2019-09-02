@@ -40,6 +40,12 @@ class IntermediarySeeder extends Seeder
             'card_id' => 1,
         ]);
 
+        DB::table('pipe_user')->insert([
+            'user_id' => 52,
+            'pipe_id' => 1,
+            'is_favorite' => true,
+        ]);
+
         DB::table('phase_emails')->insert([
             'phase_id' => 1,
             'send_type' => 'out',

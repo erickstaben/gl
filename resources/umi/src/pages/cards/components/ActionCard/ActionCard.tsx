@@ -9,16 +9,51 @@ import { CardInterface, ID, PhaseFieldInterface } from '@/models/database';
 import SpanText from '@/components/SpanText';
 import ProgressBar, { uncompleted } from '../ProgressBar/ProgressBar'
 import { getFirstLetters } from '@/utils/utils';
+import { PhaseInnerProps } from '@/pages/cards/components/PhaseLane/PhaseLane';
 
-
-interface Props {
+type Props = {
     card: CardInterface,
     toggleModal: Function,
-}
+} & PhaseInnerProps
 
 const ActionCard = (props:Props):React.ReactElement => {
-    const { card, toggleModal } = props
+    const { card, toggleModal, phaseInfo, nextPhase, previousPhase } = props
     const { due_date, assigned_users, company, fields, id } = card
+    const dispatch = useDispatch()
+    
+    const getArrowDropDown = () => {
+        const moveToNextPhase = () => {
+            dispatch({
+                type: 'pipes/cardMove',
+                payload: {
+                    path_id: [card.id,nextPhase ? nextPhase.id : null],
+                    card: card,
+                    oldPhase: phaseInfo,
+                    newPhase: nextPhase,
+                }
+            })
+        }
+        const moveToLastPhase = () => {
+            dispatch({
+                type: 'pipes/cardMove',
+                payload: {
+                    path_id: [card.id,'last'],
+                    card: card,
+                    oldPhase: phaseInfo,
+                    newPhase: nextPhase,
+                }
+            })
+        }
+        const menu = <Menu>
+            <Menu.Item onClick={moveToNextPhase}>
+                <b>Mover para próxima fase</b>
+            </Menu.Item>
+            <Menu.Item onClick={moveToLastPhase}>
+                Mover para fase final
+        </Menu.Item>
+        </Menu>
+        return menu
+    }
 
     return (
         <div className={styles.card} >
@@ -50,7 +85,7 @@ const ActionCard = (props:Props):React.ReactElement => {
                     </Dropdown>
                 </span>
                 <span className={styles.moveArrow}>
-                    <Dropdown trigger={['click']} overlay={getArrowDropDown(id)}>
+                    <Dropdown trigger={['click']} overlay={getArrowDropDown()}>
                         <Icon type="arrow-right" />
                     </Dropdown>
                 </span>
@@ -92,30 +127,7 @@ const getProgressDropDown = (fields:PhaseFieldInterface[]) => {
     return menu
 }
 
-const getArrowDropDown = (card_id:ID) => {
-    const dispatch = useDispatch()
-    const moveToNextPhase = () => {
-        dispatch({ type: 'cards/moveNext',
-payload: {
-            path_id: [card_id],
-        } })
-    }
-    const moveToLastPhase = () => {
-        dispatch({ type: 'cards/moveLast',
-payload: {
-            path_id: [card_id],
-        } })
-    }
-    const menu = <Menu>
-        <Menu.Item onClick={moveToNextPhase}>
-            <b>Mover para próxima fase</b>
-        </Menu.Item>
-        <Menu.Item onClick={moveToLastPhase}>
-            Mover para fase final
-        </Menu.Item>
-    </Menu>
-    return menu
-}
+
 
 
 export default ActionCard

@@ -9,12 +9,13 @@ import { CardInterface, ID, PhaseFieldInterface } from '@/models/database';
 import SpanText from '@/components/SpanText';
 import ProgressBar, { uncompleted } from '../ProgressBar/ProgressBar'
 import { getFirstLetters } from '@/utils/utils';
+import { PhaseInnerProps } from '../PhaseLane/PhaseLane';
 
 
-interface Props {
+type Props = {
     card: CardInterface,
     toggleModal: Function,
-}
+} & PhaseInnerProps;
 
 const EndCard = (props:Props):React.ReactElement => {
     const { card, toggleModal } = props

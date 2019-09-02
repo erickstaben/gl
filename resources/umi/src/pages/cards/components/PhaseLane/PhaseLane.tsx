@@ -5,19 +5,25 @@ import styles from './PhaseLane.less';
 import SpanEdit from '@/components/SpanEdit';
 import { ID } from '@/models/database';
 
-
-interface Props {
-    children : React.ReactChild[] | React.ReactChild | null;
-    phase_id: ID,
-    index: number,
+interface InnerPhase {
+    id: ID;
+    index: number;
 }
+export interface PhaseInnerProps { 
+    previousPhase?: InnerPhase;
+    nextPhase?: InnerPhase;
+    phaseInfo: InnerPhase;
+}
+type Props = {
+    children : React.ReactChild[] | React.ReactChild | null;   
+} & PhaseInnerProps;
 
 const PhaseLane = (props:Props):React.ReactElement => {
-    const { children, phase_id = 1, index } = props
+    const { children, previousPhase, nextPhase, phaseInfo } = props
     return (
         <li className={styles.phaseContent}>
             <header className={styles.phaseHeader}>
-                <SpanEdit dispatch={{ name: `phases.list[${index}].name`, type: 'phases/phaseNameUpdate', id: phase_id }}/>
+                <SpanEdit dispatch={{ name: `phases.list[${phaseInfo.index}].name`, type: 'phases/phaseNameUpdate', id: phaseInfo.id }}/>
             </header>
             <div className={classnames(styles.phaseLane, styles.scrollBar)}>
             {children}

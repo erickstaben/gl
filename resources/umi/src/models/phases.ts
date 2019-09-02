@@ -20,6 +20,7 @@ export interface ModelType {
   };
   reducers: {
     rPhaseNameUpdate: Reducer<PhasesModelState, Action<DefaultResponseInterface>>;
+    rSavePhases: Reducer<PhasesModelState, Action<any>>;
   };
 }
 
@@ -150,6 +151,12 @@ const Model: ModelType = {
       return {
           ...state,
           list: newList,
+      }
+    },
+    rSavePhases(state, { payload }: Action<any>) {      
+      return {
+        ...state,
+        list: payload.phases,
       }
     },
   },
