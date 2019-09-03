@@ -13,6 +13,25 @@ class PhaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function move(Request $request,$phase1_id,$phase2_id)
+    {
+        $phase1 = Phase::findOrFail($phase1_id);
+        $phase2 = Phase::findOrFail($phase2_id);
+        $temp = $phase1->order;
+        $phase1->order = $phase2->order;
+        $phase1->save();
+
+        $phase2->order = $temp;
+        $phase2->save();
+        
+        return response()->api($phase1);
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         

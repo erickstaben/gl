@@ -29,29 +29,16 @@ const getPhaseProps = (phaseIndex: number, phases: Array<PhaseInterface>):PhaseI
     nextPhase,
   }
 }
-const renderPhases = (phases: PhaseInterface[], toggleModal:Function):React.ReactChild[] => orderBy(phases, ['order']).map((phase, phaseIndex) => {
+const renderPhases = (phases: PhaseInterface[], toggleModal:Function):React.ReactChild[] => phases.map((phase, phaseIndex) => {
   const phaseProps = getPhaseProps(phaseIndex,phases)
-  if (!phase.is_final) {
-    return (
-      <PhaseLane
-        key={phaseIndex} 
-        {...phaseProps}
-      >
-        {phase.cards ? phase.cards.map((card, cardIndex) => (
-          <ActionCard {...phaseProps} toggleModal={toggleModal} card={card}/>
-          )) : null}
-      </PhaseLane>
-    )
-  }
   return (
-    <PhaseLane 
+    <PhaseLane
       key={phaseIndex} 
+      cards={phase.cards || []}
+      is_final={phase.is_final}
+      toggleModal={toggleModal}
       {...phaseProps}
-    >
-      {phase.cards ? phase.cards.map((card, cardIndex) => (
-        <EndCard {...phaseProps} toggleModal={toggleModal} card={card}/>
-        )) : null}
-    </PhaseLane>
+    />
   )
 })
 interface Props {
@@ -79,7 +66,7 @@ const PipeBoard = (props:Props) => {
 
   return (<>
       <PipeContainer pipe_id={id}>
-        {renderPhases(phases, toggleModal)}
+        {renderPhases(phases || [], toggleModal)}
       </PipeContainer>
       <Modal onCancel={() => toggleModal(false)} visible={isVisible}>
         <p>Some contents...</p>

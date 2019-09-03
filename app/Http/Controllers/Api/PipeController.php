@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 class PipeController extends Controller
 {
     
+    
+
 
     /**
      * Display a listing of the resource.
@@ -68,7 +70,8 @@ class PipeController extends Controller
     public function show(Request $request,$id)
     {
         $pipe = Pipe::findOrFail($id);
-        return response()->api($pipe->load(['phases.cards']));
+        $pipe->load(['phases.cards']);
+        return response()->api($pipe);
     }
 
     /**

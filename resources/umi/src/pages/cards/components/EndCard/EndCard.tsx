@@ -1,7 +1,7 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import { Dropdown, Icon, Menu, List, Checkbox } from 'antd';
+import { Dropdown, Icon, Menu, List, Checkbox, Card } from 'antd';
 import moment from 'moment';
 import { useDispatch } from 'dva';
 import styles from './EndCard.less';
@@ -18,15 +18,50 @@ type Props = {
 } & PhaseInnerProps;
 
 const EndCard = (props:Props):React.ReactElement => {
-    const { card, toggleModal } = props
+    const { card, toggleModal, phaseInfo, nextPhase, previousPhase } = props
     const { due_date, assigned_users, company, fields, id } = card
+
+    const getArrowDropDown = () => {
+        const dispatch = useDispatch()
+        const moveToPreviousPhase = () => {
+            dispatch({
+                type: 'pipes/cardMove',
+                payload: {
+                    path_id: [card.id,previousPhase ? previousPhase.id : null],
+                    card: card,
+                    oldPhase: phaseInfo,
+                    newPhase: previousPhase,
+                }
+            })
+        }
+        const moveToFirstPhase = () => {
+            dispatch({
+                type: 'pipes/cardMove',
+                payload: {
+                    path_id: [card.id,'first'],
+                    card: card,
+                    oldPhase: phaseInfo,
+                    newPhase: previousPhase,
+                }
+            })
+        }
+        const menu = <Menu>
+            <Menu.Item onClick={moveToPreviousPhase}>
+                <b>Mover para fase anterior</b>
+            </Menu.Item>
+            <Menu.Item onClick={moveToFirstPhase}>
+                Mover para a fase inicial
+            </Menu.Item>
+        </Menu>
+        return menu
+    }
 
     return (
         <div className={styles.card} >
             <span style={{ height: '100%', width: '80%' }} onClick={() => alert('oi')}></span>
             <div className={styles.cardHeader}>
                 <span className={styles.moveArrow}>
-                    <Dropdown trigger={['click']} overlay={getArrowDropDown(id)}>
+                    <Dropdown trigger={['click']} overlay={getArrowDropDown()}>
                         <Icon type="arrow-left" />
                     </Dropdown>
                 </span>
@@ -67,30 +102,7 @@ payload: {
 }
 
 
-const getArrowDropDown = (card_id:ID) => {
-    const dispatch = useDispatch()
-    const moveToPreviousPhase = () => {
-        dispatch({ type: 'cards/movePrevious',
-payload: {
-            path_id: [card_id],
-        } })
-    }
-    const moveToFirstPhase = () => {
-        dispatch({ type: 'cards/moveFirst',
-payload: {
-            path_id: [card_id],
-        } })
-    }
-    const menu = <Menu>
-        <Menu.Item onClick={moveToPreviousPhase}>
-            <b>Mover para fase anterior</b>
-        </Menu.Item>
-        <Menu.Item onClick={moveToFirstPhase}>
-            Mover para a fase inicial
-        </Menu.Item>
-    </Menu>
-    return menu
-}
+
 
 
 export default EndCard

@@ -22,6 +22,17 @@ const ActionCard = (props:Props):React.ReactElement => {
     const dispatch = useDispatch()
     
     const getArrowDropDown = () => {
+        const moveToPreviousPhase = () => {
+            dispatch({
+                type: 'pipes/cardMove',
+                payload: {
+                    path_id: [card.id,previousPhase ? previousPhase.id : null],
+                    card: card,
+                    oldPhase: phaseInfo,
+                    newPhase: previousPhase,
+                }
+            })
+        }
         const moveToNextPhase = () => {
             dispatch({
                 type: 'pipes/cardMove',
@@ -45,6 +56,9 @@ const ActionCard = (props:Props):React.ReactElement => {
             })
         }
         const menu = <Menu>
+            <Menu.Item onClick={moveToPreviousPhase}>
+                Mover para fase anterior
+            </Menu.Item>
             <Menu.Item onClick={moveToNextPhase}>
                 <b>Mover para próxima fase</b>
             </Menu.Item>

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Card;
 use App\Phase;
+use App\Pipe;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
+        
     /**
      * Display a listing of the resource.
      *
@@ -126,11 +128,28 @@ class CardController extends Controller
     public function move(Request $request,$id,$phase_id){
         $card = Card::findOrFail($id);
         $phase = Phase::find($phase_id);
-        if($phase && ($phase->pipe->id == $card->phase->pipe->id)){
+        if($phase && ($phase->pipe->id == $card->phase->pipe->id)){            
+            $pipe = Pipe::findOrFail($phase->pipe_id);
             $card->phase_id = $phase_id;
             $card->save();
-            return response()->api_patch($card->load(['phase.phaseFields','assignedUsers','fields','cardEmails']),['new_phase' => $phase_id]);  
+            return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso');  
         }
-        return response()->api_error('Essa fase não existe nesse pipe');        
+        if($phase_id == 'first'){
+            $pipe = Pipe::findOrFail($card->phase->pipe_id);
+            $phases = $pipe->phases;
+            $first_phase = $phases->where('order', $phases->max('order'))->first();
+            $card->phase_id = $first_phase->id;
+            $card->save();
+            return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso');  
+        }
+        if($phase_id == 'last'){
+            $pipe = Pipe::findOrFail($card->phase->pipe_id);
+            $phases = $pipe->phases;
+            $last_phase = $phases->where('order', $phases->min('order'))->last();
+            $card->phase_id = $last_phase->id;
+            $card->save();
+            return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso');  
+        }
+        return response()->api_error([],'Essa fase não existe nesse pipe');        
     }
 }

@@ -9,11 +9,42 @@
 }
 .phaseContent:hover{
   background-color: #e7e9ec;
+  .phaseHeaderIcon{
+    opacity: 1;
+  }
+  .phaseHeaderIcon:hover{
+    border-radius: 100%;
+    background-color: white;
+  }
 }
-
+.phaseContent:focus{
+  background-color: #e7e9ec;
+  .phaseHeaderIcon{
+    opacity: 1;
+  }
+  .phaseHeaderIcon:hover{
+    border-radius: 100%;
+    background-color: white;
+  }
+}
 .phaseHeader{
   margin-bottom: -4px;
   padding-left: 28px;
+  padding-right: 28px;
+  display: flex;
+  .phaseHeaderIcon{
+    flex-grow: 0;
+    font-size: 24px;
+    opacity: 0;
+    height: 38px;
+    width: 38px;
+    padding-left: 7px; 
+    transition: 200ms all;
+    transform: rotate(90deg)
+  }
+  .phaseHeaderIcon:hover{
+    opacity: 1;
+  }
 }
 
 .phaseLane{

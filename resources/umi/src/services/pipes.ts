@@ -44,3 +44,17 @@ export async function fPipeShow(payload : PipeRequests): Promise<UserInterface> 
     method: 'GET',
   } : {});
 }
+
+export async function fCardMove(payload : PipeRequests): Promise<UserInterface> {
+  return request(`/cards/${payload.path_id[0]}/move/${payload.path_id[1]}?${payload ? stringify(payload.params) : ''}`, payload ? {
+    method: 'GET',
+  } : {});
+}
+
+export async function fPhaseNameUpdate(payload ?: RequestPayload): Promise<DefaultResponseInterface> {
+  return request(`/phases/${payload && payload.path_id ? payload.path_id[0] : '0'}?${payload ? stringify(payload.params) : ''}`, payload ? {
+    body: JSON.stringify(payload.body),
+    method: 'PATCH',
+  } : {});
+}
+

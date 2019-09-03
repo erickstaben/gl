@@ -2,8 +2,10 @@
 import { Effect } from 'dva';
 import { fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow, fCardMove } from '@/services/pipes';
 
-import { PipeInterface, ID, CardInterface } from './database';
+import { PipeInterface, ID } from './database';
 import { Action, Reducer, PayloadInterface } from './connect';
+import { fPhaseNameUpdate } from '@/services/phases';
+import { findIndex } from 'lodash';
 
 interface PipesOverviewInterface {
   name: string;
@@ -11,15 +13,7 @@ interface PipesOverviewInterface {
   id: ID;
   is_favorite ?: boolean;
 }
-interface InnerPhase {
-  index: number;
-  id: ID;
-}
-interface CardMovePayload{
-  card: CardInterface;
-  oldPhase: InnerPhase;
-  newPhase: InnerPhase;
-}
+
 export interface PipeConfigInterface {
   notifications: boolean
 }
@@ -43,6 +37,7 @@ export interface ModelType {
     pipesOverview: Effect;
     pipeShow: Effect;
     cardMove: Effect;
+    phaseNameUpdate: Effect;
   };
   reducers: {
     rPipeCreate: Reducer<PipesModelState, Action<any>>;
@@ -51,7 +46,8 @@ export interface ModelType {
     rPipeConfig: Reducer<PipesModelState, Action<PayloadInterface>>;
     rPipesOverview: Reducer<PipesModelState, Action<PipesOverviewInterface>>;
     rPipeShow: Reducer<PipesModelState, Action<PipeInterface>>;
-    rCardMove: Reducer<PipesModelState, Action<CardMovePayload>>;
+    rMovePhase: Reducer<PipesModelState, Action<any>>;
+    rPhaseNameUpdate: Reducer<PipesModelState, Action<any>>;
   };
 }
 
@@ -114,21 +110,25 @@ const Model: ModelType = {
         });
       }
     },
-    *cardMove({ payload }, { call, put }){
-      yield put({
-        type: 'rCardMove',
-        payload: payload,
-      });
+    *cardMove({ payload }, { call, put }){      
       const response = yield call(fCardMove, payload);
       if (response.ok && response.data) {
         yield put({
-          type: 'rCardMove',
-          payload: payload,
+          type: 'rPipeShow',
+          payload: response.data,
+        });
+      }      
+    },
+    *phaseNameUpdate({ payload }, { call, put }){      
+      const response = yield call(fPhaseNameUpdate, payload);
+      if (response.ok && response.data) {
+        yield put({
+          type: 'rPhaseNameUpdate',
+          payload: response.data,
         });
       }      
     }
   },
-
   reducers: {
     rPipeCreate(state, { payload }:Action<PipesOverviewInterface>) {
       return {
@@ -178,23 +178,30 @@ const Model: ModelType = {
         ...state,
         loaded: payload,
       };
-    },
-    rCardMove(state: any, { payload }: Action<CardMovePayload>) {
-      const { card, oldPhase, newPhase } = payload
-      console.log(card, oldPhase, newPhase)
-      const newPhases = state.loaded.phases;
-      newPhases[oldPhase.index].cards = newPhases[oldPhase.index].cards.filter((c: CardInterface) => c.id !== card.id)
-      newPhases[newPhase.index].cards.push(card)
-      console.log(newPhases,'oioi')
+    }, 
+    rMovePhase(state:any, { payload }:Action<PipeInterface>) {
       return {
         ...state,
         loaded: {
           ...state.loaded,
-          phases: newPhases,
-        }
+          phases: []
+        },
       };
     },
-    
+    rPhaseNameUpdate(state:any, { payload }:Action<PipeInterface>) {
+      const newPhases = state.loaded.phases
+      newPhases[findIndex(state.loaded.phases,{id: payload.id})] = {
+        ...newPhases[findIndex(state.loaded.phases,{id: payload.id})],
+        ...payload,
+      }
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          phases: newPhases
+        },
+      };
+    },
   },
 };
 

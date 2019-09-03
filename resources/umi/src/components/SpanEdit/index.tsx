@@ -1,5 +1,5 @@
 
-import { Input } from 'antd';
+import { Input, Spin } from 'antd';
 import React, { useState } from 'react'
 
 
@@ -25,6 +25,7 @@ const SpanEdit = (props:Props) => {
 
     const [isEditing, toggleEdit] = useState(false)
     const fieldValue = useSelector(state => get(state, dispatch.name))
+    const loading = useSelector(state => state.loading.effects[dispatch.type])
     const [partialText, setText] = useState(fieldValue)
 
     const saveChanges = (e:React.FormEvent<HTMLInputElement>) => {
@@ -42,11 +43,13 @@ const SpanEdit = (props:Props) => {
         toggleEdit(!isEditing)
     }
     return (
-        <div>
+        <div style={{flexGrow: 2}}>
             {isEditing ?
-                <span style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ display: 'flex', flexDirection: 'column', marginRight: 8, maxWidth: 230 }}>
+                    <Spin spinning={loading}>
                     <Input className={styles.input} autoFocus onBlur={saveChanges} defaultValue={fieldValue} onChange={e => setText(e.target.value)} value={partialText}/>
                     <span className={styles.inputLabel}>Aperte enter para salvar</span>
+                    </Spin>
                 </span>
             :
                 <div className={styles.title} onClick={e => toggleEdit(!isEditing)}>{fieldValue}</div>}
