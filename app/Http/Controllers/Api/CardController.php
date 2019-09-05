@@ -65,9 +65,10 @@ class CardController extends Controller
      * @param  \App\Card  $card
      * @return \Illuminate\Http\Response
      */
-    public function show(Card $card)
+    public function show(Request $request, $id)
     {
-        $card->load(['company','phase.phaseFields','creator','assignedUsers','fields','cardEmails']);        
+        $card = Card::findOrFail($id);
+        $card->load(['company','phase.phaseFields','creator','assignedUsers','fields','cardEmails','history']);        
         return response()->api($card);   
     }
 

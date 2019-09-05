@@ -17,6 +17,10 @@ class Card extends Model
         return $this->belongsTo('App\Company');
     }
 
+    public function history(){
+        return $this->hasMany('App\History');
+    }
+
     public function phase(){
         return $this->belongsTo('App\Phase');
     }

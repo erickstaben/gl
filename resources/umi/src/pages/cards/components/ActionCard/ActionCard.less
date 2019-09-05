@@ -1,8 +1,15 @@
 @import '~antd/es/style/themes/default.less';
 @import '../../../../utils/variables.less';
 
+
+.card:hover{ 
+    transform: translateY(-4px);
+
+}
 .card{
-    display: flex;
+    transition: 200ms transform;
+    display: flex;    
+    border-top: 12px solid @default-border-color;
     flex-direction: column;
     width: 100%;
     margin-top: 16px;

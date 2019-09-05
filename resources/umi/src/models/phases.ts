@@ -1,11 +1,9 @@
 
 import { message } from 'antd';
 import { Effect } from 'dva';
-import { findIndex } from 'lodash';
-import { now } from 'umi-plugin-locale';
 import { DefaultResponseInterface, PhaseInterface } from './database';
 import { Action, Reducer } from './connect';
-import { fMovePhase } from '@/services/phases';
+import { fMovePhase, fCreate } from '@/services/phases';
 
 export interface PhasesModelState {
 }
@@ -16,6 +14,7 @@ export interface ModelType {
   state: PhasesModelState;
   effects: {
     movePhase: Effect;
+    create: Effect;
   };
   reducers: {};
 }
@@ -33,6 +32,18 @@ const Model: ModelType = {
           type: 'pipes/rMovePhase',
           payload,
         });
+      } else {
+        message.info('Erro ao tentar salvar')
+      }
+    },
+    *create({ payload }, { call, put }) {
+      const response = yield call(fCreate, payload);
+      if (response.ok) {       
+        yield put({
+          type: 'pipes/rPhaseCreate',
+          payload: response.data,
+        });
+        message.success('Fase criada com sucesso')
       } else {
         message.info('Erro ao tentar salvar')
       }

@@ -14,9 +14,16 @@ export async function fMovePhase(payload:Payload): Promise<DefaultResponseInterf
   } : {});
 }
 
-export async function fPhaseNameUpdate(payload:Payload): Promise<DefaultResponseInterface> {
-  return request(`/phases/${payload && payload.path_id ? payload.path_id[0] : '0'}?${payload ? stringify(payload.params) : ''}`, payload ? {
+export async function fCreate(payload:Payload): Promise<DefaultResponseInterface> {
+  return request(`/phases?${payload ? stringify(payload.params) : ''}`, payload ? {
+    body: JSON.stringify(payload.body),
+    method: 'POST',
+  } : {});
+} 
+
+export async function fPhaseNameUpdate(payload: Payload): Promise<DefaultResponseInterface> {
+  return request(`/phases/${payload.path_id[0]}?${payload ? stringify(payload.params) : ''}`, payload ? {
     body: JSON.stringify(payload.body),
     method: 'PATCH',
   } : {});
-}
+} 

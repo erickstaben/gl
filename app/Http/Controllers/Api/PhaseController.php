@@ -60,30 +60,26 @@ class PhaseController extends Controller
     public function store(Request $request)
     {
        $request->validate([
-            'name' => 'numeric|required',
-            'description' => 'numeric|required',
-            'client_status' => 'numeric|required',
+            'name' => 'string|required',
+            'description' => 'string|required',
+            'client_status' => 'string|required',
             'pipe_id' => 'string|required',
-            'is_final' => 'string|required',
+            'is_final' => 'boolean|required',
             'order' => 'numeric|required',
+            'phaseFields' => 'array',
         ]);
 
-        $card = Card::create($request->all());
-
-        if($request['users'])
+        Phase::where('order','>=',$request['order'])->increment('order');
+        $phase = Phase::create($request->all());
+        if($request['phaseFields'])
         {
-            $card->assignedUsers()->sync($request['users']);
+            echo 'a fazer';
         }
 
-        if($request['fields'])
+        if($phase->save())
         {
-            $card->fields()->sync($request['fields']);
-        }
-
-        if($card->save())
-        {
-            $card->load(['phase','creator','company']);
-            return response()->api($card);
+            $phase->load(['cards']);
+            return response()->api($phase);
         }
         return response()->api_error();
     }

@@ -1,15 +1,15 @@
 
-import React, { useState } from 'react';
+import React, { useState, RefObject } from 'react';
 import classnames from 'classnames';
 import styles from './PhaseLane.less';
 import SpanEdit from '@/components/SpanEdit';
 import { ID, CardInterface } from '@/models/database';
 import { EndCard, ActionCard } from '@/pages/cards/components'
-import { useSelector, shallowEqual, useDispatch } from 'dva';
+import { useSelector, useDispatch } from 'dva';
 import { findIndex } from 'lodash';
-import PhaseLaneModal from './PhaseLaneModal';
 import { Icon, Menu, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
+import { Draggable, DraggableProvided, DraggableStateSnapshot, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd'
 
 interface InnerPhase {
     id: ID;
@@ -23,25 +23,21 @@ export interface PhaseInnerProps {
 type Props = {
     cards ?: CardInterface[];
     is_final: boolean;
-    toggleModal: (a:boolean) => void;
+    setVisibility: Function;
+    pipe_id: ID;
+    toggleModal: Function | any;
+    passingRef: RefObject<HTMLLIElement>;
+    getItemStyle: (isDragging:boolean,styleObject?:DraggingStyle | NotDraggingStyle) => object;
 } & PhaseInnerProps;
 
 
-const compareArray = (left:Array<any>,right:Array<any>) => {
-    if(left.length !== right.length){
-        return true
-    }
-    return false
-}
-
 const PhaseLane = (props:Props):React.ReactElement => {
-    const { previousPhase, nextPhase, phaseInfo, is_final, toggleModal } = props
+    const { previousPhase, nextPhase, phaseInfo, is_final, toggleModal, cards, pipe_id, getItemStyle, passingRef, setVisibility } = props
     const phaseProps = {
         previousPhase,
         phaseInfo,
         nextPhase,
     }
-    const [isVisible,setVisibility] = useState(false)
     const dispatch = useDispatch();
     const getDropOverlay = () => (
         <Menu>
@@ -73,30 +69,62 @@ const PhaseLane = (props:Props):React.ReactElement => {
                 <b>Criar nova fase</b>
             </Menu.Item>
         </Menu>
-    )
-    const cards = useSelector((state:any) => state.pipes.loaded.phases[findIndex(state.pipes.loaded.phases,{id: phaseInfo.id})].cards, compareArray)
+    ) 
     const phases = useSelector((state:any) => state.pipes.loaded.phases)
-    console.log(phaseInfo,is_final)
     return ( <>
-        <li className={styles.phaseContent}>
+        
+        <li ref={passingRef} className={styles.phaseContent}>
             <header className={styles.phaseHeader}>
-                <SpanEdit dispatch={{ name: `pipes.loaded.phases[${findIndex(phases,{id: phaseInfo.id})}].name`, type: 'pipes/phaseNameUpdate', id: phaseInfo.id }}/>
+                <SpanEdit dispatch={{ name: `pipes.loaded.phases[${findIndex(phases, { id: phaseInfo.id })}].name`, type: 'pipes/phaseNameUpdate', id: phaseInfo.id }} />
                 <Dropdown overlay={getDropOverlay()}>
-                    <span className={styles.phaseHeaderIcon}><Icon type='more'/></span>
+                    <span className={styles.phaseHeaderIcon}><Icon type='more' /></span>
                 </Dropdown>
             </header>
             <div className={classnames(styles.phaseLane, styles.scrollBar)}>
-            {is_final ? 
-            cards ? cards.map((card, cardIndex) => (
-                <EndCard {...phaseProps} toggleModal={toggleModal} card={card}/>
-            )) : null
-                : 
-            cards ? cards.map((card, cardIndex) => (
-                <ActionCard {...phaseProps} toggleModal={toggleModal} card={card}/>
-            )) : null }
+                {is_final ?
+                    cards ? cards.map((card, cardIndex) => (
+                        <Draggable
+                            key={card.id}
+                            draggableId={card.id.toString()}
+                            index={cardIndex}>
+                            {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                                <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={getItemStyle(
+                                        snapshot.isDragging,
+                                        provided.draggableProps.style
+                                    )}>
+                                    <EndCard {...phaseProps} toggleModal={toggleModal} card={card} />
+                                </div>
+                            )}
+                        </Draggable>
+                        
+                    )) : null
+                    :
+                    cards ? cards.map((card, cardIndex) => (
+                        <Draggable
+                            key={card.id}
+                            draggableId={card.id.toString()}
+                            index={cardIndex}>
+                            {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                                <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={getItemStyle(
+                                        snapshot.isDragging,
+                                        provided.draggableProps.style
+                                    )}>
+                                    <ActionCard {...phaseProps} toggleModal={toggleModal} card={card} />
+                                </div>
+                            )}
+                        </Draggable>
+                    )) : null}
             </div>
         </li>
-        {isVisible && <PhaseLaneModal setVisibility={setVisibility}/>}
+        
         </>
     );
 }

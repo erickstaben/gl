@@ -1,7 +1,7 @@
 
 import { Effect } from 'dva';
 import { fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow, fCardMove } from '@/services/pipes';
-
+import { message } from 'antd';
 import { PipeInterface, ID } from './database';
 import { Action, Reducer, PayloadInterface } from './connect';
 import { fPhaseNameUpdate } from '@/services/phases';
@@ -23,6 +23,7 @@ export interface PipesModelState {
     config ?: PipeConfigInterface
   }
   overview: PipesOverviewInterface[];
+  loadingCardId ?: number;
 }
 
 
@@ -48,6 +49,8 @@ export interface ModelType {
     rPipeShow: Reducer<PipesModelState, Action<PipeInterface>>;
     rMovePhase: Reducer<PipesModelState, Action<any>>;
     rPhaseNameUpdate: Reducer<PipesModelState, Action<any>>;
+    rPhaseCreate: Reducer<PipesModelState, Action<any>>;
+    rCardMove: Reducer<PipesModelState, Action<any>>;
   };
 }
 
@@ -57,6 +60,7 @@ const Model: ModelType = {
   state: {
     loaded: <PipeInterface>{},
     overview: [],
+    loadingCardId: undefined,
   },
 
   effects: {
@@ -110,13 +114,18 @@ const Model: ModelType = {
         });
       }
     },
-    *cardMove({ payload }, { call, put }){      
+    *cardMove({ payload }, { call, put }){    
+      yield put({
+        type: 'rCardMove',
+        payload: payload,
+      });  
       const response = yield call(fCardMove, payload);
       if (response.ok && response.data) {
         yield put({
           type: 'rPipeShow',
           payload: response.data,
         });
+        message.success('Card movido com sucesso')
       }      
     },
     *phaseNameUpdate({ payload }, { call, put }){      
@@ -173,18 +182,45 @@ const Model: ModelType = {
         overview: newOverview,
       };
     },
-    rPipeShow(state:any, { payload }:Action<PipeInterface>) {
-      return {
-        ...state,
-        loaded: payload,
-      };
-    }, 
-    rMovePhase(state:any, { payload }:Action<PipeInterface>) {
+    rCardMove(state: any, { payload }: Action<any>) {
+      const { oldPhase,newPhase,card  }= payload
+      
+      let phases = state.loaded.phases
+
+      const oldPhaseIndex = findIndex(phases, { id: oldPhase.droppableId || oldPhase.id })
+      const newPhaseIndex = findIndex(phases, { id: newPhase.droppableId || newPhase.id })
+
+      phases[oldPhaseIndex].cards = phases[oldPhaseIndex].cards.filter(card => card.id !== payload.path_id[0])
+      phases[newPhaseIndex].cards.push(card)
+     
       return {
         ...state,
         loaded: {
           ...state.loaded,
-          phases: []
+          phases: phases
+        },
+        loadingCardId: card.id 
+      };
+    },
+    rPipeShow(state:any, { payload }:Action<PipeInterface>) {
+      return {
+        ...state,
+        loaded: payload,
+        loadingCardId: undefined,
+      };
+    }, 
+    rMovePhase(state: any, { payload }: Action<PayloadInterface>) {
+      const newPhases = state.loaded.phases
+      const phaseToBeMoved = findIndex(newPhases,{ id: payload.path_id[0] })
+      const phaseMoved = findIndex(newPhases, { id: payload.path_id[1] })
+      let temp = newPhases[phaseToBeMoved].order 
+      newPhases[phaseToBeMoved].order = newPhases[phaseMoved].order
+      newPhases[phaseMoved].order = temp
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          phases: newPhases
         },
       };
     },
@@ -199,6 +235,19 @@ const Model: ModelType = {
         loaded: {
           ...state.loaded,
           phases: newPhases
+        },
+      };
+    },
+    rPhaseCreate(state: any, { payload }: Action<any>) {   
+      const oldPhases = state.loaded.phases.map(phase => ({...phase,order: phase.order >= payload.order ? phase.order+1 : phase.order }))   
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          phases: [
+            ...oldPhases,
+            {...payload}
+          ]
         },
       };
     },

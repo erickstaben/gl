@@ -1,8 +1,3 @@
-/**
- * Ant Design Pro v4 use `@ant-design/pro-layout` to handle Layout.
- * You can view component api by:
- * https://github.com/ant-design/ant-design-pro-layout
- */
 
 import ProLayout, {
   MenuDataItem,
@@ -44,7 +39,6 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
     return Authorized.check(item.authority, localItem, null) as MenuDataItem;
   });
 
-const footerRender: BasicLayoutProps['footerRender'] = (_, defaultDom) => defaultDom;
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const { dispatch, children, settings } = props;
@@ -76,6 +70,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   return (
     <ProLayout
       logo={logo}
+      style={{margin: 16}}
       onCollapse={handleMenuCollapse}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl) {
@@ -101,10 +96,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           <span>{route.breadcrumbName}</span>
         );
       }}
-      footerRender={footerRender}
       menuDataRender={menuDataRender}
+      footerRender={() => null}
       formatMessage={formatMessage}
-      rightContentRender={rightProps => <RightContent {...rightProps} />}
+      rightContentRender={rightProps=> <RightContent {...rightProps} />}
       {...props}
       {...settings}
     >

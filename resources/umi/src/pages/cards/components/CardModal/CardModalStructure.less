@@ -1,0 +1,95 @@
+@import '~antd/es/style/themes/default.less';
+@import '../../../../utils/variables.less';
+
+
+.modalWrap{
+    >div{
+        width: 800px;
+        >div{
+            background-color: #fff0;
+            box-shadow: none;
+        }
+    }
+}
+.modalDiv{ 
+    width: 450px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    border-top: 20px solid @default-border-color;
+    background-color: @primary-white-color;
+}
+.leftSideModal{
+    height: 600px;
+    background-color: @default-background-color;
+    .headerTitle{
+        font-size: 18px;
+        color: @primary-active-color;
+        font-weight: bold;
+    }
+    .headerDescription{
+        font-size: 14px;
+        color: #505F6F;
+        font-weight: 600;
+    }
+    
+}
+.modalBodyContainer{
+    padding: 16px 32px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    //background-color: #F0F2F5;
+    .modalBody{
+        flex-grow: 1;
+    }
+    header{
+        margin-top: -13px;
+        display: flex;
+        flex-direction: column;
+    }
+}
+.rightSideModal{
+    box-shadow: -4 -4px 12px rgba(0, 0, 0, 0.15);
+    height: 500px;
+    position: relative;
+    top: 30px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    left: -30px;
+    .headerTitle{
+        font-size: 18px;
+        color: @primary-black-color;
+        font-weight: 600;
+    }    
+    .headerDescription{
+        font-size: 14px;
+        color: @font-description-color;
+        font-weight: 600;
+    }
+    
+    .modalFooter{
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        background-color: @primary-active-color;
+        display: flex;
+        align-items: center;
+        div{
+            flex: auto;
+            color: @primary-white-color;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            transition: 300ms font-size;
+        }
+        height: 60px;
+
+    }
+    .modalFooter:hover{
+        background-color: mix(@primary-active-color,#fff,90%);
+        cursor: pointer;
+        div{
+            font-size: 22px;
+        }
+
+    }
+}

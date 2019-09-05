@@ -1,15 +1,16 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import { Dropdown, Icon, Menu, List, Checkbox, Card } from 'antd';
+import { Dropdown, Icon, Menu, List, Checkbox, Card, Spin } from 'antd';
 import moment from 'moment';
-import { useDispatch } from 'dva';
+import { useDispatch, useSelector } from 'dva';
 import styles from './EndCard.less';
 import { CardInterface, ID, PhaseFieldInterface } from '@/models/database';
 import SpanText from '@/components/SpanText';
 import ProgressBar, { uncompleted } from '../ProgressBar/ProgressBar'
 import { getFirstLetters } from '@/utils/utils';
 import { PhaseInnerProps } from '../PhaseLane/PhaseLane';
+import { getLanguage } from '@ant-design/pro-layout/lib/locales';
 
 
 type Props = {
@@ -55,26 +56,30 @@ const EndCard = (props:Props):React.ReactElement => {
         </Menu>
         return menu
     }
+    const isLoading = () => card.id === useSelector(state => state.pipes.loadingCardId)
 
     return (
         <div className={styles.card} >
-            <span style={{ height: '100%', width: '80%' }} onClick={() => alert('oi')}></span>
-            <div className={styles.cardHeader}>
-                <span className={styles.moveArrow}>
-                    <Dropdown trigger={['click']} overlay={getArrowDropDown()}>
-                        <Icon type="arrow-left" />
-                    </Dropdown>
-                </span>
-                <div className={styles.title}>
-                    <SpanText text={company ? company.name : 'Sem nome'} className={styles.cardName}/>
-                    <SpanText text={company ? company.cnpj : 'CNPJ sem cadastro'} className={styles.cardCNPJ}/>
-                </div>
-                <Dropdown className={styles.progressBar} overlay={getMoreDropDown(toggleModal, id)} trigger={['click']}>
-                    <span className={styles.showMore}>
-                        <Icon type="more" />
+            <Spin spinning={isLoading()}>
+                <span style={{ height: '100%', width: '80%' }} onClick={() => alert('oi')}></span>
+                <div className={styles.cardHeader}>
+                    <span className={styles.moveArrow}>
+                        <Dropdown trigger={['click']} overlay={getArrowDropDown()}>
+                            <Icon type="arrow-left" />
+                        </Dropdown>
                     </span>
-                </Dropdown>
-            </div>
+                    <div className={styles.title}>
+                        <SpanText text={company ? company.name : 'Sem nome'} className={styles.cardName} />
+                        <SpanText text={company ? company.cnpj : 'CNPJ sem cadastro'} className={styles.cardCNPJ} />
+                    </div>
+                    <Dropdown className={styles.progressBar} overlay={getMoreDropDown(toggleModal, id)} trigger={['click']}>
+                        <span className={styles.showMore}>
+                            <Icon type="more" />
+                        </span>
+                    </Dropdown>
+                </div>
+            </Spin>
+            
         </div>
     );
 }
