@@ -10,7 +10,20 @@ use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
-        
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFields(Request $request,$card_id,$phase_id){
+        $card = Card::findOrFail($card_id);
+        $card->fields()->updateExistingPivot($phase_id,array('value' => $request['value']),true);
+        $card->save();
+        return response()->api(
+            $card->load(['company','phase.phaseFields','creator','assignedUsers','fields','cardEmails'])
+        );
+    }
+    
     /**
      * Display a listing of the resource.
      *

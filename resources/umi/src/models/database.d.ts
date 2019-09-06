@@ -9,6 +9,16 @@ export interface DefaultResponseInterface {
     ok: boolean;
     message: string;
 }
+export interface CardEventInterface{
+    agent: string;
+    subject: string;
+    description: string;
+    type: 'movement' | 'adition';
+    id: ID;
+    card_id ?: ID;
+    created_at: Date;
+    updated_at: Date;
+}
 
 export interface UserInterface {
     id: ID,

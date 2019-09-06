@@ -74,7 +74,6 @@ const PhaseLane = (props:Props):React.ReactElement => {
     const filterCards = (cards,filter) => filter ? cards.filter(card => card.company ? card.company.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0 : false) : cards
     const filteredCards = filterCards(cards,filter)
     const phases = useSelector((state:any) => state.pipes.loaded.phases)
-    console.log('asdas',filteredCards,cards.filter(card => card.company ? card.company.name.indexOf(filter) > 0 : false))
     return ( <>
         
         <li ref={passingRef} className={styles.phaseContent}>

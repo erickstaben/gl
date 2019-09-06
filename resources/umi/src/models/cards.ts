@@ -3,7 +3,8 @@ import { message } from 'antd';
 import { Effect } from 'dva';
 import { DefaultResponseInterface, CardInterface } from './database';
 import { Action, Reducer } from './connect';
-import { fShow } from '@/services/cards';
+import { fShow, fUpdateFieldValue } from '@/services/cards';
+import { findIndex } from 'lodash';
 
 export interface CardsModelState {
   loaded: CardInterface;
@@ -15,8 +16,11 @@ export interface ModelType {
   state: CardsModelState;
   effects: {
     show: Effect;
+    updateFieldValue: Effect;
   };
-  reducers: {};
+  reducers: {
+    rUpdateFieldValue: Reducer<CardsModelState, Action<any>>;
+  };
 }
 
 const Model: ModelType = {
@@ -38,12 +42,34 @@ const Model: ModelType = {
         message.info('Erro ao tentar salvar')
       }
     },
+    *updateFieldValue({ payload }, { call, put }) {
+      const response = yield call(fUpdateFieldValue, payload);
+      if (response.ok) {
+        yield put({
+          type: 'rUpdateFieldValue',
+          payload: response.data,
+        });
+      } else {
+        message.info('Erro ao tentar salvar')
+      }
+    },
   },
   reducers: {
     rShow(state: CardsModelState, { payload }: Action<any>) {      
       return {
         ...state,
         loaded: payload,
+      };
+    },
+    rUpdateFieldValue(state: CardsModelState, { payload }: Action<any>) {
+      const newFields = state.loaded.fields || []
+      newFields[findIndex(newFields,{id: payload.path_id[1]})].pivot.value = payload.body.value
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          fields: newFields,
+        },
       };
     },
   },

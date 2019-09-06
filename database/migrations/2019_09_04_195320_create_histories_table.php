@@ -18,8 +18,9 @@ class CreateHistoriesTable extends Migration
 
             $table->unsignedBigInteger('card_id');
             $table->foreign('card_id')->references('id')->on('cards');
-
-            $table->string('title');
+            $table->string('type');
+            $table->string('agent');
+            $table->string('subject');
             $table->string('description');
             
             $table->timestamps();
