@@ -68,7 +68,7 @@ const MainLayout = (props: Props) => {
                 <Authorized authority={route.authority || ['user','admin','super']}>
                 <Link to={route.path || '/'}>
                     <li>
-                        <Icon data-tip={'Nome do campo'} type={route.icon}/>
+                        <Icon style={!collapsed ? {height: 32,width: 32} : {}} data-tip={'Nome do campo'} type={route.icon}/>
                         {!collapsed && <div>
                             {route.name}
                         </div>}
