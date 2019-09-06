@@ -59,7 +59,7 @@
             height: 30px;
             padding: @default-padding;
             color: @default-text-color;
-            background-color: @primary-color;
+            background-color: @primary-active-color;
             border-radius: @default-border-radius;
             i{
                 margin-right: 4px;
@@ -91,13 +91,19 @@
             width: 30px;
             height: 30px;
             margin-left: 8px;
-            border: 1px solid @secondary-active-color;
+            border: 1px solid @font-description-color;
             border-radius: 100%;
             span{
                 width: 100%;
-                color: @secondary-active-color;
+                color: @font-description-color;
                 font-size: 10px;
                 text-align: center;
+            }
+        }
+        .checkListShow:hover{
+            border: 1px solid @primary-active-color;
+            span{
+                color: @primary-active-color;
             }
         }
         .moveArrow{

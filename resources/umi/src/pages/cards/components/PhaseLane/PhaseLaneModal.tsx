@@ -10,7 +10,6 @@ type Props = {
     withModal: boolean;
     pipe_id: ID;
     isVisible: boolean;
-    ref: HTMLDivElement | undefined;
 }
 
 const PhaseLaneModal = (props:Props) => {
@@ -18,7 +17,7 @@ const PhaseLaneModal = (props:Props) => {
     const { register, handleSubmit, errors, setValue, setError } = useForm(); // initialise the hook
     const dispatch = useDispatch();
     const phases = useSelector((state:any) => state.pipes.loaded.phases) || []
-    const { setVisibility, pipe_id, isVisible, ref} = props
+    const { setVisibility, pipe_id, isVisible} = props
     const onSubmit = (data: any) => {
         const newData = {
             ...data,
@@ -36,15 +35,16 @@ const PhaseLaneModal = (props:Props) => {
     useEffect(() => {
         register({ name: "order" });
     },[])
+    console.log('error',errors)
     return (    
         <Drawer
-            title="Adicionar nova fase"
+            
             placement="right"
             closable={false}
-            width={360}
+            width={600}
+            height={600}
             onClose={() => setVisibility(false)}
             visible={isVisible}
-            getContainer={ref}
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>

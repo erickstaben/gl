@@ -13,9 +13,13 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState, Dispatch } from '@/models/connect';
 import logo from '../assets/logo.svg';
+import { Icon } from 'antd';
 import classnames from 'classnames';
-import routes from '../../config/config';
+import config from '../../config/config';
+import ReactTooltip from 'react-tooltip';
+import { HotKeys } from 'react-hotkeys';
 
+const routes = config.routes;
 
 interface Props { 
     children: ReactElement
@@ -53,46 +57,63 @@ const MainLayout = (props: Props) => {
         }
     }, []);
 
+    const renderMenuItems = (routes) => {
+        if(routes.routes){
+            <li><Icon data-tip={'Nome do campo'} type='user'/>{!collapsed && <div>
+                {renderMenuItems(routes.routes)}
+            </div>}</li>
+        }
+        return routes.filter(r => r.path && !r.hideInMenu).map(route => {
+            return (
+                <Authorized authority={route.authority || ['user','admin','super']}>
+                <Link to={route.path || '/'}>
+                    <li>
+                        <Icon data-tip={'Nome do campo'} type={route.icon}/>
+                        {!collapsed && <div>
+                            {route.name}
+                        </div>}
+                    </li>
+                </Link>
+                </Authorized>                
+            )
+        }) 
+    }
     const handleMenuCollapse = (payload: boolean): void =>{
         dispatch({
             type: 'global/changeLayoutCollapsed',
             payload,
         })
     }
-        
-    console.log('layout', routes)
-
+    console.log('oioi',routes)
+    const handlers = (collapsed:boolean) => {console.log('collapse inside handlers'); return ({CHANGE_LAYOUT: () => handleMenuCollapse(!collapsed)})}
     return (
-        <div style={{display: 'inline-flex',height: '100%'}}>
+        <HotKeys allowChanges className={styles.layoutContainer} handlers={handlers(collapsed)} keyMap={{CHANGE_LAYOUT: 's'}}>
+            {collapsed && <ReactTooltip type='info' effect={'solid'} delayHide={150}/>}
             <aside className={classnames(styles.sidebar, { [styles.sidebarCollapse]: collapsed },{ [styles.sidebarUncollapse]: !collapsed })}>
-                <div>
-                    <div className={styles.sidebarHeader}>
-                        <div className={styles.avatar}><div></div>Avatar</div>
-                        <div className={styles.name}>nome</div>
-                        <div className={styles.info}>info</div>
-                    </div>
-                    <ul className={styles.sidebarMenu}>
-                        <li>asd</li>
-                        <ul>
-                            <li>dsa</li>
-                        </ul>
-                        <li>asd</li>
-                        <button onClick={() => handleMenuCollapse(!collapsed)}>
-                            Collapse
-                    </button>
-                    </ul>
-                    <footer className={styles.sidebarActionButtons}>
-                        <div className={styles.actionButtons}>
-                            <span>Configurações</span>
-                        </div>
-                        <div className={styles.actionButtons}>
-                            <span>Mais</span>
-                        </div>
-                    </footer>
+                <div className={styles.sidebarHeader}>
+                    <span className={styles.menuFold} onClick={() => handleMenuCollapse(!collapsed)}>
+                        <Icon type="menu-fold"/>
+                    </span>
+                    <div className={classnames(styles.avatar,{[styles.avatarCollapsed]: collapsed})}></div>
+                    <p className={classnames(styles.name,{[styles.nameCollapsed]: collapsed})}>nome</p>
+                    <p className={classnames(styles.info,{[styles.infoCollapsed]: collapsed})}>info</p>
                 </div>
+                <ul className={styles.sidebarMenu}>
+                    {renderMenuItems(routes[0].routes)}                   
+                </ul>
+                <footer className={classnames(styles.sidebarFooter,collapsed ? styles.sidebarFooterCollapsed : styles.sidebarFooterUncollapsed)}>
+                    <div className={styles.actionButtons}>
+                        <span><Icon type='setting'/></span>
+                    </div>
+                    <div className={styles.actionButtons}>
+                        <span><Icon type='plus'/></span>
+                    </div>
+                </footer>
             </aside>
-            {children}
-        </div>
+            <div style={{display: 'flex',width: '100%',flexDirection: 'column'}}>
+                {children}
+            </div>
+        </HotKeys>
     )
 };
 

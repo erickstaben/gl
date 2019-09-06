@@ -7,7 +7,7 @@ import { ID, CardInterface } from '@/models/database';
 import { EndCard, ActionCard } from '@/pages/cards/components'
 import { useSelector, useDispatch } from 'dva';
 import { findIndex } from 'lodash';
-import { Icon, Menu, Dropdown } from 'antd';
+import { Icon, Menu, Dropdown, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { Draggable, DraggableProvided, DraggableStateSnapshot, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd'
 
@@ -38,6 +38,7 @@ const PhaseLane = (props:Props):React.ReactElement => {
         phaseInfo,
         nextPhase,
     }
+    const [filter,setFilter] = useState('')
     const dispatch = useDispatch();
     const getDropOverlay = () => (
         <Menu>
@@ -70,7 +71,10 @@ const PhaseLane = (props:Props):React.ReactElement => {
             </Menu.Item>
         </Menu>
     ) 
+    const filterCards = (cards,filter) => filter ? cards.filter(card => card.company ? card.company.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0 : false) : cards
+    const filteredCards = filterCards(cards,filter)
     const phases = useSelector((state:any) => state.pipes.loaded.phases)
+    console.log('asdas',filteredCards,cards.filter(card => card.company ? card.company.name.indexOf(filter) > 0 : false))
     return ( <>
         
         <li ref={passingRef} className={styles.phaseContent}>
@@ -78,11 +82,15 @@ const PhaseLane = (props:Props):React.ReactElement => {
                 <SpanEdit dispatch={{ name: `pipes.loaded.phases[${findIndex(phases, { id: phaseInfo.id })}].name`, type: 'pipes/phaseNameUpdate', id: phaseInfo.id }} />
                 <Dropdown overlay={getDropOverlay()}>
                     <span className={styles.phaseHeaderIcon}><Icon type='more' /></span>
-                </Dropdown>
+                </Dropdown>                
             </header>
+            <div className={styles.searchContainer}>
+                <input onChange={(e) => setFilter(e.target.value)} className={styles.searchInput} placeholder='Digite algo para pesquisar'/>
+                <Icon className={styles.searchIcon} type='search'/>
+            </div>
             <div className={classnames(styles.phaseLane, styles.scrollBar)}>
                 {is_final ?
-                    cards ? cards.map((card, cardIndex) => (
+                    filteredCards.length > 0 ? filteredCards.map((card, cardIndex) => (
                         <Draggable
                             key={card.id}
                             draggableId={card.id.toString()}
@@ -100,10 +108,12 @@ const PhaseLane = (props:Props):React.ReactElement => {
                                 </div>
                             )}
                         </Draggable>
-                        
-                    )) : null
+        
+                    )) : <div className={styles.noCards}>
+                        {filter ? <span>Nada foi encontrado</span> : <span>Não há cards nessa fase</span>}
+                    </div>
                     :
-                    cards ? cards.map((card, cardIndex) => (
+                    filteredCards.length > 0  ? filteredCards.map((card, cardIndex) => (
                         <Draggable
                             key={card.id}
                             draggableId={card.id.toString()}
@@ -121,7 +131,9 @@ const PhaseLane = (props:Props):React.ReactElement => {
                                 </div>
                             )}
                         </Draggable>
-                    )) : null}
+                    )) : <div className={styles.noCards}>
+                    {filter ? <span>Nada foi encontrado</span> : <span>Não há cards nessa fase</span>}
+                    </div>}
             </div>
         </li>
         

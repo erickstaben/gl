@@ -6,7 +6,7 @@ import { findIndex, orderBy } from 'lodash';
 import { PhaseInnerProps } from '../../components/PhaseLane/PhaseLane';
 import PhaseLane from '../PhaseLane/PhaseLane';
 import { DragDropContext, Droppable, DroppableProvided, DraggingStyle, DropResult, NotDraggingStyle } from 'react-beautiful-dnd';
-import { useDispatch } from 'dva';
+import { useDispatch, useSelector } from 'dva';
 import PhaseLaneModal from '../PhaseLane/PhaseLaneModal';
 
 interface Props {
@@ -91,6 +91,7 @@ const PipeContainer = (props:Props) => {
         return props.phases[findIndex(props.phases,{id: id})].cards || []
     };
 
+    const pipe = useSelector(state => state.pipes.loaded || {})
     const [isVisible, setVisibility] = useState(false)
     const onDragEnd = (result:DropResult) => {
         const { source, destination } = result;
@@ -131,19 +132,17 @@ const PipeContainer = (props:Props) => {
             
         }
     };
-    let ref
     const { phases, toggleModal, pipe_id } = props
     return (
         <>
-            <h1>Identificador do pipe: {pipe_id}</h1>
+            <div className={styles.pipeTitle}><div>Você está no pipe:</div> <div>{pipe.name}</div></div>
             <ul className={styles.pipeContainer}>
                 <DragDropContext onDragEnd={onDragEnd}>
                     {renderPhases(phases, toggleModal, pipe_id, setVisibility)}                        
                 </DragDropContext>                
             </ul>
-            <div ref={(r) => ref = r} style={{
-                position: 'relative',height: '100%'}}>
-                <PhaseLaneModal ref={ref} isVisible={isVisible} pipe_id={pipe_id} setVisibility={setVisibility} />
+            <div>
+                <PhaseLaneModal isVisible={isVisible} pipe_id={pipe_id} setVisibility={setVisibility} />
             </div>
         </>
 

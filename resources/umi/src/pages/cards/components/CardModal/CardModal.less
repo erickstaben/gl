@@ -10,7 +10,7 @@
         flex-grow: 1;
         .label{
             font-size: 14px;
-            color: #505F6F;
+            color: @default-label-color;
             font-weight: 600;
         }
         .dateContainer{
@@ -20,7 +20,7 @@
             display: flex;
             .dateBagde{
                 border-radius: 2px;
-                background-color: #1094e0;
+                background-color: @primary-active-color;
                 color: @primary-white-color;
                 height: 24px;
                 width: 48px;
@@ -56,11 +56,11 @@
     margin: 24px;
     padding: 16px;
     border-radius: @default-border-radius;
-    margin: 24px 30px 0px 0px;
+    margin: 24px 16px 0px -16px;
     background-color: @primary-white-color;
     .label{
         font-size: 14px;
-        color: #505F6F;
+        color: @default-label-color;
         font-weight: 600;
     }
     .emptyDiv{
@@ -69,9 +69,9 @@
         font-size: 14px;
         margin: 4px 0px;
         padding: 16px 0px;
-        border: 1px solid #e4eaf0;
+        border: 1px solid @default-background-color;
         border-radius: 5px;
-        color: #8b99a9;
+        color: @font-description-color;//#8b99a9
         font-weight: 600;
     }
     .historyContainer{

@@ -107,6 +107,7 @@ export default {
         {
           path: '/reports',
           name: 'reports',
+          authority: ['super'],
           icon: 'pipe',
           component: './reports/routes/MainReports',          
         },

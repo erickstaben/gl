@@ -22,7 +22,6 @@ const FormListPreview = (props:Props) => {
         e.preventDefault();
         setFields([...fields, { field_type, label,field_options: field_options ? field_options.split(',') : null}])
     }
-    console.log(fields)
     return (
         <div>
             <label>Campos dessa fase:</label>

@@ -1,5 +1,5 @@
 @import '~antd/es/style/themes/default.less';
-
+@import '../../../utils/variables.less';
 
 .pipeContainer{
   >*{
@@ -8,25 +8,27 @@
   }
 
   display: flex;
+  
+}
+.scrollBar{
+  background-color: @default-background-color;
+  padding: 0 32px;
 }
 .scrollBar::-webkit-scrollbar-track
 {
-	background-color: #F5F5F5;
+	background-color: #dadada;
 	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  
-  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 }
 
 .scrollBar::-webkit-scrollbar
 {
-	width: 12px;
-	background-color: #F5F5F5;
+  width: 8px;
+  height: 8px;
+	background-color: #dadada;
 }
 
 .scrollBar::-webkit-scrollbar-thumb
 {
 	background-color: @primary-color;
-  border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  border-radius: 2px;
 }
