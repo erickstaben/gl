@@ -62,7 +62,7 @@ const PhaseLane = (props:Props):React.ReactElement => {
                 <Icon type='arrow-right'/>Mover para direita
                 </Menu.Item>
             }
-            <Menu.Item><Link to={`phases/${phaseInfo.id}/config`}>
+            <Menu.Item><Link to={`/phases/${phaseInfo.id}/config`}>
                 <Icon type='settings'/>Configurações dessa fase
             </Link></Menu.Item>
             <Menu.Item onClick={() => setVisibility(true)}>

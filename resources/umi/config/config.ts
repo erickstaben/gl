@@ -97,6 +97,23 @@ export default {
               component: './cards/routes/PipeBoard',
             }, 
           ]
+        }, {
+          path: '/phases',
+          name: 'phases',
+          icon: 'pipe',
+          routes: [
+            {
+              path: '/phases',
+              name: 'phasesCenter',
+              component: './phases/routes/PhasesCenter',
+            },
+            {
+              path: '/phases/:id/config',
+              name: 'phaseConfig',
+              hideInMenu: true,
+              component: './phases/routes/PhaseConfig',
+            },
+          ],
         },
         {
           path: '/customers',

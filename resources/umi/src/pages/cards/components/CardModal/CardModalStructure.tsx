@@ -3,6 +3,8 @@ import { Modal } from 'antd';
 import styles from './CardModalStructure.less';
 import classnames from 'classnames';
 import { PhaseInterface, CompanyInterface, CardInterface } from '@/models/database';
+import { useDispatch, useSelector } from 'dva';
+import { findIndex } from 'lodash';
 
 interface Props {
     isVisible: boolean;
@@ -15,7 +17,27 @@ interface Props {
     cardTitle: string;
 }
 const CardModalStructure = (props:Props) => {
-    const { isVisible, toggleModal, cardTitle, company, phase, buttonText,leftBodyContent, rightBodyContent } = props 
+    const { isVisible, toggleModal, cardTitle, company, phase, buttonText,leftBodyContent, rightBodyContent } = props
+    const dispatch = useDispatch()
+    const card = useSelector(state => state.cards.loaded)
+    const phases = useSelector(state => state.pipes.loaded.phases) 
+    let nextPhaseId:null|number = null
+
+    const handleNextButton = () => {
+        dispatch({
+            type: 'pipes/cardMove',
+            payload: {
+                path_id: [card.id, nextPhaseId],
+                newPhase: { id: nextPhaseId },
+                oldPhase: { id: phase.id },
+                card: card,
+            }
+        })
+        toggleModal(false)
+    }
+    if(phase){
+        nextPhaseId = phases[findIndex(phases, { order: phase.order + 1 })].id
+    }
     return (
         <Modal 
             wrapClassName={styles.modalWrap}
@@ -48,7 +70,7 @@ const CardModalStructure = (props:Props) => {
                     </header>
                     <div className={styles.modalBody}>{rightBodyContent || null}</div>                    
                 </div>
-                <footer className={styles.modalFooter}><div>{buttonText || 'Próximo'}</div></footer>
+                <footer onClick={handleNextButton} className={styles.modalFooter}><div>{buttonText || 'Próximo'}</div></footer>
             </div>
         </Modal>
     )
