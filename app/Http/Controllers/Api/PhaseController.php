@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Phase;
+use App\PhaseField;
 use Illuminate\Http\Request;
 
 class PhaseController extends Controller
@@ -73,7 +74,9 @@ class PhaseController extends Controller
         $phase = Phase::create($request->all());
         if($request['phaseFields'])
         {
-            echo 'a fazer';
+            foreach($request['phaseFields'] as $field){
+                PhaseField::create(array_merge($field,array('phase_id' => $phase->id)));
+            }
         }
 
         if($phase->save())
@@ -106,10 +109,30 @@ class PhaseController extends Controller
      */
     public function update(Request $request,int $id)
     {
-        $phase = Phase::findOrFail($id);
-        $phase[$request['name']] = $request['value'];
-        $phase->save();
-        return response()->api($phase);
+        $phase = Phase::findOrFail($id);        
+        if($request['name'] && $request['value']){
+            $phase[$request['name']] = $request['value'];
+            $phase->save();
+            return response()->api($phase);
+        }
+        else{
+            $phase->update((array)$request);
+            if($request['phaseFields']){
+                foreach($request['phaseFields'] as $field){
+                    if(property_exists((object)$field,'id')){
+                        $phaseField = PhaseField::findOrFail($field['id']);
+                        $phaseField->update($field);                        
+                    }
+                    else{
+                        $phaseField = new PhaseField(array_merge($field,array('phase_id' => $phase->pipe_id)));
+                        $phaseField->save();
+                    }
+                    
+                }
+            }
+            return response()->api($phase->load(['phaseFields']));
+        }
+        
     }
 
     /**

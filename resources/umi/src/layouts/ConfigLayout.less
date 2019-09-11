@@ -1,0 +1,30 @@
+
+@import '../utils/variables.less';
+
+.configContent{
+    margin: 0px 20%;
+    height: 100%;
+    background-color: @primary-white-color;
+    padding: 32px;
+    .configHeader{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        h2{
+            flex-grow: 1;
+            text-align: center;
+        }
+        button{
+            outline: none;
+            border: none;
+            background-color: @primary-active-color;
+            border-radius: @default-border-radius;
+            padding: @default-padding;
+            color: @primary-white-color;
+            min-width: 60px;
+        }
+        button:hover{
+            background-color: fade(@primary-active-color,80%);
+        }
+    }
+}

@@ -27,3 +27,17 @@ export async function fPhaseNameUpdate(payload: Payload): Promise<DefaultRespons
     method: 'PATCH',
   } : {});
 } 
+
+export async function fUpdate(payload: Payload): Promise<DefaultResponseInterface> {
+  return request(`/phases/${payload.path_id[0]}?${payload ? stringify(payload.params) : ''}`, payload ? {
+    body: JSON.stringify(payload.body),
+    method: 'PATCH',
+  } : {});
+} 
+
+export async function fPhaseConfig(payload: Payload): Promise<DefaultResponseInterface> {
+  return request(`/phases/${payload.path_id[0]}?${payload ? stringify(payload.params) : ''}`, {
+    method: 'GET',
+  });
+} 
+

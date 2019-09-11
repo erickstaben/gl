@@ -16,7 +16,7 @@ interface Props {
 }
 
 const CardModal = (props:Props) => {
-    const card = useSelector(state => state.cards.loaded) || {}
+    const card = useSelector((state:any) => state.cards.loaded) || {}
     const { company, phase, assigned_users, due_date, card_emails,history = [],fields } = card
     const { phase_fields = [] } = phase ? phase : []
     const leftBodyContent = (
@@ -25,7 +25,7 @@ const CardModal = (props:Props) => {
                 {assigned_users && <div className={styles.actionLabel}>
                     <label className={styles.label}>Responsáveis</label>
                     <div style={{display: 'flex',padding: '4px 0'}}>
-                    {assigned_users.map(user => <span>
+                    {assigned_users.map((user:any) => <span>
                         <div className={styles.userAvatar}>
                             <span>{getFirstLetters(user.name)}</span>
                         </div>                        
@@ -69,7 +69,7 @@ const CardModal = (props:Props) => {
     const rightBodyContent = <div>
         <div className={styles.rightBodyContentContainer}>
             <div className={styles.fieldsContainer}>
-                {phase_fields.map(field => {
+                {phase_fields.map((field:any) => {
                     const index = findIndex(fields,{id: field.id})
                     const value = index >= 0 ? fields[index].pivot.value : null
                     return <RenderFields field={field} fieldValue={value} card_id={card.id}/>                   

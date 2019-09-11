@@ -1,24 +1,99 @@
 @import '~antd/es/style/themes/default.less';
 @import '../../../../utils/variables.less';
 
-
-.inputContainer{
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 16px;
-    margin-top: 16px;
-    label{
-        font-weight: bold;
-    }
-    div{
+.previewContainer{
+    display: flex;
+    align-items: center;
+    .inputContainer{
+        display: inline-block;
         width: 100%;
-        input{
-            width: 100%;
+        margin-bottom: 16px;
+        margin-top: 16px;
+        label{
+            font-weight: bold;
         }
+        div{
+            width: 100%;
+            input{
+                width: 100%;
+            }
+        }
+    }
+    i{
+        margin-top: 22px;
+        margin-left: 16px;
+        color: @default-label-color;
+    }
+    i:hover{
+        color: @primary-active-color;
     }
 }
 
+.defaultLabel{
+    font-size: @font-description-size + 2;
+    font-weight: 600;
+    color: @default-label-color;
+    margin-top: 4px;
+}
 .formListContainer{
-    padding: 16px;
-    border: 1px solid #fafafa;
+    padding: 8px 32px;
+    border-top-left-radius: @default-border-radius;
+    border-top-right-radius: @default-border-radius;
+    background-color: @default-background-color;
+    label{
+        font-size: @font-description-size + 2;
+        font-weight: 600;
+        color: @default-label-color;
+        margin-top: 4px;
+    }
+}
+
+.formContainer{
+    padding: 8px 16px;
+    border-top: 1px solid white;
+    background-color: @default-background-color;
+    border-bottom-left-radius: @default-border-radius;
+    border-bottom-right-radius: @default-border-radius;
+}
+
+.formInput{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    label{
+        font-size: @font-description-size + 2;
+        font-weight: 600;
+        color: @default-label-color;
+        margin-top: 4px;
+    }
+    input{
+        outline: none;
+        width: 100%;
+        border: 1px solid @default-border-color;
+        padding: 8px @default-padding;
+        border-radius: @default-border-radius;
+    }
+    input:focus{
+        
+        border: 1px solid @primary-active-color;
+    }
+    >div>select,select{
+        outline: none;
+        margin-left: 8px;
+        border: 1px solid @default-border-color;
+        padding: 8px @default-padding;
+        border-radius: @default-border-radius;
+    }
+    button{
+        margin-top: 2*@default-padding;
+        background-color: @primary-active-color;
+        border: none;
+        color: @primary-white-color;
+        border-radius: @default-border-radius;
+        padding: @default-padding;
+        
+    }
+    button:hover{
+        background-color: fade(@primary-active-color,80%);
+    }
 }

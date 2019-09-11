@@ -95,22 +95,24 @@ export default {
               name: 'pipeBoard',
               hideInMenu: true,
               component: './cards/routes/PipeBoard',
-            }, 
+            }, {
+              path: '/pipes/:id/phases',
+              name: 'phasesCenter',
+              hideInMenu: true,
+              Routes: ['src/layouts/ConfigLayout'],
+              component: './phases/routes/PhasesCenter',
+            },
           ]
         }, {
           path: '/phases',
           name: 'phases',
           icon: 'pipe',
+          hideInMenu: true,
+          component: '../layouts/ConfigLayout',
           routes: [
-            {
-              path: '/phases',
-              name: 'phasesCenter',
-              component: './phases/routes/PhasesCenter',
-            },
             {
               path: '/phases/:id/config',
               name: 'phaseConfig',
-              hideInMenu: true,
               component: './phases/routes/PhaseConfig',
             },
           ],

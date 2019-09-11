@@ -34,6 +34,7 @@ const PhaseLaneModal = (props:Props) => {
 
     useEffect(() => {
         register({ name: "order" });
+        register({ name: "phaseFields" })
     },[])
     console.log('error',errors)
     return (    
@@ -79,7 +80,7 @@ const PhaseLaneModal = (props:Props) => {
 
                 <div style={{ color: "red" }}>
                     {Object.keys(errors).length > 0 &&
-                        "There are errors, check your console."}
+                        "Foram encontrado erros."}
                 </div>
                 <input type="submit" value='Salvar'/>
             </form>

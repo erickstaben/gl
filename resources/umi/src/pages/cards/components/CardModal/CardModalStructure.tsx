@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Modal } from 'antd';
 import styles from './CardModalStructure.less';
 import classnames from 'classnames';
-import { PhaseInterface, CompanyInterface, CardInterface } from '@/models/database';
+import { PhaseInterface, CompanyInterface} from '@/models/database';
 import { useDispatch, useSelector } from 'dva';
 import { findIndex } from 'lodash';
 
@@ -19,8 +19,8 @@ interface Props {
 const CardModalStructure = (props:Props) => {
     const { isVisible, toggleModal, cardTitle, company, phase, buttonText,leftBodyContent, rightBodyContent } = props
     const dispatch = useDispatch()
-    const card = useSelector(state => state.cards.loaded)
-    const phases = useSelector(state => state.pipes.loaded.phases) 
+    const card = useSelector((state:any) => state.cards.loaded)
+    const phases = useSelector((state:any) => state.pipes.loaded.phases) 
     let nextPhaseId:null|number = null
 
     const handleNextButton = () => {
@@ -36,7 +36,10 @@ const CardModalStructure = (props:Props) => {
         toggleModal(false)
     }
     if(phase){
-        nextPhaseId = phases[findIndex(phases, { order: phase.order + 1 })].id
+        const index = findIndex(phases, { order: phase.order + 1 })
+        if(index > 0){
+            nextPhaseId = phases[index].id
+        }
     }
     return (
         <Modal 

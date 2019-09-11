@@ -15,9 +15,14 @@ class CardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function updateFields(Request $request,$card_id,$phase_id){
+    public function updateFields(Request $request,$card_id,$field_id){
         $card = Card::findOrFail($card_id);
-        $card->fields()->updateExistingPivot($phase_id,array('value' => $request['value']),true);
+        if(!$card->fields->where('id',$field_id)->isEmpty()){
+            $card->fields()->updateExistingPivot($field_id,array('value' => $request['value']),true);
+        }
+        else{
+            $card->fields()->attach([$field_id => ['value' => $request['value']]]);
+        }
         $card->save();
         return response()->api(
             $card->load(['company','phase.phaseFields','creator','assignedUsers','fields','cardEmails'])

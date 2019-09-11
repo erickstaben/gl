@@ -6,7 +6,7 @@ import { PhaseFieldInterface, ID } from '@/models/database';
 import { useDispatch, useSelector } from 'dva';
 import { Spin } from 'antd';
 
-type FieldValues = string | undefined | null;
+type FieldValues = string | undefined;
 interface Props {
     field: PhaseFieldInterface,
     fieldValue: FieldValues,
@@ -33,15 +33,15 @@ const RenderFields = (props:Props):void|ReactElement => {
         })
     }
 
-    const updatingField = useSelector(state => state.loading.effects['cards/updateFieldValue'])
+    const updatingField = useSelector((state:any) => state.loading.effects['cards/updateFieldValue'])
 
     let inputRef: null | HTMLInputElement
 
     const [isEditing,toggleEditing] = useState(false)
 
-    const handleEditStart = (e,b:boolean) => {
+    const handleEditStart = (e:any,b:boolean) => {
         e.stopPropagation();
-        !isEditing ? inputRef.focus() : null
+        !isEditing && inputRef ? inputRef.focus() : null
         toggleEditing(b)
         console.log(b,'oi')
     }

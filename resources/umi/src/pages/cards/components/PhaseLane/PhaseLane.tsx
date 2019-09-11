@@ -88,30 +88,7 @@ const PhaseLane = (props:Props):React.ReactElement => {
                 <Icon className={styles.searchIcon} type='search'/>
             </div>
             <div className={classnames(styles.phaseLane, styles.scrollBar)}>
-                {is_final ?
-                    filteredCards.length > 0 ? filteredCards.map((card, cardIndex) => (
-                        <Draggable
-                            key={card.id}
-                            draggableId={card.id.toString()}
-                            index={cardIndex}>
-                            {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-                                <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    style={getItemStyle(
-                                        snapshot.isDragging,
-                                        provided.draggableProps.style
-                                    )}>
-                                    <EndCard {...phaseProps} toggleModal={toggleModal} card={card} />
-                                </div>
-                            )}
-                        </Draggable>
-        
-                    )) : <div className={styles.noCards}>
-                        {filter ? <span>Nada foi encontrado</span> : <span>Não há cards nessa fase</span>}
-                    </div>
-                    :
+                {
                     filteredCards.length > 0  ? filteredCards.map((card, cardIndex) => (
                         <Draggable
                             key={card.id}
