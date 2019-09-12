@@ -13,14 +13,15 @@ const reorder = (list:Array<object>, startIndex:number, endIndex:number):Array<o
 
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = (isDragging, draggableStyle, id = null) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: "none",
     padding: grid * 2,
-    margin: `0 0 ${grid}px 0`,
-
+    margin: `4px 4px ${grid}px 4px`,
+    borderRadius: '5px',
     // change background colour if dragging
-    background: isDragging ? "lightgreen" : "grey",
+    background: isDragging ? "#0094C6" : (id ? "EBF0F7" : "#bfd4f2"),
+    color: isDragging ? "#fff" : "#50719D",
 
     // styles we need to apply on draggables
     ...draggableStyle
@@ -96,7 +97,8 @@ class ReorderComponent extends Component<Props,State> {
                                             {...provided.dragHandleProps}
                                             style={getItemStyle(
                                                 snapshot.isDragging,
-                                                provided.draggableProps.style
+                                                provided.draggableProps.style,
+                                                item.id,
                                             )}
                                         >
                                             {item.content}

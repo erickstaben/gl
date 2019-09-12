@@ -91,6 +91,11 @@ export default {
               component: './cards/routes/PipeConfig',
             },
             {
+              path: '/pipes/new',
+              name: 'pipeNew',
+              component: './cards/routes/PipeForm',
+            },
+            {
               path: '/pipes/:id',
               name: 'pipeBoard',
               hideInMenu: true,

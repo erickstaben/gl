@@ -25,7 +25,10 @@ const PipeCenter = () => {
             },
         })
     }
-    return (<div>
+    return (<div className={styles.pipeCenterLayout}>
+        <div style={{textAlign:'center'}}>
+            <h2>Central de pipes</h2>
+        </div>
         <h3>Meus pipes</h3>
         <Row>
             {pipes ? pipes.map(pipe => <Col xs={6}>
@@ -44,10 +47,25 @@ const PipeCenter = () => {
                             </span>
                             </div>
                         </span>
-
                     </Link>
                 </div>
             </Col>) : null}
+            <Col xs={6}>
+                <div className={styles.pipeCard}>
+                    <Link className={styles.pipeLink} to={`./pipes/new`}>
+                        <span className={styles.pipeCount}>
+                            <div style={{ display: 'grid' }}>
+                                <span style={{textAlign: 'center'}}>
+                                    <Icon type={'plus'} style={{fontSize: 64}}/>
+                                </span>
+                                <span className={styles.pipeName}>
+                                    Adicionar novo pipe
+                                </span>
+                            </div>
+                        </span>
+                    </Link>
+                </div>
+            </Col>
         </Row>
         </div>
     );

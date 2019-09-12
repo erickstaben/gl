@@ -1,53 +1,55 @@
 @import '~antd/es/style/themes/default.less';
 @import '../../../utils/variables.less';
 
-
-.pipeCard{
-    display: flex;
-    flex-direction: column;
-    width: 220px;
-    height: 170px;
-    padding: @default-padding 16px;
-    background-color: white;
-    border-radius: @default-border-radius; 
-    box-shadow: @default-box-shadow;
-    transition: transform 0.3s;
-     
-
-    .pipeFavoriteIcon{
-        position: relative;
-        left: 170px;
-        height: 0;
-        .favoriteIcon{
-            color: red;
-            font-size: 24px;
-        }
-    }
-    .pipeLink{
+.pipeCenterLayout{
+    margin: 20px 5% 40px 5%;
+    .pipeCard{
         display: flex;
         flex-direction: column;
-        flex-grow: 2;
-        align-items: center;
-        width: 100%;
-        .pipeCount{ 
-            display: flex;
-            align-items: center;
-            height: 100%;
-            font-weight: bold;
-            font-size: @font-description-size + 4;           
-            .pipeCountLabel{
-                margin-top: 18px;
-                margin-left: 4px;
+        width: 220px;
+        height: 170px;
+        padding: @default-padding 16px;
+        background-color: white;
+        border-radius: @default-border-radius; 
+        box-shadow: @default-box-shadow;
+        transition: transform 0.3s;
+        
+
+        .pipeFavoriteIcon{
+            position: relative;
+            left: 170px;
+            height: 0;
+            .favoriteIcon{
+                color: red;
+                font-size: 24px;
             }
         }
-        .pipeName{
-            color: @font-description-color;
-            font-size: @font-description-size + 2;
-            text-align: center;
+        .pipeLink{
+            display: flex;
+            flex-direction: column;
+            flex-grow: 2;
+            align-items: center;
+            width: 100%;
+            .pipeCount{ 
+                display: flex;
+                align-items: center;
+                height: 100%;
+                font-weight: bold;
+                font-size: @font-description-size + 4;           
+                .pipeCountLabel{
+                    margin-top: 18px;
+                    margin-left: 4px;
+                }
+            }
+            .pipeName{
+                color: @font-description-color;
+                font-size: @font-description-size + 2;
+                text-align: center;
+            }
         }
     }
-}
-.pipeCard:hover{
-    border: 1px solid @primary-color;
-    transform: translateY(-5px);
+    .pipeCard:hover{
+        border: 1px solid @primary-color;
+        transform: translateY(-5px);
+    }
 }
