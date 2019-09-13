@@ -54,10 +54,22 @@ const Model: ModelType = {
     },
     *authUser(_, { call, put }) {
       const response: UserInterface = yield call(fAuthUser);
-      yield put({
-        type: 'updateUserModel',
-        payload: response,
-      });
+      if (response.ok){
+        yield put({
+          type: 'updateUserModel',
+          payload: response,
+        });
+      }
+      else{
+        yield put(
+          routerRedux.replace({
+            pathname: '/auth/login',
+            search: stringify({
+              redirect: window.location.href,
+            }),
+          }),
+        );
+      }
     },
   },
 

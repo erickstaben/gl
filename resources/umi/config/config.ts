@@ -65,6 +65,18 @@ export default {
   // umi routes: https://umijs.org/zh/guide/router.html
   routes: [
     {
+      path: '/auth',
+      component: '../layouts/AuthLayout',
+      routes: [
+        {
+          path: '/auth/login',
+          name: 'home',
+          icon: 'home',
+          component: './auth/routes/Login',
+        },
+      ]
+    },
+    {
       path: '/',
       component: '../layouts/MainLayout',
       Routes: ['src/pages/Authorized'],
@@ -147,6 +159,7 @@ export default {
         },
       ],
     },
+    
     {
       component: './404',
     },

@@ -84,7 +84,6 @@ const MainLayout = (props: Props) => {
             payload,
         })
     }
-    console.log('oioi',routes)
     const handlers = (collapsed:boolean) => {console.log('collapse inside handlers'); return ({CHANGE_LAYOUT: () => handleMenuCollapse(!collapsed)})}
     return (
         <HotKeys allowChanges className={styles.layoutContainer} handlers={handlers(collapsed)} keyMap={{CHANGE_LAYOUT: 's'}}>
