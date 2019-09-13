@@ -31,15 +31,15 @@ const ConfigLayout = (props:Props) => {
     },[id]) 
     console.log(location,'location')
     const checkLocation = (location:string) => {
-        if(location.split('/')[1] == 'pipes' && location.split('/')[3] == 'phases'){
-            return false
+        if(location.split('/')[1] == 'phases' && location.split('/')[3] == 'config'){
+            return true
         }
-        return true
+        return false
     }
     return (
         <div className={styles.configContent}>
             <div  className={styles.configHeader}>
-            <h2>Configurações da fase {id}</h2>
+            <h2>Configurações d{(location.pathname.split('/')[1] == 'pipes' && !(location.pathname.split('/')[3] == 'phases')) ? 'o Pipe' : 'a Fase'}</h2>
             {checkLocation(location.pathname) && <a style={{marginRight: 8}} onClick={() => history.push(`/pipes/${pipe_id}/phases`)}><button>Todas as fases</button></a>}
             <a onClick={() => history.goBack()}><button>Voltar</button></a>
             </div>

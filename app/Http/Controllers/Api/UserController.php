@@ -7,6 +7,18 @@ use App\User;
 
 class UserController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $users = User::get();
+        return response()->api($users);
+    }
+
+
     public function update(UserRequest $request, $id)
     {
         $user = User::findOrFail($id);

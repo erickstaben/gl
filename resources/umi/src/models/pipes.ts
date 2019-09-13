@@ -1,6 +1,6 @@
 
 import { Effect } from 'dva';
-import { fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow, fCardMove } from '@/services/pipes';
+import { fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow, fCardMove, fSaveRecurrentCard, fSavePipeUser } from '@/services/pipes';
 import { message } from 'antd';
 import { PipeInterface, ID } from './database';
 import { Action, Reducer, PayloadInterface } from './connect';
@@ -39,6 +39,8 @@ export interface ModelType {
     pipeShow: Effect;
     cardMove: Effect;
     phaseNameUpdate: Effect;
+    saveRecurrentCard: Effect;
+    savePipeUser: Effect;
   };
   reducers: {
     rPipeCreate: Reducer<PipesModelState, Action<any>>;
@@ -51,6 +53,8 @@ export interface ModelType {
     rPhaseNameUpdate: Reducer<PipesModelState, Action<any>>;
     rPhaseCreate: Reducer<PipesModelState, Action<any>>;
     rCardMove: Reducer<PipesModelState, Action<any>>;
+    rSaveRecurrentCard: Reducer<PipesModelState, Action<any>>;
+    rSavePipeUser: Reducer<PipesModelState, Action<any>>;
   };
 }
 
@@ -64,6 +68,26 @@ const Model: ModelType = {
   },
 
   effects: {
+    *saveRecurrentCard({ payload }, { call, put }) {
+      const response = yield call(fSaveRecurrentCard, payload);
+      if (response.ok && response.data) {
+        message.success(response.message)
+        yield put({
+          type: 'rSaveRecurrentCard',
+          payload: response.data,
+        });
+      }
+    },
+    *savePipeUser({ payload }, { call, put }) {
+      const response = yield call(fSavePipeUser, payload);
+      if (response.ok && response.data) {
+        message.success(response.message)
+        yield put({
+          type: 'rSavePipeUser',
+          payload: response.data,
+        });
+      }
+    },
     *pipeCreate({ payload }, { call, put }) {
       const response = yield call(fPipeCreate, payload);
       if (response.ok && response.data) {
@@ -139,6 +163,24 @@ const Model: ModelType = {
     }
   },
   reducers: {
+    rSaveRecurrentCard(state, { payload }:Action<any>) {
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          recurrent_cards: payload.recurrent_cards
+        }
+      };
+    },
+    rSavePipeUser(state, { payload }:Action<any>) {
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          users: payload.users
+        }
+      };
+    },
     rPipeCreate(state, { payload }:Action<PipesOverviewInterface>) {
       return {
         ...state,

@@ -4,9 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Phase extends Model
 {
     //
+    
+    use SoftDeletes;
+    
     protected $fillable = ['pipe_id','name','is_final','order','description','client_status'];
 
     protected $hidden = ['pipe_id'];

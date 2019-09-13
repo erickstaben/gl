@@ -4,11 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Pipe extends Model
 {
     //
+    use SoftDeletes;
 
-    protected $fillable = ['name','pipefy_pipe_id','is_favorite'];
+    protected $fillable = ['name','is_favorite'];
  
     public function recurrentCards(){
         return $this->hasMany('App\RecurrentCard');

@@ -46,8 +46,6 @@ class RecurrentCardController extends Controller
             'user_id' => 'numeric',
             'pipe_id' => 'numeric',
             'company_id' => 'numeric',
-            'pipefy_parent_id' => 'numeric',
-            'pipefy_card_id' => 'numeric',
             'due_date' => 'string',
         ]);
 
@@ -98,8 +96,6 @@ class RecurrentCardController extends Controller
             'user_id' => 'numeric',
             'pipe_id' => 'numeric',
             'company_id' => 'numeric',
-            'pipefy_parent_id' => 'numeric',
-            'pipefy_card_id' => 'numeric',
             'due_date' => 'string',
         ]);
         $extra_fields = $request->except($recurrentCard->getFillable());
@@ -229,7 +225,8 @@ class RecurrentCardController extends Controller
      * @param  \App\RecurrentCard  $recurrentCard
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RecurrentCard $recurrentCard){
-        //
+    public function destroy(Request $request,$id){
+        $recurrentCard = RecurrentCard::findOrFail($id)->delete();        
+        return response()->api("Deletado com sucesso.");
     }
 }

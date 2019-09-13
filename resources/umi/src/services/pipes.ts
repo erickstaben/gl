@@ -51,10 +51,23 @@ export async function fCardMove(payload : PipeRequests): Promise<UserInterface> 
   } : {});
 }
 
-export async function fPhaseNameUpdate(payload ?: RequestPayload): Promise<DefaultResponseInterface> {
+export async function fPhaseNameUpdate(payload : PipeRequests): Promise<UserInterface> {
   return request(`/phases/${payload && payload.path_id ? payload.path_id[0] : '0'}?${payload ? stringify(payload.params) : ''}`, payload ? {
     body: JSON.stringify(payload.body),
     method: 'PATCH',
   } : {});
 }
 
+export async function fSaveRecurrentCard(payload:any){
+  return request(`/pipes/${payload.path_id[0]}/recurrentCards?${payload ? stringify(payload.params) : ''}`, {
+    body: JSON.stringify(payload.body),
+    method: 'POST',
+  });
+}
+
+export async function fSavePipeUser(payload:any){
+  return request(`/pipes/${payload.path_id[0]}/users?${payload ? stringify(payload.params) : ''}`, {
+    body: JSON.stringify(payload.body),
+    method: 'POST',
+  });
+}

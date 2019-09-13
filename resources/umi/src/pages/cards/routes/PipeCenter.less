@@ -14,14 +14,22 @@
         box-shadow: @default-box-shadow;
         transition: transform 0.3s;
         
-
+        .pipeDeleteIcon{
+            position: relative;
+            left: 145px;
+            height: 0;
+            .favoriteIcon{
+                color: @default-label-color;
+                font-size: 22px;
+            }
+        }
         .pipeFavoriteIcon{
             position: relative;
             left: 170px;
             height: 0;
             .favoriteIcon{
                 color: red;
-                font-size: 24px;
+                font-size: 22px;
             }
         }
         .pipeLink{
@@ -51,5 +59,27 @@
     .pipeCard:hover{
         border: 1px solid @primary-color;
         transform: translateY(-5px);
+    }
+}
+
+.formInput{
+    display: flex;
+    flex-direction: column;
+    label{
+        font-size: @font-description-size + 2;
+        font-weight: 600;
+        color: @default-label-color;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+    input{
+        outline: none;
+        border: 1px solid @default-border-color;
+        padding: 8px @default-padding;
+        border-radius: @default-border-radius;
+    }
+    input:focus{
+        
+        border: 1px solid @primary-active-color;
     }
 }

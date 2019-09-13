@@ -86,8 +86,9 @@ export default {
               component: './cards/routes/PipeCenter',
             },          
             {
-              path: '/pipes/config',
+              path: '/pipes/:id/config',
               name: 'pipeConfig',
+              Routes: ['src/layouts/ConfigLayout'],
               component: './cards/routes/PipeConfig',
             },
             {

@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Validator;
 use Illuminate\Support\Facades\Log;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class RecurrentCard extends Model
 {
     //
-    protected $fillable = ['pipe_id','user_id','company_id','pipefy_parent_id','pipefy_card_id','due_date'];
+
+    protected $fillable = ['pipe_id','user_id','company_id','due_date'];
  
     protected $with = ['user','pipe','company'];
 
@@ -29,7 +32,6 @@ class RecurrentCard extends Model
 
     public function setPipeAttribute($values){
         $validator = Validator::make($values, [
-            'pipefy_pipe_id' => 'numeric',
             'name' => 'string',
         ]);
 

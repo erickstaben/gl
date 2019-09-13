@@ -15,7 +15,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $companies = Company::get();
+        return response()->api($companies);
     }
 
     /**

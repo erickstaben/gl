@@ -141,8 +141,8 @@ class PhaseController extends Controller
      * @param  \App\Phase  $phase
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Phase $phase)
+    public function destroy(Request $request,$id)
     {
-        //
+        $phase = Phase::findOrFail($id)->delete();
     }
 }

@@ -24,6 +24,7 @@ class CreatePhasesTable extends Migration
             $table->unsignedBigInteger('pipe_id');
             $table->foreign('pipe_id')->references('id')->on('pipes');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
