@@ -11,6 +11,10 @@
 |
 */
 
-Route::get( '{anyExceptRoot}/{any}', function () {
+Route::get('{anyExceptRoot?}/{any?}', function () {
     return file_get_contents(base_path() . '/public/dist/index.html');
 })->where(['anyExceptRoot' => '^(?!api).*','any' => '.*']);
+
+Route::fallback(function () {
+    echo 'Não encontrou nada';
+});
