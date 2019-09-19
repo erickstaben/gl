@@ -53,7 +53,7 @@ const request = extend({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  prefix: `http://http://18.222.128.192/api/${apiVersion}`,
+  prefix: `http://18.222.128.192/api/${apiVersion}`,
 });
 
 export default request;
