@@ -60,7 +60,7 @@ export default {
     ie: 11,
   },
   outputPath: '../../public/dist',
-  publicPath: './dist/',
+  publicPath: '/dist/',
   devtool: 'source-map',
   // umi routes: https://umijs.org/zh/guide/router.html
   routes: [

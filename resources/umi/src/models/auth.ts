@@ -67,8 +67,8 @@ const Model: ModelType = {
         });
       }
     },
-    *authUser(_, { call, put }) {
-      const response = yield call(fAuthUser);
+    *authUser({payload}, { call, put }) {
+      const response = yield call(fAuthUser, { access_token: payload.access_token});
       if (response.ok){
         yield put({
           type: 'updateUserModel',

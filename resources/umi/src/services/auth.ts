@@ -6,6 +6,9 @@ import { RequestPayload } from '@/models/connect';
 export async function fAuthUser(payload ?: RequestPayload): Promise<UserInterface> {
   return request(`/auth/user?${payload ? stringify(payload.params) : ''}`, payload ? {
     body: JSON.stringify(payload.body),
+    headers: {
+      'Authorization' : 'Bearer '+ payload.access_token
+    }
   } : {});
 }
 
