@@ -14,7 +14,7 @@ class RecurrentCard extends Model
 
     protected $fillable = ['pipe_id','user_id','company_id','due_date'];
  
-    protected $with = ['user','pipe','company'];
+    protected $with = ['user','pipe','company','requiredFields'];
 
     protected $hidden = ['user_id','pipe_id','company_id'];
 
@@ -22,6 +22,9 @@ class RecurrentCard extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function requiredFields(){
+        return $this->hasMany('App\RecurrentCardField','recurrent_card_id');
+    }
     public function pipe(){
         return $this->belongsTo('App\Pipe');
     }

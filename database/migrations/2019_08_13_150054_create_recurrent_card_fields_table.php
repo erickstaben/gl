@@ -14,7 +14,15 @@ class CreateRecurrentCardFieldsTable extends Migration
     public function up(){
         Schema::create('recurrent_card_fields', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            
+            
+            $table->unsignedBigInteger('recurrent_card_id')->nullable();
+            $table->foreign('recurrent_card_id')->references('id')->on('recurrent_cards');
+
+            
+            $table->unsignedBigInteger('phase_field_id')->nullable();
+            $table->foreign('phase_field_id')->references('id')->on('phase_fields');
+
             $table->timestamps();
             $table->softDeletes();
         });

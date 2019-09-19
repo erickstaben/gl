@@ -18,6 +18,7 @@ class PhaseTableSeeder extends Seeder
             'description' => 'Alguma descrição',
             'client_status' => 'Finalizado',
             'pipe_id' => 1,
+            'due_date' => 8,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -29,6 +30,7 @@ class PhaseTableSeeder extends Seeder
             'description' => 'Alguma descrição 2',
             'client_status' => 'Em andamento',
             'pipe_id' => 1,
+            'due_date' => 8,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -40,6 +42,7 @@ class PhaseTableSeeder extends Seeder
             'description' => 'Alguma descrição 3',
             'client_status' => 'Não iniciado',
             'pipe_id' => 1,
+            'due_date' => 15,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

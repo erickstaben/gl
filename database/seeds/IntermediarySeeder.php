@@ -26,6 +26,8 @@ class IntermediarySeeder extends Seeder
         DB::table('phase_fields')->insert([
             'field_type' => 'input',
             'label' => 'Campo 3',
+            'due_date' => 1,
+            'postpone' => 0,
             'phase_id' => 1,
         ]);
 
@@ -41,7 +43,7 @@ class IntermediarySeeder extends Seeder
         ]);
 
         DB::table('pipe_user')->insert([
-            'user_id' => 52,
+            'user_id' => 3,
             'pipe_id' => 1,
             'is_favorite' => true,
         ]);

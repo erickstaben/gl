@@ -16,9 +16,11 @@ class CreatePhasesTable extends Migration
         Schema::create('phases', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->boolean('is_final');
+            $table->boolean('is_final')->default(false);
             $table->unsignedBigInteger('order');
             $table->string('description');
+            $table->integer('due_date')->nullable();
+            $table->boolean('postpone')->default(false);
             $table->string('client_status');
 
             $table->unsignedBigInteger('pipe_id');

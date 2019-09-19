@@ -43,6 +43,7 @@ export interface ModelType {
     savePipeUser: Effect;
   };
   reducers: {
+    rUpdatePipeList: Reducer<PipesModelState, Action<any>>;
     rPipeCreate: Reducer<PipesModelState, Action<any>>;
     rPipeDelete: Reducer<PipesModelState, Action<any>>;
     rPipeFavorite: Reducer<PipesModelState, Action<PayloadInterface>>;
@@ -163,6 +164,22 @@ const Model: ModelType = {
     }
   },
   reducers: {
+    rUpdatePipeList(state, { payload }: Action<any>) {
+      const index = findIndex(state.loaded.phases, { id: payload.phase.id })
+      let newPhases = state.loaded.phases
+      if(index >= 0){
+        const newCards = newPhases[index].cards.filter(card => card.id !== payload.id)
+        console.log('tamanho', newCards.length, newPhases[index].cards.length)
+        newPhases[index].cards = [...newCards, payload]
+      }
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          phases: newPhases,
+        }
+      };
+    },
     rSaveRecurrentCard(state, { payload }:Action<any>) {
       return {
         ...state,

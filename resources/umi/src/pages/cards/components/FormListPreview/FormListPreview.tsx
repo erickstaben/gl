@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import styles from './FormListPreview.less';
-import { Icon } from 'antd';
+import { Icon, Checkbox, Tag } from 'antd';
 import { isFulfilled } from 'q';
 import { Row, Col } from 'antd';
+import moment from 'moment';
 
 interface Props {
     setValue: (fieldName: string, content: Object) => void
-    setError: (fieldName: string, index: number) => void
+    setError: any;
     initialState: Array<object>;
 }
 
@@ -15,6 +16,8 @@ const FormListPreview = (props:Props) => {
     const [label, setLabel] = useState()
     const [field_type, setFieldType] = useState()
     const [field_options, setFieldOptions] = useState()
+    const [field_due_date, setFieldDueDate] = useState()
+    const [field_postpone, setFieldPostpone] = useState(false)
     const deleteField = (index: number): void => {
         const fieldsClone = fields
         fieldsClone.splice(index, 1)
@@ -26,7 +29,16 @@ const FormListPreview = (props:Props) => {
     },[props.initialState])
     const addField = (e:any) => {
         e.preventDefault();
-        const newFields = [...fields, { field_type, label,field_options: field_options ? field_options.split(',') : null}]
+        const newFields = [
+            ...fields,
+            { 
+                field_type,
+                due_date: moment([(new Date()).getFullYear(), (new Date()).getMonth(), field_due_date]).format(),
+                field_postpone,
+                label,
+                field_options: field_options ? field_options.split(',') : null
+            }
+        ]
         setFields(newFields)
         props.setValue('phaseFields',newFields)
     }
@@ -60,6 +72,15 @@ const FormListPreview = (props:Props) => {
                                 </div>
                                 <Icon type='delete' onClick={() => deleteField(index)} />
                             </div>
+                        case 'checkbox':
+                            return <div className={styles.previewContainer}>
+                                    <Checkbox disabled={true}>{field.label}
+                                        {field.due_date &&
+                                        <Tag style={{ marginLeft: 8 }} color='blue'>{moment(field.due_date).format('D MMM')} - {moment(field.due_date).fromNow()}</Tag>
+                                        }
+                                    </Checkbox>
+                                    <Icon type='delete' onClick={() => deleteField(index)} />
+                            </div>
                         default:
                             return
                     }
@@ -79,11 +100,21 @@ const FormListPreview = (props:Props) => {
                         <option value='input'>
                             Campo de digitação pequeno
                         </option>
+                        <option value='checkbox'>
+                            Checkbox
+                        </option>
                     </select>
                 </Col>
                 <Col xs={24} lg={24}  className={styles.formInput}>
                     <label>Opções: (separadas por virgula)</label>
                     <input value={field_options} onChange={(e) => setFieldOptions(e.target.value)}/>
+                </Col>
+                <Col xs={24} lg={24} className={styles.formInput}>
+                    <label>Dia do mês limite para realização:</label>
+                    <input value={field_due_date} onChange={(e) => setFieldDueDate(e.target.value)} />
+                </Col>
+                <Col xs={24} lg={24} className={styles.formInput}>
+                    <Checkbox onChange={(e) => setFieldPostpone(e.target.checked)}>Prorroga?</Checkbox>
                 </Col>
                 <Col xs={24} lg={24}  className={styles.formInput}>
                     <button onClick={addField}>Adicionar campo</button>

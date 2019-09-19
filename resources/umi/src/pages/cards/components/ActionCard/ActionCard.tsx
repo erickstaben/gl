@@ -19,7 +19,7 @@ type Props = {
 
 const ActionCard = (props:Props):React.ReactElement => {
     const { card, toggleModal, phaseInfo, nextPhase, previousPhase } = props
-    const { due_date, assigned_users = [], company, fields, id } = card
+    const { due_date, assigned_users = [], company, fields, id, is_finished } = card
     const dispatch = useDispatch()
     
     const getArrowDropDown = () => {
@@ -98,14 +98,20 @@ const ActionCard = (props:Props):React.ReactElement => {
                 <div className={styles.title}>
                     <SpanText text={company ? company.name : 'Sem nome'} className={styles.cardName}/>
                     <SpanText text={company ? company.cnpj : 'CNPJ sem cadastro'} className={styles.cardCNPJ}/>
-                </div>
-                <ProgressBar className={styles.progressBar} fields={fields}/>                
+                </div>               
             </div>
             <div className={styles.cardActions}>
+                {is_finished ? 
+                <span className={styles.checkShow}>
+                    <Icon className={styles.icon} type="check"/>
+                    <span >OK</span>
+                </span> 
+                :
                 <span className={styles.calendarShow}>
-                    <Icon className={styles.icon} type="calendar"/>
+                    <Icon className={styles.icon} type="calendar" />
                     <span>{moment(due_date).format('D MMM')}</span>
                 </span>
+                }   
                 {assigned_users.length > 0 ? <span className={classnames(styles.calendarShow, styles.membersShow)}>
                     <Icon className={styles.icon} type="user" />
                     <span>{getFirstLetters(assigned_users ? assigned_users[0] ? assigned_users[0].name : '' : '')}</span>

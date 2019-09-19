@@ -49,6 +49,10 @@ const Model: ModelType = {
           type: 'rUpdateFieldValue',
           payload: response.data,
         });
+        yield put({
+          type: 'pipes/rUpdatePipeList',
+          payload: response.data,
+        });
       } else {
         message.info('Erro ao tentar salvar')
       }
@@ -62,14 +66,9 @@ const Model: ModelType = {
       };
     },
     rUpdateFieldValue(state: CardsModelState, { payload }: Action<any>) {
-      const newFields = state.loaded.fields || []
-      newFields[findIndex(newFields,{id: payload.path_id[1]})].pivot.value = payload.body.value
       return {
         ...state,
-        loaded: {
-          ...state.loaded,
-          fields: newFields,
-        },
+        loaded: payload,
       };
     },
   },

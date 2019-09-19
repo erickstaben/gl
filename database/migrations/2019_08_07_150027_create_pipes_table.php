@@ -16,6 +16,7 @@ class CreatePipesTable extends Migration
         Schema::create('pipes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
+            $table->boolean('email_on_completion')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

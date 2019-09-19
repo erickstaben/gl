@@ -11,7 +11,7 @@ class Phase extends Model
     
     use SoftDeletes;
     
-    protected $fillable = ['pipe_id','name','is_final','order','description','client_status'];
+    protected $fillable = ['pipe_id','name','is_final','order','description','client_status','due_date','postpone'];
 
     protected $hidden = ['pipe_id'];
 

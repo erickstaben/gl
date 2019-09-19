@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class PhaseField extends Model
 {
-    protected $fillable = ['phase_id','field_type','label','field_options'];
+    protected $fillable = ['phase_id','field_type','label','field_options','due_date','postpone'];
 
     protected $hidden = ['phase_id'];
 
@@ -16,7 +17,7 @@ class PhaseField extends Model
 
     public function cardFieldsValue(){
         return $this->belongsToMany('App\Card','card_phase_field','phase_field_id','card_id')
-            ->withPivot(['value']);
+            ->withPivot(['value'])->withTimestamps();
     }
 
     public function setFieldOptionsAttribute($value){
@@ -25,5 +26,17 @@ class PhaseField extends Model
 
     public function getFieldOptionsAttribute($value){
         return json_decode($value,1);
+    }
+    public function getDueDateAttribute($value){
+        if($this->attributes['postpone']){
+            return Carbon::createFromDate(null,null,$value,'America/Sao_Paulo')->currentOrNextBusinessDay();
+        }
+        return Carbon::createFromDate(null,null,$value,'America/Sao_Paulo')->currentOrPreviousBusinessDay();
+    }
+    public function setDueDateAttribute($value){
+        return Carbon::createFromFormat('Y-m-d\TH:i:s.uZ',$value)->day;
+    }
+    public function recurrentCardsFields(){
+        return $this->hasMany('App\RecurrentCardField');
     }
 }

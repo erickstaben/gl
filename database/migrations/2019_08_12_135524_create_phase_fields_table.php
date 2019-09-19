@@ -17,6 +17,8 @@ class CreatePhaseFieldsTable extends Migration
             $table->bigIncrements('id');
             $table->string('field_type')->default('input');
             $table->string('label')->default('Nome do campo');
+            $table->string('due_date')->nullable();
+            $table->boolean('postpone')->nullable();
             $table->string('field_options')->nullable();
             
             $table->unsignedBigInteger('phase_id');

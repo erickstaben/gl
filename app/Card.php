@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Card extends Model
 {
     //
-    protected $fillable = ['due_date','title','company_id','phase_id','creator_id'];
+    protected $fillable = ['due_date','title','company_id','phase_id','creator_id','is_finished'];
 
     protected $hidden = ['company_id','phase_id','creator_id'];
 
-    protected $with = ['assignedUsers','company','fields'];
+    protected $with = ['assignedUsers','company','fields','recurrentCard'];
 
     public function company(){
         return $this->belongsTo('App\Company');
@@ -28,6 +28,9 @@ class Card extends Model
     public function creator(){
         return $this->belongsTo('App\User','creator_id');
     }
+    public function recurrentCard(){
+        return $this->belongsTo('App\RecurrentCard','recurrent_card_id');
+    }
 
     public function assignedUsers(){
         return $this->belongsToMany('App\User');
@@ -35,7 +38,7 @@ class Card extends Model
 
     public function fields(){
         return $this->belongsToMany('App\PhaseField','card_phase_field','card_id','phase_field_id')
-            ->withPivot(['value']);
+            ->withPivot(['value'])->withTimestamps();
     }
 
     public function cardEmails(){

@@ -65,8 +65,8 @@ class PhaseController extends Controller
             'description' => 'string|required',
             'client_status' => 'string|required',
             'pipe_id' => 'string|required',
-            'is_final' => 'boolean|required',
-            'order' => 'numeric|required',
+            'is_final' => 'boolean',
+            'postpone' => 'boolean',
             'phaseFields' => 'array',
         ]);
 
@@ -75,7 +75,13 @@ class PhaseController extends Controller
         if($request['phaseFields'])
         {
             foreach($request['phaseFields'] as $field){
-                PhaseField::create(array_merge($field,array('phase_id' => $phase->id)));
+                PhaseField::create(array_merge(array(
+                    'due_date' => $field['due_date'],
+                    'postpone' => $field['postpone'],
+                    'field_type' => $field['field_type'],
+                    'label' => $field['label'],
+                    'field_options' => $field['field_options'],
+                ),array('phase_id' => $phase->id)));
             }
         }
 
@@ -116,7 +122,7 @@ class PhaseController extends Controller
             return response()->api($phase);
         }
         else{
-            $phase->update((array)$request);
+            $phase->update($request->all());
             if($request['phaseFields']){
                 foreach($request['phaseFields'] as $field){
                     if(property_exists((object)$field,'id')){

@@ -16,8 +16,16 @@ interface Props {
 }
 
 const CardModal = (props:Props) => {
+
+    const filterPhaseField = (fields,ids) => {
+        return ids.length > 0 ? fields.filter(field => ids.indexOf(field.id) >= 0) : fields
+    }
     const card = useSelector((state:any) => state.cards.loaded) || {}
-    const { company, phase, assigned_users, due_date, card_emails,history = [],fields } = card
+    const { company, phase, assigned_users, due_date, card_emails,history = [],fields, recurrent_card = { required_fields: []} } = card
+    let requiredFieldsId = []
+    if(recurrent_card){
+        requiredFieldsId = recurrent_card.required_fields.map(field => field.phase_field_id)
+    }
     const { phase_fields = [] } = phase ? phase : []
     const leftBodyContent = (
         <div>
@@ -65,11 +73,11 @@ const CardModal = (props:Props) => {
             </div>
         </div>
     )
-
+    
     const rightBodyContent = <div>
         <div className={styles.rightBodyContentContainer}>
             <div className={styles.fieldsContainer}>
-                {phase_fields.map((field:any) => {
+                {filterPhaseField(phase_fields, requiredFieldsId).map((field:any) => {
                     const index = findIndex(fields,{id: field.id})
                     const value = index >= 0 ? fields[index].pivot.value : null
                     return <RenderFields field={field} fieldValue={value} card_id={card.id}/>                   

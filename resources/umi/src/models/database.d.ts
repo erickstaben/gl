@@ -1,6 +1,6 @@
 
 export type ID = number | string;
-export type FieldTypes = 'input' | 'select';
+export type FieldTypes = 'input' | 'select' | 'checkbox';
 export type SendTypes = 'in' | 'out';
 export type Email = string;
 export type AuthorityTypes = 'super' | 'admin';
@@ -103,6 +103,7 @@ export interface CompanyInterface {
 export interface PhaseFieldInterface {
     id: ID,
     phase_id ?: ID,
+    due_date: Number,
     phase ?: PhaseInterface,
     label: string,
     field_type: FieldTypes,
@@ -114,6 +115,7 @@ export interface PhaseFieldInterface {
 export interface CardInterface {
     id: ID,
     due_date: Date,
+    is_finished: Boolean,
     created_at: Date,
     updated_at: Date,
     company ?: CompanyInterface,

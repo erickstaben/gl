@@ -66,6 +66,7 @@ class PipeController extends Controller
             'name' => 'Fase padrão',
             'is_final' => false,
             'order' => 1,
+            'due_date' => 1,
             'description' => 'Descrição padrão',
             'client_status' => 'Status para o cliente',
             'pipe_id' => $pipe->id

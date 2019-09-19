@@ -139,6 +139,7 @@ export default {
           path: '/customers',
           name: 'customers',
           icon: 'pipe',
+          Routes: ['src/layouts/ConfigLayout'],
           component: './customers/routes/CustomerList',          
         },
         {

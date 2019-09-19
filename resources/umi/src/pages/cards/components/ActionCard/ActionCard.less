@@ -52,6 +52,26 @@
         flex-direction: row;
         align-items: center;
         margin-top: 16px;
+        .checkShow{
+            display: flex;
+            align-items: center;
+            width: 82px;
+            height: 30px;
+            padding: @default-padding;
+            color: green;
+            border: 1px solid green;
+            background-color: @primary-white-color;
+            border-radius: @default-border-radius;
+            span{
+                overflow: hidden;   
+                margin-left: 8px;             
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            span:hover{
+                overflow: visible;
+            }
+        }
         .calendarShow{
             display: flex;
             align-items: center;

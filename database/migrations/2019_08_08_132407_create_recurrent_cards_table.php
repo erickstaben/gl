@@ -21,7 +21,6 @@ class CreateRecurrentCardsTable extends Migration
             $table->foreign('pipe_id')->references('id')->on('pipes'); 
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->unsignedBigInteger('due_date');
             $table->timestamps();
         });
     }

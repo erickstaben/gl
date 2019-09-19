@@ -2,9 +2,10 @@ import { parse, stringify } from 'qs';
 
 import { Effect } from 'dva';
 import { routerRedux } from 'dva/router';
-import { fAuthUser } from '@/services/auth';
+import { fAuthUser, fLogin } from '@/services/auth';
 import { UserInterface } from './database';
 import { Action, Reducer } from './connect';
+import { setAuthority } from '@/utils/authority';
 
 export function getPageQuery(): {
   [key: string]: string;
@@ -14,6 +15,7 @@ export function getPageQuery(): {
 
 export interface AuthModelState {
   user: UserInterface,
+  isLogged: boolean;
 }
 
 
@@ -23,6 +25,7 @@ export interface ModelType {
   effects: {
     logout: Effect;
     authUser: Effect;
+    login: Effect;
   };
   reducers: {
     changeLoginStatus: Reducer<AuthModelState, Action<any>>;
@@ -35,6 +38,7 @@ const Model: ModelType = {
 
   state: {
     user: <UserInterface>{},
+    isLogged: false,
   },
 
   effects: {
@@ -52,13 +56,30 @@ const Model: ModelType = {
         );
       }
     },
+    *login({payload}, { put, call }) {
+      const response = yield call(fLogin, payload);
+      localStorage.setItem('access-token', response.data.access_token)
+      if(response.ok){
+        setAuthority(response.data.authority || 'admin')
+        yield put({
+          type: 'authUser',
+          payload: response.data,
+        });
+      }
+    },
     *authUser(_, { call, put }) {
-      const response: UserInterface = yield call(fAuthUser);
+      const response = yield call(fAuthUser);
       if (response.ok){
         yield put({
           type: 'updateUserModel',
-          payload: response,
+          payload: response.data,
         });
+        console.log(getPageQuery(), 'oi', window.location.pathname)
+        if(window.location.pathname == '/auth/login'){
+          yield put(routerRedux.replace({
+            pathname: getPageQuery().redirect || '/',
+          }))
+        }
       }
       else{
         yield put(
@@ -78,7 +99,6 @@ const Model: ModelType = {
       return {
         ...state,
         status: payload.status,
-        type: payload.type,
       };
     },
     updateUserModel(state, { payload }:Action<UserInterface>) {
@@ -88,6 +108,7 @@ const Model: ModelType = {
           ...state.user,
           ...payload,
         },
+        isLogged: true,
       };
     },
   },

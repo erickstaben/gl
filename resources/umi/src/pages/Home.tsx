@@ -4,7 +4,6 @@ import IsDev from '@/components/IsDev';
 
 const Home = (): React.ReactNode => (
   <>
-    <IsDev><b>MODO DE DESENVOLVIMENTO ATIVO</b></IsDev>
     <div>Algo para ser escrito</div>
   </>
   );

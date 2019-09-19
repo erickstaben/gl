@@ -33,7 +33,7 @@ class LoginController extends Controller
             ]);
             $res = json_decode((string)$response->getBody(),1);
             $res['id']= 1;
-            return response()->json($res);
+            return response()->api($res);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'invalid_credentials',

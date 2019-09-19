@@ -7,6 +7,7 @@ import { FormListPreview } from '@/pages/cards/components';
 import useForm from 'react-hook-form';
 import { PhaseInterface } from '@/models/database'
 import { ReorderComponent } from '../../cards/components';
+import PhaseForm from '@/pages/cards/components/PhaseLane/PhaseForm';
 
 interface Props {
     match: {
@@ -29,14 +30,10 @@ const PhaseConfig = (props:Props) => {
         })
     },[id])    
     const onSubmit = (data: any) => {
-        const newData = {
-            ...data,
-            pipe_id: config.pipe_id
-        }
         dispatch({
             type: 'phases/update',
             payload: {
-                body: newData,
+                body: data,
                 path_id: [config.id]
             }
         })
@@ -48,39 +45,11 @@ const PhaseConfig = (props:Props) => {
     useEffect(() => {
         register({ name: "phaseFields" })
         register({ name: "is_final" })
+        register({ name: "extends" })
     },[])
     return (
         <Spin spinning={saving || loading || false} className={styles.configContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-            <Row>
-                <div className={styles.formInput}>
-                    <label>Nome da fase:</label>
-                    <input defaultValue={config.name} name='name' ref={register}/>
-                </div>
-            </Row>
-            <Row>
-                <div className={styles.formInput}>
-                    <label>Descrição:</label>
-                    <input defaultValue={config.description} name='description' ref={register}/>
-                </div>
-            </Row>
-            <Row>
-                <div className={styles.formInput}>
-                    <label>Status para o cliente:</label> 
-                    <input defaultValue={config.client_status} name='client_status' ref={register}/>
-                </div>                
-            </Row>
-            <Row>
-                <FormListPreview initialState={config.phase_fields} setValue={setValue} setError={setError}/>
-            </Row>
-            <Row> 
-                <label className={styles.defaultLabel}>Fase final:</label>               
-                <div><Switch defaultChecked={config.is_final} onChange={(value) => setValue('is_final',value)}/></div>
-            </Row>
-            <Row>
-                <button type='submit' className={styles.saveButton}>Salvar</button>
-            </Row>
-            </form>
+            <PhaseForm editing={false} values={config} pipe_id={config.pipe_id} submit={onSubmit}/>
         </Spin>
     )
 }

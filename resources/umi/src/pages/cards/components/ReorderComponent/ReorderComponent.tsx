@@ -74,6 +74,7 @@ class ReorderComponent extends Component<Props,State> {
     }
     componentDidMount(){
         this.props.setValue('order',this.state.items.length)
+        console.log('setting order',this.state.items.length)
     }
 
     // Normally you would want to split things out into separate components.

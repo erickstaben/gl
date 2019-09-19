@@ -37,7 +37,20 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(array(
+            'cnpj' => 'string|required',
+            'name' => 'string|required',
+        ));
+
+        $company = Company::create(array(
+            'cnpj' => $request['cnpj'],
+            'name' => $request['name'],
+            'contact_email' => $request['contact_email'] || 'Nenhum email cadastrado',
+        ));
+
+        return response()->api($company);
+
+
     }
 
     /**
@@ -69,9 +82,20 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request,$id)
     {
-        //
+        $request->validate(array(
+            'cnpj' => 'string',
+            'name' => 'string',
+        ));
+        $company = Company::findOrFail($id);
+        $company->update($request->all());
+        $company->save();
+
+
+        return response()->api($company,'Sucesso ao modificar empresa');
+
+
     }
 
     /**

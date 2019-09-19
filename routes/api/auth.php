@@ -10,6 +10,6 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::delete('/logout', 'Auth\LoginController@logout')->name('auth.logout');;
 
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        return response()->api($request->user());
     });
 });

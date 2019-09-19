@@ -17,6 +17,11 @@ class CreateCardsTable extends Migration
             $table->bigIncrements('id');
             $table->string('due_date');
             $table->string('title');
+            $table->boolean('is_finished')->default(false);
+
+            
+            $table->unsignedBigInteger('recurrent_card_id')->nullable();
+            $table->foreign('recurrent_card_id')->references('id')->on('recurrent_cards');
 
             $table->unsignedBigInteger('creator_id');
             $table->foreign('creator_id')->references('id')->on('users');

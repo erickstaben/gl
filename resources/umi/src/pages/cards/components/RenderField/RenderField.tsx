@@ -4,7 +4,8 @@ import styles from './RenderField.less';
 import React, { useState, ReactElement } from 'react';
 import { PhaseFieldInterface, ID } from '@/models/database';
 import { useDispatch, useSelector } from 'dva';
-import { Spin } from 'antd';
+import { Spin, Checkbox, Tag } from 'antd';
+import moment from 'moment';
 
 type FieldValues = string | undefined;
 interface Props {
@@ -16,14 +17,14 @@ const RenderFields = (props:Props):void|ReactElement => {
     const dispatch = useDispatch()
 
     const {field,fieldValue,card_id} = props
-
-    const [value,setValue] = useState()
+    const { due_date } = field
+    const [value,setValue] = useState(fieldValue)
 
     const handleOnChange = (e:any) =>{
         setValue(e.target.value)
     }
 
-    const onSave = (value: string) => {
+    const onSave = (value: string | boolean) => {
         dispatch({
             type: 'cards/updateFieldValue',
             payload: {
@@ -43,7 +44,6 @@ const RenderFields = (props:Props):void|ReactElement => {
         e.stopPropagation();
         !isEditing && inputRef ? inputRef.focus() : null
         toggleEditing(b)
-        console.log(b,'oi')
     }
     
 
@@ -67,6 +67,17 @@ const RenderFields = (props:Props):void|ReactElement => {
                             <span>{updatingField && <Spin style={{color: 'white'}} />}Salvar</span>
                         </div>
                     </div>}
+                </div>
+            case 'checkbox':
+                return <div onClick={(e) => handleEditStart(e, true)} className={styles.inputContainer}>
+                    <Spin spinning={updatingField || false}>
+                        <Checkbox checked={value} onChange={(e) => {
+                            setValue(e.target.checked);
+                            onSave(e.target.checked)
+                        }}>{field.label}{due_date &&
+                            <Tag style={{marginLeft: 8}} color='blue'>{moment(due_date).format('D MMM')} - {moment(due_date).fromNow()}</Tag>
+                        }</Checkbox>
+                    </Spin>
                 </div>
             default:
                 return <div>Tipo de campo não encontrado. Entrar em contato com suporte</div>

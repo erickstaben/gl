@@ -8,3 +8,10 @@ export async function fAuthUser(payload ?: RequestPayload): Promise<UserInterfac
     body: JSON.stringify(payload.body),
   } : {});
 }
+
+export async function fLogin(payload?: RequestPayload): Promise<UserInterface> {
+  return request(`/auth/login?${payload ? stringify(payload.params) : ''}`, payload ? {
+    body: JSON.stringify(payload.body),
+    method: 'POST',
+  } : {});
+}

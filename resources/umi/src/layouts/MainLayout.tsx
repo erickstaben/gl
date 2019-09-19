@@ -56,7 +56,7 @@ const MainLayout = (props: Props) => {
             });
         }
     }, []);
-
+    const user = useSelector((state:any) => state.auth.user)
     const renderMenuItems = (routes) => {
         if(routes.routes){
             <li><Icon data-tip={'Nome do campo'} type='user'/>{!collapsed && <div>
@@ -94,11 +94,11 @@ const MainLayout = (props: Props) => {
                         <Icon type="menu-fold"/>
                     </span>
                     <div className={classnames(styles.avatar,{[styles.avatarCollapsed]: collapsed})}></div>
-                    <p className={classnames(styles.name,{[styles.nameCollapsed]: collapsed})}>nome</p>
-                    <p className={classnames(styles.info,{[styles.infoCollapsed]: collapsed})}>info</p>
+                    <p className={classnames(styles.name, { [styles.nameCollapsed]: collapsed })}>{user.name}</p>
+                    <p className={classnames(styles.info, { [styles.infoCollapsed]: collapsed })}>{user.email}</p>
                 </div>
                 <ul className={styles.sidebarMenu}>
-                    {renderMenuItems(routes[0].routes)}                   
+                    {renderMenuItems(routes[1].routes)}                   
                 </ul>
                 <footer className={classnames(styles.sidebarFooter,collapsed ? styles.sidebarFooterCollapsed : styles.sidebarFooterUncollapsed)}>
                     <div className={styles.actionButtons}>

@@ -11,7 +11,7 @@ class Pipe extends Model
     //
     use SoftDeletes;
 
-    protected $fillable = ['name','is_favorite'];
+    protected $fillable = ['name','email_on_completion'];
  
     public function recurrentCards(){
         return $this->hasMany('App\RecurrentCard');

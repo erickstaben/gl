@@ -36,10 +36,22 @@ const ConfigLayout = (props:Props) => {
         }
         return false
     }
+    const getLocationName = () => {
+        const pieces = location.pathname.split('/')
+        if(pieces[1] == 'pipes' && !(pieces[3] == 'phases')){
+            return 'Configurações do Pipe';
+        }
+        if(pieces[1] == 'pipes'){
+            return 'Configurações da Fase';
+        }
+        if(pieces[1] == 'customers'){
+            return 'Empresas cadastradas';
+        }
+    }
     return (
         <div className={styles.configContent}>
             <div  className={styles.configHeader}>
-            <h2>Configurações d{(location.pathname.split('/')[1] == 'pipes' && !(location.pathname.split('/')[3] == 'phases')) ? 'o Pipe' : 'a Fase'}</h2>
+            <h2>{getLocationName()}</h2>
             {checkLocation(location.pathname) && <a style={{marginRight: 8}} onClick={() => history.push(`/pipes/${pipe_id}/phases`)}><button>Todas as fases</button></a>}
             <a onClick={() => history.goBack()}><button>Voltar</button></a>
             </div>

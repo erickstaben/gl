@@ -64,7 +64,7 @@ const PipeCenter = () => {
         </div>
         <h3>Meus pipes</h3>
         <Row>
-            {pipes ? pipes.map(pipe => <Col xs={12} lg={4}>
+            {pipes ? pipes.map(pipe => <Col xs={12} lg={6}>
                 <div className={styles.pipeCard}>
                     <span className={styles.pipeFavoriteIcon} onClick={() => setPipeFavorite(pipe.id)}>
                         <Icon className={styles.favoriteIcon} theme={pipe.is_favorite ? 'filled' : 'outlined'} type="heart"/>
@@ -76,7 +76,7 @@ const PipeCenter = () => {
                     </Popconfirm>
                     <Link className={styles.pipeLink} to={`./pipes/${pipe.id}`}>
                         <span className={styles.pipeCount}>
-                            <div style={{ display: 'grid' }}>
+                            <div style={{ display: 'grid', textAlign: 'center' }}>
                             <span>
                                 <b style={{ fontSize: 36 }}>{pipe.totalCards}</b><span className={styles.pipeCountLabel}>atividades</span>
                             </span>
@@ -88,7 +88,7 @@ const PipeCenter = () => {
                     </Link>
                 </div>
             </Col>) : null}
-            <Col xs={12} lg={4}>
+            <Col style={{ marginTop: 8 }}  xs={12} lg={6}>
                 <div className={styles.pipeCard} onClick={() => setVisible(true)}>
                     <div className={styles.pipeLink}>
                         <span className={styles.pipeCount}>
