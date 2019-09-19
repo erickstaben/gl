@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder
 
         \App\User::create([
             'name' => 'Erick Staben',
-            'email' => 'a@a.com',
+            'email' => 'erick@glcontabilidade.cnt.br',
             'password' => bcrypt('12345678'),
             'is_admin' => true,
             'remember_token' => str_random(10),

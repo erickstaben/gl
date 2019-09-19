@@ -12,7 +12,19 @@ class PhaseTableSeeder extends Seeder
     public function run()
     {
         DB::table('phases')->insert([
-            'name' => 'fase 3',
+            'name' => 'Em pausa',
+            'is_final' => true,
+            'order' => 4,
+            'description' => 'Alguma descrição',
+            'client_status' => 'Finalizado',
+            'pipe_id' => 1,
+            'due_date' => 8,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('phases')->insert([
+            'name' => 'Concluídos',
             'is_final' => true,
             'order' => 3,
             'description' => 'Alguma descrição',
@@ -24,7 +36,7 @@ class PhaseTableSeeder extends Seeder
         ]);
 
         DB::table('phases')->insert([
-            'name' => 'fase 2',
+            'name' => 'Em andamento',
             'is_final' => false,
             'order' => 2,
             'description' => 'Alguma descrição 2',
@@ -36,7 +48,7 @@ class PhaseTableSeeder extends Seeder
         ]);
 
         DB::table('phases')->insert([
-            'name' => 'fase 1',
+            'name' => 'Pendentes',
             'is_final' => false,
             'order' => 1,
             'description' => 'Alguma descrição 3',

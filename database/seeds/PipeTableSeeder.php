@@ -12,7 +12,8 @@ class PipeTableSeeder extends Seeder
     public function run()
     {
         DB::table('pipes')->insert([
-            'name' => 'pipe 1',
+            'name' => 'Escrituração Fiscal Simples',
+            'email_on_completion' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
