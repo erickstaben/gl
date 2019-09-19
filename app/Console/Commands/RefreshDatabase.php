@@ -38,7 +38,7 @@ class RefreshDatabase extends Command
      */
     public function handle()
     {
-        $this->call('migrate:refresh');
+        $this->call('migrate:fresh');
         $this->call('db:seed');
         $this->call('passport:install');
 
