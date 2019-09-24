@@ -19,7 +19,7 @@ class CreateCardEmailsTable extends Migration
             $table->string('subject');
             $table->string('to');
             $table->string('content');
-            $table->unsignedBigInteger('phase_email_id');
+            $table->unsignedBigInteger('phase_email_id')->nullable();
             $table->foreign('phase_email_id')->references('id')->on('phase_emails');
             $table->unsignedBigInteger('card_id');
             $table->foreign('card_id')->references('id')->on('cards');

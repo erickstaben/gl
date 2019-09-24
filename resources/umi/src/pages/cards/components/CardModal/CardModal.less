@@ -63,6 +63,24 @@
         color: @default-label-color;
         font-weight: 600;
     }
+    .emailContainer{
+        max-height: 290px;
+        overflow-y: scroll;
+    }
+    .emailContainer::-webkit-scrollbar-track{
+        background-color: #F5F5F5;
+        border-radius: 10px;
+    }
+
+    .emailContainer::-webkit-scrollbar{
+        width: 6px;
+        background-color: #F5F5F5;
+    }
+    
+    .emailContainer::-webkit-scrollbar-thumb{
+        background-color: @primary-color;
+        border-radius: 2px;
+    }
     
     .historyContainer{
         display:block;
@@ -113,5 +131,43 @@
 
     .fieldsContainer{
         margin-top: 16px;
+    }
+}
+
+
+.emailContentContainer{
+    max-height: 400px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid @default-border-color;
+    .emailIcon{
+        font-size: 24px;
+        color: @primary-active-color;
+        padding: 2*@default-padding;
+    }
+    .emailContent{
+        padding: @default-padding;
+        flex-grow: 1;
+        .emailTo{
+            font-weight: 600;
+            color: @primary-active-color;
+        }
+        .emailSubject{
+            color: @primary-black-color;
+        }
+        .emailBody{
+            .collapseButton{
+                border: 1px dashed @default-label-color;
+                border-radius: @default-border-radius;
+                margin: @default-padding;
+                text-align: center;
+            }
+            .collapsedBody{
+                text-overflow: ellipsis;
+                max-height: 25px;
+                overflow: hidden;
+            }
+        }
     }
 }

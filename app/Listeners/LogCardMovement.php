@@ -36,7 +36,7 @@ class LogCardMovement implements ShouldQueue
      * @param  CardMovement  $event
      * @return void
      */
-    public function handle(CardMovement $event)
+    public function handle($event)
     {
         //
         $card = CardLog::create(array(
@@ -44,7 +44,7 @@ class LogCardMovement implements ShouldQueue
             'user_id' => $event->user->id,
             'card_id' => $event->card->id,
             'new_phase_id' => $event->card->phase->id,
-            'phase_id' => $event->old_phase_id,
+            'phase_id' => $event->old_phase_id || null,
         ));
         /*try {
             Mail::to($event->user->email)->send(new SendUser());

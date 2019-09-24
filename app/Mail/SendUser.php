@@ -13,6 +13,7 @@ class SendUser extends Mailable
 
     public $name;
     public $body;
+    public $subject;
     /**
      * Create a new message instance.
      *
@@ -22,6 +23,7 @@ class SendUser extends Mailable
     {
         $this->body = $params['body'];
         $this->name = $params['name'];
+        $this->subject = $params['subject'];
     }
 
     /**
@@ -32,6 +34,7 @@ class SendUser extends Mailable
     public function build()
     {
         return $this->from(config('mail.username'))
+            ->subject($this->subject)
             ->view(utf8_encode('emails.mail'))
             ->with(array(
                 'name' => $this->name,

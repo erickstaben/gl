@@ -15,7 +15,11 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\CardMovement' => [
             'App\Listeners\LogCardMovement',
-        ]
+        ],
+        'App\Events\CardCompletion' => [
+            'App\Listeners\LogCardMovement',
+            'App\Listeners\SendEmail',
+        ],
     ];
 
     /**

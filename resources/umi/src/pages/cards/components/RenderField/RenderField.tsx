@@ -18,7 +18,7 @@ const RenderFields = (props:Props):void|ReactElement => {
 
     const {field,fieldValue,card_id} = props
     const { due_date } = field
-    const [value,setValue] = useState(fieldValue)
+    const [value,setValue] = useState(fieldValue > 0 ? fieldValue : false)
 
     const handleOnChange = (e:any) =>{
         setValue(e.target.value)
@@ -53,7 +53,7 @@ const RenderFields = (props:Props):void|ReactElement => {
                 return <div onClick={(e) => handleEditStart(e,true)} className={styles.inputContainer}>
                     <label className={styles.label}>{field.label}:</label>
                     <input
-                        value={value}
+                        value={value > 0 ? value : false}
                         onChange={handleOnChange}
                         ref={(ip) => inputRef = ip}
                         className={styles.input}

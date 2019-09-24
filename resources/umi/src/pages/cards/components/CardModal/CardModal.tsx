@@ -9,6 +9,8 @@ import EmptyDiv from '../EmptyDiv/EmptyDiv';
 import { CardEmailInterface, CardEventInterface } from '@/models/database';
 import RenderFields from '../RenderField/RenderField';
 import { findIndex } from 'lodash';
+import { MdSend, MdArrowUpward, MdArrowDownward } from 'react-icons/md';
+import parse from 'html-react-parser';
 
 interface Props {
     isVisible: boolean;
@@ -56,7 +58,9 @@ const CardModal = (props:Props) => {
             <div className={styles.internalCard}>
                 <label className={styles.label}>Emails</label>
                 {card_emails ? card_emails.length > 0 ? <div className={styles.emailContainer}>
-                    {card_emails.map((email:CardEmailInterface) => <div>{email.content}</div>)}    
+                    {card_emails.map((email:CardEmailInterface) => 
+                        <Email email={email}/>
+                    )}    
                 </div> : <EmptyDiv text={'Nenhum email encontrado'} icon={'mail'}/>: null }                    
                 <div>
                     <label className={styles.label}>Histórico</label>
@@ -99,3 +103,50 @@ const CardModal = (props:Props) => {
     )
 }
 export default CardModal;
+
+interface EmailProps {
+    email: CardEmailInterface;
+}
+
+const Email = (props: EmailProps) =>{
+    const [collapsed,setCollapse] = useState(true)
+    const {email} = props
+    return (
+        <div className={styles.emailContentContainer}>
+            <div className={styles.emailIcon}>
+                <i><MdSend /></i>
+            </div>
+            <div className={styles.emailContent}>
+                <div className={styles.emailTo}>
+                    {email.to}
+                </div>
+                <div className={styles.emailSubject}>
+                    {email.subject}
+                </div>
+                <div className={styles.emailBody}>
+                    {collapsed ? 
+                    <div>
+                        <div className={styles.collapsedBody}>
+                            {parse(email.content)}
+                            
+                        </div>
+                        <div onClick={() => setCollapse(false)} className={styles.collapseButton}>
+                            <i><MdArrowDownward /></i>
+                        </div>
+                    </div>
+                :   
+                    <div>
+                        <div>
+                            {parse(email.content)}
+                            
+                        </div>}
+                        <div onClick={() => setCollapse(true)} className={styles.collapseButton}>
+                            <i><MdArrowUpward /></i>
+                        </div>
+                    </div>}
+                </div>
+            </div>
+            <div />
+        </div>
+    )
+}

@@ -8,7 +8,7 @@ use App\Phase;
 use App\Pipe;
 use Illuminate\Http\Request;
 use App\Events\CardMovement;
-
+use App\Events\CardCompletion;
 use Illuminate\Support\Carbon;
 
 
@@ -29,7 +29,6 @@ class CardController extends Controller
             $field = $filtered_fields->sortBy(function ($item) {
                 return $item->phaseField->due_date->day;
             })->values()->first();
-
             //Atualiza o novo due_date do card.
             if($field){
                 $new_due_date = Carbon::createFromDate(null,null,$field->phaseField->due_date->day,'America/Sao_Paulo');   
@@ -59,7 +58,7 @@ class CardController extends Controller
         $required_fields = $card->recurrentCard->requiredFields->map(function ($item) {
             return $item->phase_field_id;
         });
-        if($completed_ids == $required_fields){
+        if($completed_ids == $required_fields->all()){
             return true;
         }
         return false;
@@ -80,7 +79,6 @@ class CardController extends Controller
         }        
         $card->save();
         $this->updateCardDueDate($card);
-        
         $card->refresh();
         return response()->api(
             $card->load(['company','phase.phaseFields','creator','assignedUsers','fields','cardEmails'])
@@ -217,13 +215,17 @@ class CardController extends Controller
             if($phase->is_final){
 
             }
+            
             if($this->checkIfCardIsComplete($card) && $pipe->email_on_completion){
-                event(new CardCompleted($card));
+                event(new CardCompletion($card,$request->user(),$old_phase_id));
+                return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso! Email enviado!');  
             }
-            //ativa o evento de log
-            event(new CardMovement($card,$request->user(),$old_phase_id));
-
-            return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso');  
+            else{
+                //ativa o evento de log
+                event(new CardMovement($card,$request->user(),$old_phase_id));
+                return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso');  
+            }
+            
         }
         /*if($phase_id == 'first'){
             $pipe = Pipe::findOrFail($card->phase->pipe_id);

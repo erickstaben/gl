@@ -53,7 +53,7 @@ const request = extend({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  prefix: `http://18.222.128.192/api/${apiVersion}`,
+  prefix: `http://${window.location.host == 'localhost:8001' ? 'gl.test' : window.location.host}/api/${apiVersion}`,
 });
 
 export default request;
