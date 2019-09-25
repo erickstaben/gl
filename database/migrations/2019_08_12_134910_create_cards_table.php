@@ -23,7 +23,7 @@ class CreateCardsTable extends Migration
             $table->unsignedBigInteger('recurrent_card_id')->nullable();
             $table->foreign('recurrent_card_id')->references('id')->on('recurrent_cards');
 
-            $table->unsignedBigInteger('creator_id');
+            $table->unsignedBigInteger('creator_id')->nullable();
             $table->foreign('creator_id')->references('id')->on('users');
             
             $table->unsignedBigInteger('phase_id');

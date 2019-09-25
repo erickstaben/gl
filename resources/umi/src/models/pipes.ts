@@ -1,6 +1,6 @@
 
 import { Effect } from 'dva';
-import { fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow, fCardMove, fSaveRecurrentCard, fSavePipeUser } from '@/services/pipes';
+import { fNewCard, fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow, fCardMove, fSaveRecurrentCard, fSavePipeUser } from '@/services/pipes';
 import { message } from 'antd';
 import { PipeInterface, ID } from './database';
 import { Action, Reducer, PayloadInterface } from './connect';
@@ -41,6 +41,7 @@ export interface ModelType {
     phaseNameUpdate: Effect;
     saveRecurrentCard: Effect;
     savePipeUser: Effect;
+    newCard: Effect;
   };
   reducers: {
     rUpdatePipeList: Reducer<PipesModelState, Action<any>>;
@@ -56,6 +57,7 @@ export interface ModelType {
     rCardMove: Reducer<PipesModelState, Action<any>>;
     rSaveRecurrentCard: Reducer<PipesModelState, Action<any>>;
     rSavePipeUser: Reducer<PipesModelState, Action<any>>;
+    rNewCard: Reducer<PipesModelState, Action<any>>;
   };
 }
 
@@ -69,6 +71,16 @@ const Model: ModelType = {
   },
 
   effects: {
+    *newCard({ payload }, { call, put }) {
+      const response = yield call(fNewCard, payload);
+      if (response.ok && response.data) {
+        message.success(response.message)
+        yield put({
+          type: 'rNewCard',
+          payload: response.data,
+        });
+      }
+    },
     *saveRecurrentCard({ payload }, { call, put }) {
       const response = yield call(fSaveRecurrentCard, payload);
       if (response.ok && response.data) {
@@ -164,12 +176,26 @@ const Model: ModelType = {
     }
   },
   reducers: {
+    rNewCard(state, { payload }: Action<any>) {
+      const index = findIndex(state.loaded.phases, { id: payload.phase.id })
+      let newPhases = state.loaded.phases
+      if(index >= 0){
+        const newCards = newPhases[index].cards.push(payload)
+        newPhases[index].cards = [...newCards, payload]
+      }
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          phases: newPhases,
+        }
+      };
+    },
     rUpdatePipeList(state, { payload }: Action<any>) {
       const index = findIndex(state.loaded.phases, { id: payload.phase.id })
       let newPhases = state.loaded.phases
       if(index >= 0){
         const newCards = newPhases[index].cards.filter(card => card.id !== payload.id)
-        console.log('tamanho', newCards.length, newPhases[index].cards.length)
         newPhases[index].cards = [...newCards, payload]
       }
       return {

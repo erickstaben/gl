@@ -50,18 +50,21 @@ class CardController extends Controller
     }
 
     public function checkIfCardIsComplete(Card $card){
-        $completed_ids =  $card->fields->map(function ($item) {
-            if($item->pivot->value > 0){
-                return $item->id;
+        if($card->recurrentCard){
+            $completed_ids =  $card->fields->map(function ($item) {
+                if($item->pivot->value > 0){
+                    return $item->id;
+                }
+            })->toArray();
+            
+            $required_fields = $card->recurrentCard->requiredFields->map(function ($item) {
+                return $item->phase_field_id;
+            });
+            if($completed_ids == $required_fields->all()){
+                return true;
             }
-        })->toArray();
-        $required_fields = $card->recurrentCard->requiredFields->map(function ($item) {
-            return $item->phase_field_id;
-        });
-        if($completed_ids == $required_fields->all()){
-            return true;
-        }
-        return false;
+            return false;
+        }        
     }
     
     /**
@@ -106,7 +109,6 @@ class CardController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'creator_id' => 'numeric|required',
             'phase_id' => 'numeric|required',
             'company_id' => 'numeric|required',
             'title' => 'string|required',
@@ -212,15 +214,12 @@ class CardController extends Controller
             $card->phase_id = $phase_id;
             $card->save();
             $card->refresh();
-            if($phase->is_final){
-
-            }
-            
-            if($this->checkIfCardIsComplete($card) && $pipe->email_on_completion){
-                event(new CardCompletion($card,$request->user(),$old_phase_id));
-                return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso! Email enviado!');  
-            }
-            else{
+            if($phase->is_final){                
+                if($this->checkIfCardIsComplete($card) && $pipe->email_on_completion){
+                    event(new CardCompletion($card,$request->user(),$old_phase_id));
+                    return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso! Email enviado!');  
+                }
+            } else {
                 //ativa o evento de log
                 event(new CardMovement($card,$request->user(),$old_phase_id));
                 return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso');  

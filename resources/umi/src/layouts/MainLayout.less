@@ -15,6 +15,17 @@
     width: @sidebar-width;
 }
 .sidebar{
+    .glLogoContainer{
+        text-align: center;
+        .glLogo{
+            width: 190px;
+            margin-bottom: 14px;
+        }
+        .glLogoCollapsed{
+            width: 60px;
+        }
+    }
+    
     *:not(svg,path){
         transition: @default-transition-time all;
     }
@@ -37,7 +48,7 @@
             color: @primary-white-color;
         }
         align-items: center;
-        .avatar{
+        .avatar >img{
             height: 64px;
             width: 64px;
             min-height: 64px;

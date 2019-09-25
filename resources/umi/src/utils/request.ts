@@ -5,6 +5,7 @@
 import { extend } from 'umi-request';
 import { notification } from 'antd';
 import { __DEV__, apiVersion } from './utils';
+import router from 'umi/router';
 
 const codeMessage = {
   200: 'O servidor retornou com sucesso os dados solicitados.',
@@ -36,6 +37,10 @@ const errorHandler = (error: { response: Response }): Response => {
       message: 'Sem Internet',
     });
   }
+  console.log(response.status,response.status == 401)
+  if(response.status == 401){
+    router.push('/auth/login')
+  }
   return response;
 };
 
@@ -43,17 +48,20 @@ const getAccessToken = () => localStorage.getItem('access-token')
 /**
  * 配置request请求时的默认参数
  */
+
+let access_token = getAccessToken()
+
 const request = extend({
   errorHandler,
-  headers: getAccessToken() ? {
-    Authorization: `Bearer ${getAccessToken()}`,
+  headers: access_token ? {
+    Authorization: `Bearer ${access_token}`,
     'Content-Type': 'application/json',
     Accept: 'application/json',
   } : {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  prefix: `http://${window.location.host == 'localhost:8001' ? 'gl.test' : window.location.host}/api/${apiVersion}`,
+  prefix: `http://${window.location.host == 'localhost:8000' ? 'gl.test' : window.location.host}/api/${apiVersion}`,
 });
 
 export default request;

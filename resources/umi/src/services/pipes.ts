@@ -71,3 +71,10 @@ export async function fSavePipeUser(payload:any){
     method: 'POST',
   });
 }
+
+export async function fNewCard(payload:any){
+  return request(`/cards?${payload ? stringify(payload.params) : ''}`, {
+    body: JSON.stringify(payload.body),
+    method: 'POST',
+  });
+}

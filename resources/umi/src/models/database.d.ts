@@ -87,7 +87,7 @@ export interface RecurrentCardInterface{
 export interface PipeInterface {
     id: ID,
     name: string,
-    phases ?: PhaseInterface[],
+    phases : PhaseInterface[],
     recurrentCards ?: RecurrentCardInterface[],
 }
 

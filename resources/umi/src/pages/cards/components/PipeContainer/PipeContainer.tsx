@@ -8,6 +8,8 @@ import PhaseLane from '../PhaseLane/PhaseLane';
 import { DragDropContext, Droppable, DroppableProvided, DraggingStyle, DropResult, NotDraggingStyle } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'dva';
 import PhaseLaneModal from '../PhaseLane/PhaseLaneModal';
+import { MdSettings } from 'react-icons/md';
+import { router } from 'umi';
 
 interface Props {
     pipe_id: ID;
@@ -134,8 +136,18 @@ const PipeContainer = (props:Props) => {
     };
     const { phases, toggleModal, pipe_id } = props
     return (
-        <>
-            <div className={styles.pipeTitle}><div>Você está no pipe:</div> <div>{pipe.name}</div></div>
+        <>  
+            <div className={styles.header}>
+                <div className={styles.pipeTitle}>
+                    <div>Você está no pipe:</div>
+                    <div>{pipe.name}</div>
+                </div>
+                <div className={styles.actions}>
+                    <div onClick={() => router.push(`/pipes/${pipe_id}/config`)} className={styles.actionContainer}>
+                        <i><MdSettings/></i>
+                    </div>
+                </div>
+            </div>            
             <ul className={styles.pipeContainer}>
                 <DragDropContext onDragEnd={onDragEnd}>
                     {renderPhases(phases, toggleModal, pipe_id, setVisibility)}                        

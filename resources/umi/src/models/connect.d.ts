@@ -10,6 +10,7 @@ import { AuthModelState } from './auth';
 import { ID, PhaseInterface } from './database';
 import { PhasesModelState } from './phases';
 import { PipesModelState } from './pipes';
+import { CompaniesModelState } from './companies';
 
 export { GlobalModelState, SettingModelState, UserModelState };
 export interface RequestPayload {
@@ -44,6 +45,7 @@ export interface PayloadInterface {
 export interface ConnectState {
   global: GlobalModelState;
   loading: Loading;
+  companies: CompaniesModelState;
   settings: SettingModelState;
   user: UserModelState;
   auth: AuthModelState;

@@ -21,7 +21,7 @@ class CreatePhaseEmailsTable extends Migration
             $table->string('copy')->nullable();  
             $table->string('subject');
             $table->string('to');
-            $table->string('content');
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }

@@ -84,12 +84,12 @@ export default {
       routes: [
         {
           path: '/',
-          name: 'home',
+          name: 'Página inicial',
           icon: 'home',
           component: './Home',
         },{
           path: '/pipes',
-          name: 'pipes',
+          name: 'Processos',
           icon: 'pipe',
           routes: [ 
             {
@@ -137,21 +137,21 @@ export default {
         },
         {
           path: '/customers',
-          name: 'customers',
+          name: 'Clientes',
           icon: 'pipe',
           Routes: ['src/layouts/ConfigLayout'],
           component: './customers/routes/CustomerList',          
         },
         {
           path: '/reports',
-          name: 'reports',
+          name: 'Relatórios',
           authority: ['super'],
           icon: 'pipe',
           component: './reports/routes/MainReports',          
         },
         {
           path: '/scripts',
-          name: 'scripts',
+          name: 'Automações',
           icon: 'pipe',
           component: './scripts/routes/ScriptsHome',          
         },

@@ -17,7 +17,11 @@ export interface AuthModelState {
   user: UserInterface,
   isLogged: boolean;
 }
-
+interface Response {
+  ok: boolean;
+  data: any;
+  message: string;
+}
 
 export interface ModelType {
   namespace: string;
@@ -30,6 +34,8 @@ export interface ModelType {
   reducers: {
     changeLoginStatus: Reducer<AuthModelState, Action<any>>;
     updateUserModel: Reducer<AuthModelState, Action<UserInterface>>;
+    loginError: Reducer<AuthModelState,Action<any>>;
+    rLogout: Reducer<AuthModelState,Action<any>>;
   };
 }
 
@@ -45,36 +51,47 @@ const Model: ModelType = {
     *logout(_, { put }) {
       const { redirect } = getPageQuery();
       // redirect
-      if (window.location.pathname !== '/user/login' && !redirect) {
+      if (window.location.pathname !== '/auth/login' && !redirect) {
+        yield put({
+          type: 'rLogout',
+        })
         yield put(
           routerRedux.replace({
-            pathname: '/user/login',
-            search: stringify({
+            pathname: '/auth/login',
+            /*search: stringify({
               redirect: window.location.href,
-            }),
+            }),*/
           }),
         );
       }
     },
     *login({payload}, { put, call }) {
-      const response = yield call(fLogin, payload);
-      localStorage.setItem('access-token', response.data.access_token)
-      if(response.ok){
-        setAuthority(response.data.authority || 'admin')
+      const response:Response = yield call(fLogin, payload);
+      if(response.data){
+        localStorage.setItem('access-token', response.data.access_token)
+        if(response.ok && response.data.access_token){
+          setAuthority(response.data.authority || 'admin')
+          yield put({
+            type: 'authUser',
+            payload: response.data,
+          });
+        }
+      }  
+      else{
         yield put({
-          type: 'authUser',
-          payload: response.data,
+          type: 'loginError',
+          payload: response.message,
         });
-      }
+      }    
     },
     *authUser({payload}, { call, put }) {
+      console.log('1')
       const response = yield call(fAuthUser, { access_token: payload.access_token});
       if (response.ok){
         yield put({
           type: 'updateUserModel',
           payload: response.data,
         });
-        console.log(getPageQuery(), 'oi', window.location.pathname)
         if(window.location.pathname == '/auth/login'){
           yield put(routerRedux.replace({
             pathname: getPageQuery().redirect || '/',
@@ -109,6 +126,18 @@ const Model: ModelType = {
           ...payload,
         },
         isLogged: true,
+      };
+    },
+    loginError(state, { payload }:Action<any>) {
+      return {
+        ...state,
+        error : payload,
+      };
+    },
+    rLogout(state, { payload }:Action<any>) {
+      return {
+        user: <UserInterface>{},
+        isLogged: false,
       };
     },
   },

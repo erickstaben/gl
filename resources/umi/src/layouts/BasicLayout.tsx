@@ -49,7 +49,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   useEffect(() => {
     if (dispatch) {
       dispatch({
-        type: 'auth/authUser',
+        type: 'auth/authUser',        
+        payload: {
+          access_token: localStorage.getItem('access-token');
+        }
       });
       dispatch({
         type: 'settings/getSetting',

@@ -111,6 +111,9 @@ const PhaseLane = (props:Props):React.ReactElement => {
                     {filter ? <span>Nada foi encontrado</span> : <span>Não há cards nessa fase</span>}
                     </div>}
             </div>
+            <div className={styles.laneDescription}>
+                {phases[findIndex(phases,{id: phaseInfo.id})].description}
+            </div>
         </li>
         
         </>

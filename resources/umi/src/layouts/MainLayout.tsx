@@ -18,6 +18,10 @@ import classnames from 'classnames';
 import config from '../../config/config';
 import ReactTooltip from 'react-tooltip';
 import { HotKeys } from 'react-hotkeys';
+import { router } from 'umi';
+import { getAuthority } from '@/utils/authority';
+import logo_gl from '@/assets/logo_gl.png';
+import only_logo from '@/assets/only_logo.png';
 
 const routes = config.routes;
 
@@ -50,6 +54,9 @@ const MainLayout = (props: Props) => {
         if (dispatch) {
             dispatch({
                 type: 'auth/authUser',
+                payload: {
+                    access_token: localStorage.getItem('access-token')
+                }
             });
             dispatch({
                 type: 'settings/getSetting',
@@ -57,6 +64,10 @@ const MainLayout = (props: Props) => {
         }
     }, []);
     const user = useSelector((state:any) => state.auth.user)
+    if(!user.id && localStorage.getItem('access-token') == null){
+        console.log('Redirecting on layout')
+        router.push('/auth/login')
+    }
     const renderMenuItems = (routes) => {
         if(routes.routes){
             <li><Icon data-tip={'Nome do campo'} type='user'/>{!collapsed && <div>
@@ -93,19 +104,24 @@ const MainLayout = (props: Props) => {
                     <span className={styles.menuFold} onClick={() => handleMenuCollapse(!collapsed)}>
                         <Icon type="menu-fold"/>
                     </span>
-                    <div className={classnames(styles.avatar,{[styles.avatarCollapsed]: collapsed})}></div>
+                    <div className={classnames(styles.avatar,{[styles.avatarCollapsed]: collapsed})}><img src={'https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png'}/></div>
                     <p className={classnames(styles.name, { [styles.nameCollapsed]: collapsed })}>{user.name}</p>
                     <p className={classnames(styles.info, { [styles.infoCollapsed]: collapsed })}>{user.email}</p>
                 </div>
                 <ul className={styles.sidebarMenu}>
                     {renderMenuItems(routes[1].routes)}                   
                 </ul>
+                <div className={styles.glLogoContainer}>
+                    <img className={classnames(styles.glLogo,{[styles.glLogoCollapsed]: collapsed})} src={collapsed ? only_logo : logo_gl}/>
+                </div>
                 <footer className={classnames(styles.sidebarFooter,collapsed ? styles.sidebarFooterCollapsed : styles.sidebarFooterUncollapsed)}>
                     <div className={styles.actionButtons}>
                         <span><Icon type='setting'/></span>
                     </div>
-                    <div className={styles.actionButtons}>
-                        <span><Icon type='plus'/></span>
+                    <div onClick={() => dispatch({
+                        type: 'auth/logout'
+                    })} className={styles.actionButtons}>
+                        <span><Icon type='logout'/></span>
                     </div>
                 </footer>
             </aside>

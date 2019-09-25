@@ -10,6 +10,29 @@
   display: flex;
   
 }
+.affixButton{
+  background-color: @primary-active-color;
+  height: 64px;
+  color: @primary-white-color;
+  width: 64px;
+  border-radius: 100%;
+  position: fixed;
+  transition: transform @default-transition-time;
+  bottom: 2*@default-padding;
+  right: 2*@default-padding;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  i{
+    font-size: 36px;
+    width: 100%;
+  }
+}
+.affixButton:hover{
+  background-color: fade(@primary-active-color,80%);
+  transform: translateY(-2px);
+  color: @primary-white-color;
+}
 .scrollBar{
   background-color: @default-background-color;
   padding: 0 32px;

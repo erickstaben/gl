@@ -3,10 +3,11 @@ import { Effect } from 'dva';
 import { fIndex, fStore, fDelete } from '@/services/companies';
 import { Action, Reducer} from './connect';
 import { findIndex } from 'lodash';
+import { CompanyInterface } from './database';
 
 
 export interface CompaniesModelState {
-  list: Array<object>;
+  list: CompanyInterface[];
 }
 
 
