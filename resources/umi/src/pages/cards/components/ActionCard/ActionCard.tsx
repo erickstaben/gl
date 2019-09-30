@@ -11,6 +11,7 @@ import ProgressBar, { uncompleted } from '../ProgressBar/ProgressBar'
 import { getFirstLetters } from '@/utils/utils';
 import { PhaseInnerProps } from '@/pages/cards/components/PhaseLane/PhaseLane';
 import { ConnectState } from '@/models/connect';
+import { MdRepeat, MdAssignmentTurnedIn } from 'react-icons/md';
 
 type Props = {
     card: CardInterface,
@@ -19,7 +20,7 @@ type Props = {
 
 const ActionCard = (props:Props):React.ReactElement => {
     const { card, toggleModal, phaseInfo, nextPhase, previousPhase } = props
-    const { due_date, assigned_users = [], company, fields, id, is_finished } = card
+    const { due_date, assigned_users = [], company, fields, id, is_finished, recurrent_card } = card
     const dispatch = useDispatch()
     
     const getArrowDropDown = () => {
@@ -95,6 +96,11 @@ const ActionCard = (props:Props):React.ReactElement => {
             <Spin spinning={isLoading()}>
             <span style={{ height: '100%', width: '80%' }} onClick={() => alert('oi')}></span>
             <div className={styles.cardHeader}>
+                <div className={styles.cardIcon}>
+                        <i>
+                            {recurrent_card ? <MdRepeat /> : <MdAssignmentTurnedIn /> }
+                        </i>
+                </div>
                 <div className={styles.title}>
                     <SpanText text={company ? company.name : 'Sem nome'} className={styles.cardName}/>
                     <SpanText text={company ? company.cnpj : 'CNPJ sem cadastro'} className={styles.cardCNPJ}/>

@@ -84,7 +84,7 @@ export default {
         },{
           path: '/pipes',
           name: 'Processos',
-          icon: 'pipe',
+          icon: 'snippets',
           routes: [ 
             {
               path: '/pipes',
@@ -132,7 +132,7 @@ export default {
         {
           path: '/customers',
           name: 'Clientes',
-          icon: 'pipe',
+          icon: 'team',
           Routes: ['src/layouts/ConfigLayout'],
           component: './customers/routes/CustomerList',          
         },
@@ -140,13 +140,13 @@ export default {
           path: '/reports',
           name: 'Relatórios',
           authority: ['super'],
-          icon: 'pipe',
+          icon: 'solution',
           component: './reports/routes/MainReports',          
         },
         {
           path: '/scripts',
           name: 'Automações',
-          icon: 'pipe',
+          icon: 'android',
           component: './scripts/routes/ScriptsHome',          
         },
         {

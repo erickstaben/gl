@@ -79,7 +79,7 @@ const MainLayout = (props: Props) => {
                 <Authorized authority={route.authority || ['user','admin','super']}>
                 <Link to={route.path || '/'}>
                     <li>
-                        <Icon style={!collapsed ? {height: 32,width: 32} : {}} data-tip={'Nome do campo'} type={route.icon}/>
+                        <Icon style={!collapsed ? {height: 32,width: 32} : {}} data-tip={route.name} type={route.icon}/>
                         {!collapsed && <div>
                             {route.name}
                         </div>}
@@ -125,7 +125,7 @@ const MainLayout = (props: Props) => {
                     </div>
                 </footer>
             </aside>
-            <div style={{display: 'flex',width: '100%',flexDirection: 'column'}}>
+            <div style={{ display: 'flex', width: `calc(100% - ${collapsed  ? 80 : 280}px)`,flexDirection: 'column'}}>
                 {children}
             </div>
         </HotKeys>

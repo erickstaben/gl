@@ -33,7 +33,7 @@ const FormListPreview = (props:Props) => {
             ...fields,
             { 
                 field_type,
-                due_date: moment([(new Date()).getFullYear(), (new Date()).getMonth(), field_due_date]).format(),
+                due_date: field_due_date,
                 field_postpone,
                 label,
                 field_options: field_options ? field_options.split(',') : null
@@ -76,7 +76,7 @@ const FormListPreview = (props:Props) => {
                             return <div className={styles.previewContainer}>
                                     <Checkbox disabled={true}>{field.label}
                                         {field.due_date &&
-                                        <Tag style={{ marginLeft: 8 }} color='blue'>{moment(field.due_date).format('D MMM')} - {moment(field.due_date).fromNow()}</Tag>
+                                        <Tag style={{ marginLeft: 8 }} color='blue'>{moment([(new Date()).getFullYear(), (new Date()).getMonth(), field_due_date]).format('D MMM')} - {moment(field.due_date).fromNow()}</Tag>
                                         }
                                     </Checkbox>
                                     <Icon type='delete' onClick={() => deleteField(index)} />

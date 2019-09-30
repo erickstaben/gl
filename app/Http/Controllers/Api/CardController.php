@@ -52,15 +52,15 @@ class CardController extends Controller
     public function checkIfCardIsComplete(Card $card){
         if($card->recurrentCard){
             $completed_ids =  $card->fields->map(function ($item) {
-                if($item->pivot->value > 0){
+                if($item->pivot->value > 0 || strlen($item->pivot->value) > 1){
                     return $item->id;
                 }
             })->toArray();
             
             $required_fields = $card->recurrentCard->requiredFields->map(function ($item) {
                 return $item->phase_field_id;
-            });
-            if($completed_ids == $required_fields->all()){
+            })->all();
+            if(sort($completed_ids) == sort($required_fields)){
                 return true;
             }
             return false;
@@ -209,7 +209,7 @@ class CardController extends Controller
         // Encontra a fase 
         $phase = Phase::find($phase_id);
 
-        if($phase && ($phase->pipe->id == $card->phase->pipe->id)){            
+        if($phase && ($phase->pipe->id == $card->phase->pipe->id)){          
             $pipe = Pipe::findOrFail($phase->pipe_id);
             $card->phase_id = $phase_id;
             $card->save();
@@ -218,6 +218,10 @@ class CardController extends Controller
                 if($this->checkIfCardIsComplete($card) && $pipe->email_on_completion){
                     event(new CardCompletion($card,$request->user(),$old_phase_id));
                     return response()->api($pipe->load(['phases.cards']),'Card movimentado com sucesso! Email enviado!');  
+                }
+                else{
+                    event(new CardMovement($card,$request->user(),$old_phase_id));
+                    return response()->api($pipe->load(['phases.cards']),'Card movido para uma fase final incompleto'); 
                 }
             } else {
                 //ativa o evento de log

@@ -123,6 +123,7 @@ export interface CardInterface {
     creator ?: UserInterface,
     fields ?: PhaseFieldInterface[],
     assigned_users ?: UserInterface[],
+    recurrent_card: RecurrentCardInterface,
     company_id ?: ID,
     creator_id ?: ID,
     phase_id ?: ID,

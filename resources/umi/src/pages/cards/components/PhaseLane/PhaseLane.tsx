@@ -76,7 +76,7 @@ const PhaseLane = (props:Props):React.ReactElement => {
     const phases = useSelector((state:any) => state.pipes.loaded.phases)
     return ( <>
         
-        <li ref={passingRef} className={styles.phaseContent}>
+        <li ref={passingRef} className={classnames(styles.phaseContent,{[styles.phaseFinal]: is_final})}>
             <header className={styles.phaseHeader}>
                 <SpanEdit dispatch={{ name: `pipes.loaded.phases[${findIndex(phases, { id: phaseInfo.id })}].name`, type: 'pipes/phaseNameUpdate', id: phaseInfo.id }} />
                 <Dropdown overlay={getDropOverlay()}>

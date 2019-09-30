@@ -79,6 +79,23 @@ const RenderFields = (props:Props):void|ReactElement => {
                         }</Checkbox>
                     </Spin>
                 </div>
+            case 'select':
+                return <div onClick={(e) => handleEditStart(e, true)} className={styles.inputContainer}>
+                    <Spin spinning={updatingField || false}>
+                        <label>{field.label}{due_date &&
+                            <Tag style={{ marginLeft: 8 }} color='blue'>{moment(due_date).format('D MMM')} - {moment(due_date).fromNow()}</Tag>
+                        }</label>
+                        <select onChange={(e) => {
+                            setValue(e.target.value)
+                            onSave(e.target.value)
+                        }} defaultValue={undefined}>
+                            {field.field_options.map(opt => {
+                                return (<option value={opt}>{opt}</option>)
+                            })}
+                            <option value={undefined}>Não selecionado</option>
+                        </select>
+                    </Spin>
+                </div>
             default:
                 return <div>Tipo de campo não encontrado. Entrar em contato com suporte</div>
         }

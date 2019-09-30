@@ -77,7 +77,7 @@ class PhaseController extends Controller
             foreach($request['phaseFields'] as $field){
                 PhaseField::create(array_merge(array(
                     'due_date' => $field['due_date'],
-                    'postpone' => $field['postpone'],
+                    'postpone' => $field['field_postpone'],
                     'field_type' => $field['field_type'],
                     'label' => $field['label'],
                     'field_options' => $field['field_options'],
