@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[4],{l2KX:function(e,t,a){"use strict";var l=a("g09b");Object.defineProperty(t,"__esModule",{value:!0}),t.default=void 0;var n=l(a("q1tI")),u=function(){return n.default.createElement(n.default.Fragment,null,n.default.createElement("div",null,"Algo para ser escrito"))},r=u;t.default=r}}]);
-//# sourceMappingURL=p__Home.fca9994c.async.js.map

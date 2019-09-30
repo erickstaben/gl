@@ -21,13 +21,17 @@ const NewCardModal = (props:Props) => {
     const phases = useSelector((state:ConnectState) => state.pipes.loaded.phases) || []
     const { register, handleSubmit, errors, setValue, setError, reset } = useForm();
 
+    const dispatch = useDispatch()
+
     useEffect(() => {
+        dispatch({
+            type: 'companies/index',
+        })
         register({ name: "due_date" })
         register({ name: "company_id" })
         register({ name: "phase_id" })
     },[])
 
-    const dispatch = useDispatch()
 
     const onSubmit = (data: any) => {
         dispatch({

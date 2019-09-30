@@ -54,7 +54,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Ant Design Pro',
+  title: 'GL Inteligência Contábil',
   pwa: false,
   iconfontUrl: '',
 } as DefaultSettings;
