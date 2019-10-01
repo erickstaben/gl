@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\RecurrentCard;
 use App\Pipe;
-
+use App\RecurrentCardField;
 use Illuminate\Http\Request;
 
 use GuzzleHttp\Promise;
@@ -23,6 +23,15 @@ class RecurrentCardController extends Controller
     public function index(Request $request){
         $recurrentCards = RecurrentCard::limit($request['limit'] ?: 100)->offset($request['offset'] ?: 0)->get();
         return response()->api($recurrentCards);
+    }
+
+
+    public function enabledFields(Request $request){
+        $fields =  RecurrentCardField::selectRaw("recurrent_card_fields.recurrent_card_id, IF(group_concat(phase_fields.label) LIKE '%PIS%',1,0)  AS 'PIS'")
+        ->join('phase_fields', 'phase_fields.id', '=', 'recurrent_card_fields.phase_field_id')
+        ->groupBy('recurrent_card_id')
+        ->get();
+        echo json_decode($fields);   
     }
 
     /**
