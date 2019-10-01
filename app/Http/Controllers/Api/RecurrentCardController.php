@@ -31,7 +31,7 @@ class RecurrentCardController extends Controller
         ->join('phase_fields', 'phase_fields.id', '=', 'recurrent_card_fields.phase_field_id')
         ->groupBy('recurrent_card_id')
         ->get();
-        echo json_decode($fields);   
+        echo json_encode($fields);   
     }
 
     /**
