@@ -41,6 +41,15 @@ Route::group(["prefix" => "{$api_version}","middleware" => ["cors"]], function()
     // register companies routes
     Route::prefix('companies')
         ->group(base_path('routes/api/companies.php'));
+    // register companies routes
+    Route::prefix('processes')
+        ->group(base_path('routes/api/processes.php'));
+    // register companies routes
+    Route::prefix('activities')
+        ->group(base_path('routes/api/activities.php'));
+        // register companies routes
+    Route::prefix('tasks')
+        ->group(base_path('routes/api/tasks.php'));
 
     
 });

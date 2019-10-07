@@ -51,6 +51,17 @@ class User extends Authenticatable
         return $this->hasMany('App\Notification');
     }
 
+    public function processes(){
+        return $this->hasMany('App\Process');
+    }
+    public function activities(){
+        return $this->hasManyThrough('App\Activity','App\Process')->with('tasks');
+    }
+    
+    public function tasks(){
+        return $this->processes()->tasks();
+    }
+
     public function cards(){
         return $this->hasMany('App\Card','creator_id');
     }

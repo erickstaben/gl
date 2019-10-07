@@ -62,6 +62,33 @@ export interface CardEmailInterface {
     phase_email ?: PhaseEmailInterface,
 }
 
+export interface ProcessInterface {
+    id: ID;
+    name: string;
+    user_id : ID;
+    activities: ActivityInterface[];
+    company_id: ID;
+    created_at: Date;
+    updated_at: Date;
+}
+export interface ActivityInterface{
+    name: string;
+    due_day: string;
+    status: 'Não iniciado' | 'Em andamento'
+    total_tasks: number;
+    completed_tasks: number;
+    tasks: TaskInterface[];    
+}
+
+export interface TaskInterface {
+    name: string;
+    description: string;
+    due_day: string;
+    is_complete: boolean;
+    created_at: Date;
+    updated_at: Date;
+}
+
 export interface PhaseInterface {
     id: ID,
     pipe_id ?: ID,

@@ -16,4 +16,8 @@ class Company extends Model
     public function cards(){
         return $this->hasMany('App\Card');
     }
+
+    public function processes(){
+        return $this->hasMany('App\Process');
+    }
 }

@@ -11,6 +11,7 @@ import { ID, PhaseInterface } from './database';
 import { PhasesModelState } from './phases';
 import { PipesModelState } from './pipes';
 import { CompaniesModelState } from './companies';
+import { ProcessModelState } from './processes';
 
 export { GlobalModelState, SettingModelState, UserModelState };
 export interface RequestPayload {
@@ -43,6 +44,7 @@ export interface PayloadInterface {
 }
 
 export interface ConnectState {
+  processes: ProcessModelState;
   global: GlobalModelState;
   loading: Loading;
   companies: CompaniesModelState;

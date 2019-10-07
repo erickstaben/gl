@@ -69,14 +69,8 @@ export default {
           component: './auth/routes/Login',
         },
       ]
-    },    
-    {
-      path: '/processes/:id',
-      name: 'processes',
-      hideInMenu: true,
-      Routes: ['src/layouts/MainLayout'],
-      component: './cards/routes/ProcessesBoard',
-    },
+    },   
+    
     {
       path: '/',
       component: '../layouts/MainLayout',
@@ -88,6 +82,23 @@ export default {
           name: 'Página inicial',
           icon: 'home',
           component: './Home',
+        },
+        {
+          path: '/processes',
+          name: 'Processos',
+          hideInMenu: true,
+          routes: [
+            {
+              path: '/processes',
+              name: 'Meus processos',
+              component: './cards/routes/ProcessesBoard',
+            },
+            {
+              path: '/processes/:id/config',
+              name: 'Configuração do processo',
+              component: './cards/routes/ProcessConfig',
+            }
+          ],
         },{
           path: '/pipes',
           name: 'Processos',
