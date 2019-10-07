@@ -69,6 +69,13 @@ export default {
           component: './auth/routes/Login',
         },
       ]
+    },    
+    {
+      path: '/processes/:id',
+      name: 'processes',
+      hideInMenu: true,
+      Routes: ['src/layouts/MainLayout'],
+      component: './cards/routes/ProcessesBoard',
     },
     {
       path: '/',
