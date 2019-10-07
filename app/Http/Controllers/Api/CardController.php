@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Card;
 use App\Phase;
+use App\CardLog;
 use App\Pipe;
 use Illuminate\Http\Request;
 use App\Events\CardMovement;
@@ -83,6 +84,21 @@ class CardController extends Controller
         $card->save();
         $this->updateCardDueDate($card);
         $card->refresh();
+        
+
+        //LOGA 
+
+        $log = CardLog::create(array(
+            'action' => 'card_update',
+            'user_id' => $request->user()->id,
+            'card_id' => $card->id,
+            'new_phase_id' => $card->phase->id,
+            'phase_id' =>  null,
+            'phase_field_id' => $field_id,
+        ));
+        $log->save();
+
+
         return response()->api(
             $card->load(['company','phase.phaseFields','creator','assignedUsers','fields','cardEmails'])
         );

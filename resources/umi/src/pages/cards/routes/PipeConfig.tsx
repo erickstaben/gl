@@ -9,10 +9,6 @@ const PipeConfig = (props:any) => {
     
       
     const cardsColumns = [{
-        title: 'Pipe',
-        dataIndex: 'pipe.name',
-        key: 'pipe.id',
-    },{
         title: 'Empresa',
         dataIndex: 'company.name',
         key: 'company.id',

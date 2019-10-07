@@ -20,6 +20,10 @@ class PhaseField extends Model
             ->withPivot(['value'])->withTimestamps();
     }
 
+    public function cardLogs(){
+        return $this->hasMany('App\CardLog');
+    }
+
     public function setFieldOptionsAttribute($value){
         $this->attributes['field_options'] =  json_encode($value);        
     }

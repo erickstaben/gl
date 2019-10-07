@@ -32,7 +32,12 @@ class CreateCardLogsTable extends Migration
             $table->unsignedBigInteger('new_phase_id');
             $table->foreign('new_phase_id')->references('id')->on('phases');
 
+            
+            $table->unsignedBigInteger('phase_field_id')->nullable();
+            $table->foreign('phase_field_id')->references('id')->on('phase_fields');
+
             $table->string('action')->default('move');
+
             $table->string('duration')->nullable();
             $table->timestamps();
         });
