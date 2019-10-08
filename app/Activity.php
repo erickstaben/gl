@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Activity extends Model
 {
-    protected $fillable = ['due_day','name','process_id'];
+    protected $fillable = ['due_day','name','process_id','tasks'];
 
     protected $appends = ['completed_tasks','total_tasks','status'];
 

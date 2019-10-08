@@ -33,11 +33,22 @@ class ProcessController extends Controller
             foreach($activities as $act){
                 $activities_object[] =  [
                     'name' => $act['name'],
-                    'due_day' => $act['due_day']                    
+                    'due_day' => property_exists((object)$act,'due_day') ? $act['due_day'] : null,             
                 ];
             }
         }
-        $process->activities()->createMany($activities_object);  
+        $process->activities()->createMany($activities_object); 
+        foreach($process->activities as $key=>$activity){
+            $tasks_object = [];
+            foreach($activities[$key]['tasks'] as $task){
+                $tasks_object[] =  [
+                    'name' => $task['name'],
+                    'description' => property_exists((object)$task,'description') ? $task['description'] : null,
+                    'due_day' => property_exists((object)$task,'due_day') ? $task['due_day'] : null,                 
+                ];
+            }
+            $activity->tasks()->createMany($tasks_object);
+        }
         
         return response()->api($process->load(['activities.tasks']));
     }

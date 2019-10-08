@@ -65,10 +65,7 @@ const Model: ModelType = {
         *update({ payload }, { call, put }) {
             const response = yield call(fUpdate, payload);
             if (response.ok) {
-                yield put({
-                    type: 'rUpdate',
-                    payload: response.data,
-                });
+                yield put({type:'processes/index'})
                 message.success('Fase atualizada!')
             } else {
                 message.error('Não foi possivel atualizar!')
@@ -110,15 +107,9 @@ const Model: ModelType = {
                 loaded: payload
             };
         },
-        rUpdate(state, { payload }: Action<any>) {
-            let newLoaded = state.loaded
-            const activityIndex = findIndex(newLoaded,{id: payload.activity_id})
-            const taskIndex = findIndex(newLoaded[activityIndex],{id: payload.id})
-            newLoaded[activityIndex].tasks[taskIndex] = payload
-            console.log(activityIndex,taskIndex,newLoaded)
+        rUpdate(state, { payload }: Action<any>) {x
             return {
                 ...state,
-                loaded: newLoaded
             };
         },
         rDestroy(state, { payload }: Action<any>) {

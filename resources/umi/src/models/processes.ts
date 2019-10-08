@@ -4,6 +4,7 @@ import { Effect } from 'dva';
 import { DefaultResponseInterface, ProcessInterface } from './database';
 import { Action, Reducer } from './connect';
 import { fIndex, fShow, fUpdate, fDestroy, fStore } from '@/services/processes';
+import { findIndex } from 'lodash';
 
 export interface ProcessModelState {
     loaded: ProcessInterface,
@@ -22,6 +23,7 @@ export interface ModelType {
         store: Effect;
     };
     reducers: {
+        updateTask: Reducer<ProcessModelState, Action<any>>;
         rIndex: Reducer<ProcessModelState, Action<any>>;
         rShow: Reducer<ProcessModelState, Action<any>>;
         rUpdate: Reducer<ProcessModelState, Action<any>>;

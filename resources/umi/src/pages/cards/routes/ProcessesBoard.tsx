@@ -72,7 +72,7 @@ const ProcessesBoard = (props:Props) => {
                 <Input.Search placeholder='Digite para pesquisar...' style={{ width: 200, float: 'right'}} onSearch={(e) => setFilterValue(e)} />
             </div>
             
-            <div>
+            <div className={styles.processContainer}>
                 {filteredProcesses.length > 0 ? filteredProcesses.map((process: ProcessInterface, processIndex: number) => {
                     return (
                         <ProcessComponent
