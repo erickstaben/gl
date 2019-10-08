@@ -57,7 +57,8 @@ class TaskController extends Controller
             $task[$key] = $req;
         }
         $task->save();
-        return response()->api($task);
+        Event
+        return response()->api($task->load('activity'));
     }
 
     
