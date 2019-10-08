@@ -1,0 +1,45 @@
+
+@import '../../../../utils/variables.less';
+
+.iconStyle{
+    font-size: 16px;
+    height: 24px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    border-radius: 100%;
+    i{
+        width: 100%;
+    }
+}
+.iconStyle:hover{
+    background-color: @default-description-color;
+}
+.headerStyle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    span{
+        padding: 0px 4px;
+    }
+    i{
+        color: green;
+        font-size: 20px;
+    }
+}
+.taskContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .previousTask{
+        text-align: center;
+    }
+    .activeTask{
+        flex-grow: 1;
+        text-align: left;
+    }
+    .nextTask{
+        text-align: center;
+    }   
+}

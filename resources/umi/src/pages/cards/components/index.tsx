@@ -8,5 +8,18 @@ import ReorderComponent from './ReorderComponent/ReorderComponent';
 import FormListPreview from './FormListPreview/FormListPreview';
 import CardModal from './CardModal/CardModal';
 import NewCardModal from './NewCardModal/NewCardModal';
+import ProcessComponent from './ProcessComponent/ProcessComponent';
 
-export { PhaseLane, PipeContainer, ActionCard, ProgressBar, EndCard, PhaseLaneModal, ReorderComponent, FormListPreview, CardModal, NewCardModal}
+export { ProcessComponent, 
+    PhaseLane,
+    PipeContainer,
+    ActionCard,
+    ProgressBar,
+    EndCard,
+    PhaseLaneModal, 
+    ReorderComponent, 
+    FormListPreview, 
+    CardModal, 
+    NewCardModal
+    
+}

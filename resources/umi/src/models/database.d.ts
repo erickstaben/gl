@@ -84,7 +84,7 @@ export interface TaskInterface {
     name: string;
     description: string;
     due_day: string;
-    is_complete: boolean;
+    is_complete: number;
     created_at: Date;
     updated_at: Date;
 }

@@ -8,7 +8,7 @@ import { ActivityInterface, ProcessInterface, TaskInterface } from '@/models/dat
 import styles from './ProcessesBoard.less';
 import EmptyDiv from '../components/EmptyDiv/EmptyDiv';
 import { MdTimer, MdCheck, MdSettings, MdDelete } from 'react-icons/md';
-
+import { ProcessComponent } from '../components';
 const { Panel } = Collapse;
 
 interface Props {
@@ -40,7 +40,7 @@ const ProcessesBoard = (props:Props) => {
         return processes
     }
 
-    const updateTask = (string:string, newValue:string,task_id: number) => {
+    const updateTask = (string:string, newValue:string|boolean,task_id: number) => {
         dispatch({
             type: 'tasks/update',
             payload: {
@@ -60,14 +60,7 @@ const ProcessesBoard = (props:Props) => {
                 path_id: [id],
             }
         })
-    }
-    const checkActivityFinished = (activity) => {
-        if (activity.completed_tasks == activity.total_tasks && activity.total_tasks !== 0){
-            return true
-        }
-        return false
-    }
-    console.log(filteredProcesses)
+    }    
     return (
         <div className={styles.processBoardContainer}>
             
@@ -82,69 +75,12 @@ const ProcessesBoard = (props:Props) => {
             <div>
                 {filteredProcesses.length > 0 ? filteredProcesses.map((process: ProcessInterface, processIndex: number) => {
                     return (
-                        <Collapse>
-                            <Panel 
-                                key={processIndex} 
-                                header={process.name} 
-                                extra={ <div style={{display:'inline-flex'}}>
-                                    <div className={styles.iconStyle} >
-                                        <i onClick={() => router.push(`/processes/${process.id}/config`)}>
-                                            <MdSettings />
-                                        </i>
-                                    </div>
-                                    <div className={styles.iconStyle} >
-                                        <i onClick={() => deleteProcess(process.id)}>
-                                            <MdDelete />
-                                        </i>
-                                    </div>
-                                </div>}
-                            >
-                                {process.activities && <Collapse>
-                                    {process.activities.map((activity: ActivityInterface, taskIndex: number) => {
-                                        return (
-                                            <Panel 
-                                            key={taskIndex} 
-                                                style={checkActivityFinished(activity) ? {
-                                                    backgroundColor: '#dfffdf'
-                                                } : {}}
-                                            header={
-                                                <div className={styles.headerStyle}>
-                                                    {checkActivityFinished(activity) && <i><MdCheck /></i>}
-                                                    <span style={{flexGrow: 1}}>{activity.name}</span>
-                                                    <label>Status:</label><span>{activity.status}</span>
-                                                    <span>{activity.completed_tasks}/{activity.total_tasks}</span>
-                                                </div>
-                                            }
-                                            >
-                                                {activity.tasks ? activity.tasks.map((task: TaskInterface) => {
-                                                    return (
-                                                        <div className={styles.taskContainer}>
-                                                            <div className={styles.activeTask}>
-                                                                <Checkbox 
-                                                                    checked={task.is_complete} 
-                                                                    onChange={(e) => updateTask('is_complete',e.target.checked,task.id)}
-                                                                >
-                                                                    {task.name}
-                                                                </Checkbox>
-                                                            </div>
-                                                            <div className={styles.nextTask}>
-                                                                {task.is_complete == 0 ? <>
-                                                                    <i><MdTimer /></i>
-                                                                    <span>{task.due_day}</span>
-                                                                </> : <>
-                                                                    <i><MdCheck/></i>
-                                                                    <span>{task.updated_at}</span>
-                                                                </>}
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                }) : null}
-                                            </Panel>
-                                        )
-                                    })}
-                                </Collapse>}
-                            </Panel>
-                        </Collapse>
+                        <ProcessComponent
+                            key={processIndex}  
+                            process={process} 
+                            updateTask={updateTask} 
+                            deleteProcess={deleteProcess}
+                        />
                     )
                 }) : <EmptyDiv text={'Nenhum processo encontrado'}/>}
             </div>    
@@ -153,3 +89,4 @@ const ProcessesBoard = (props:Props) => {
 }
 
 export default ProcessesBoard 
+
