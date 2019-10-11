@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\Event;
 
 class TaskController extends Controller
 {
@@ -57,7 +58,12 @@ class TaskController extends Controller
             $task[$key] = $req;
         }
         $task->save();
-        Event
+        Event::create(array(
+            'type' => 'taskCompleted',
+            'duration' => null,
+            'user_id' => $request->user()->id,
+            'company_id' => $task->activity->process->company_id,
+        ));
         return response()->api($task->load('activity'));
     }
 

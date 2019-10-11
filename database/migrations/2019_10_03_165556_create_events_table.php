@@ -17,15 +17,15 @@ class CreateEventsTable extends Migration
             $table->bigIncrements('id');
 
             
-            $table->unsignedBigInteger('card_id');
-            $table->foreign('card_id')->references('id')->on('cards');
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies');
 
             
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->string('type');
-            $table->string('duration');
+            $table->string('duration')->nullable();
             $table->string('description')->nullable();
             $table->string('other')->default(null)->nullable();
 
