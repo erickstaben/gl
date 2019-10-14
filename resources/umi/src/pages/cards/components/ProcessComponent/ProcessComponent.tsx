@@ -4,6 +4,8 @@ import { MdSettings, MdDelete, MdCheck, MdTimer } from 'react-icons/md';
 import { router } from 'umi';
 import styles from './ProcessComponent.less'
 import { Collapse, Checkbox } from 'antd';
+import moment from 'moment';
+
 const Panel = Collapse.Panel
 
 
@@ -72,10 +74,10 @@ const ProcessComponent = (props:Props) => {
                                             <div className={styles.nextTask}>
                                                 {task.is_complete == 0 ? <>
                                                     <i><MdTimer /></i>
-                                                    <span>{task.due_day}</span>
+                                                    <span>{moment([(new Date()).getFullYear(), (new Date()).getMonth(), task.due_day]).format('D MMM')}</span>
                                                 </> : <>
                                                         <i><MdCheck /></i>
-                                                        <span>{task.updated_at}</span>
+                                                        <span>{moment(task.updated_at).format('D MMM')}</span>
                                                     </>}
                                             </div>
                                         </div>

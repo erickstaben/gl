@@ -157,7 +157,7 @@ export default {
         {
           path: '/reports',
           name: 'Relatórios',
-          authority: ['super'],
+          authority: ['admin'],
           icon: 'solution',
           component: './reports/routes/MainReports',          
         },

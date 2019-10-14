@@ -16,9 +16,12 @@ class EventController extends Controller
             'company_id' => 'numeric|required',
             'type' => 'string|required',
             'duration' => 'string|required',
-            'user_id' => 'numeric|required',
-            'description' => 'string|required',
+            'user_id' => 'numeric',
+            'description' => 'string',
             'other' => 'string'
+        ]);
+        $request->merge([
+            'user_id' => $request->user()->id,            
         ]);
 
         $event = Event::create($request->all());

@@ -9,6 +9,7 @@ import { ProcessComponent } from '../components';
 import { ActivityInterface } from '@/models/database';
 import Select from 'react-select';
 import EmptyDiv from '../components/EmptyDiv/EmptyDiv';
+import { router } from 'umi';
 
 const Panel = Collapse.Panel
 
@@ -84,8 +85,11 @@ const ProcessesBoard = (props: Props) => {
     const companies = useSelector((state: ConnectState) => state.companies.list)
     return (
         <div className={styles.processBoardContainer}>
-            <div style={{marginBottom: 16}}>
+            <div className={styles.configHeader} style={{marginBottom: 16}}>
                 <h2>Configurações do processo</h2>
+                <div>
+                    <Button onClick={() => router.goBack()}>Voltar</Button>
+                </div>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormField>

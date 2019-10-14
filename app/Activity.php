@@ -20,7 +20,7 @@ class Activity extends Model
     }
 
     public function getCompletedTasksAttribute(){
-        return $this->tasks()->sum('is_complete');
+        return (int)$this->tasks()->sum('is_complete');
     }
     public function getTotalTasksAttribute(){
         return $this->tasks()->count();

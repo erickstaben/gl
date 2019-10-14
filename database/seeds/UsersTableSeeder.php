@@ -17,6 +17,9 @@ class UsersTableSeeder extends Seeder
             'email' => 'soely@glcontabilidade.cnt.br',
             'password' => bcrypt('12345678'),
             'is_admin' => true,
+            'authority' => 'user',
+            'department' => 'contabil',
+            'costs' => 4000,
             'remember_token' => str_random(10),
         ]);
 
@@ -25,6 +28,9 @@ class UsersTableSeeder extends Seeder
             'email' => 'cesar@glcontabilidade.cnt.br',
             'password' => bcrypt('12345678'),
             'is_admin' => true,
+            'authority' => 'user',
+            'department' => 'contabil',
+            'costs' => 2000,
             'remember_token' => str_random(10),
         ]);
 
@@ -33,6 +39,9 @@ class UsersTableSeeder extends Seeder
             'email' => 'erick@glcontabilidade.cnt.br',
             'password' => bcrypt('12345678'),
             'is_admin' => true,
+            'authority' => 'super',
+            'department' => 'direção',
+            'costs' => 12000,
             'remember_token' => str_random(10),
         ]);
     }

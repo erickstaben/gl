@@ -39,3 +39,14 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
         'published_at' => \Carbon\Carbon::now(),
     ];
 });
+
+$factory->define(App\Event::class, function (Faker\Generator $faker) {
+
+    return [
+        'company_id' => $faker->numberBetween(1,2),
+        'user_id' => $faker->numberBetween(1,3),
+        'type' => 'atendimento',
+        'duration' => $faker->randomDigit(),
+        'created_at' => \Carbon\Carbon::now(),
+    ];
+});

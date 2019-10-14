@@ -51,5 +51,8 @@ Route::group(["prefix" => "{$api_version}","middleware" => ["cors"]], function()
     Route::prefix('tasks')
         ->group(base_path('routes/api/tasks.php'));
 
+    Route::prefix('events')
+        ->group(base_path('routes/api/events.php'));
+
     
 });

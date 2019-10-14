@@ -27,8 +27,8 @@ const NewEventModal = (props:Props) => {
         dispatch({
             type: 'companies/index',
         })
-        register({ name: "action" })
-        register({ name: "company_id" })
+        register({ name: "type" }, { required: 'Esse campo é necessário'})
+        register({ name: "company_id" },{ required: 'Esse campo é necessário', min: 0})
     },[])
 
 
@@ -53,24 +53,23 @@ const NewEventModal = (props:Props) => {
         }
         return result
     }
-
+    console.log(errors)
     return (
         <div>
-            <Modal footer={null} onCancel={() => toggleModal(false)} title={'Adicionar um novo card ao pipe'} visible={isVisible}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    
+            <Modal footer={null} onCancel={() => toggleModal(false)} title={'Novo registro de evento'} visible={isVisible}>
+                <form onSubmit={handleSubmit(onSubmit)}>                  
                     
                     <FormField> 
                         <label>Tipo de evento</label>
                         <Select 
-                        onChange={({value}:any) => setValue('action',value)} 
-                        filterOption={optionFilter}  
+                        onChange={({value}:any) => setValue('type',value)} 
                         noOptionsMessage={() => 'Nenhuma opção'} 
                         options={[{value: 'atendimento',label: 'Atendimento'},{value: 'pesquisa',label: 'Pesquisa'}]}/>
+                        <div error>{errors.type ? errors.type.message : null}</div>
                     </FormField>
                     <FormField>    
                         <label>Duração do evento (mins)</label>                
-                        <input name='duration' ref={register}/>
+                        <input autoFocus name='duration' ref={register}/>
                     </FormField>
                     <FormField> 
                         <label>Evento referente a qual empresa?</label>

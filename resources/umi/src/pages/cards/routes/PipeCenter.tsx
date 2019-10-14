@@ -15,8 +15,13 @@ const PipeCenter = () => {
             type: 'pipes/pipesOverview',
             payload: {},
         })
+        dispatch({
+            type: 'processes/index',
+            payload: {},
+        })
     }, [])
     const pipes = useSelector((state:ConnectState) => state.pipes.overview)
+    const processes = useSelector((state:ConnectState) => state.processes.list)
     const setPipeFavorite = (pipe_id:ID) => {
         dispatch({
             type: 'pipes/pipeFavorite',
@@ -63,8 +68,8 @@ const PipeCenter = () => {
             <h2>Central de pipes</h2>
         </div>
         <h3>Meus pipes</h3>
-        <Row>
-            {pipes ? pipes.map(pipe => <Col xs={12} lg={6}>
+        <div className={styles.containerDisplay}>
+            {pipes ? pipes.map(pipe => 
                 <div className={styles.pipeCard}>
                     <span className={styles.pipeFavoriteIcon} onClick={() => setPipeFavorite(pipe.id)}>
                         <Icon className={styles.favoriteIcon} theme={pipe.is_favorite ? 'filled' : 'outlined'} type="heart"/>
@@ -87,24 +92,22 @@ const PipeCenter = () => {
                         </span>
                     </Link>
                 </div>
-            </Col>) : null}
-            <Col style={{ marginTop: 8 }}  xs={12} lg={6}>
-                <div className={styles.pipeCard} onClick={() => setVisible(true)}>
-                    <div className={styles.pipeLink}>
-                        <span className={styles.pipeCount}>
-                            <div style={{ display: 'grid' }}>
-                                <span style={{textAlign: 'center'}}>
-                                    <Icon type={'plus'} style={{fontSize: 64}}/>
-                                </span>
-                                <span className={styles.pipeName}>
-                                    Adicionar novo pipe
-                                </span>
-                            </div>
-                        </span>
-                    </div>
+            ) : null}
+            <div className={styles.pipeCard} onClick={() => setVisible(true)}>
+                <div className={styles.pipeLink}>
+                    <span className={styles.pipeCount}>
+                        <div style={{ display: 'grid' }}>
+                            <span style={{textAlign: 'center'}}>
+                                <Icon type={'plus'} style={{fontSize: 64}}/>
+                            </span>
+                            <span className={styles.pipeName}>
+                                Adicionar novo pipe
+                            </span>
+                        </div>
+                    </span>
                 </div>
-            </Col>
-        </Row>
+            </div>
+        </div>
         <Modal
           title="Adicionar novo pipe"
           visible={modalVisible}
@@ -125,7 +128,29 @@ const PipeCenter = () => {
                 </div>
             </Spin>
         </Modal>
-        </div>
+        <h3>Meus processos</h3>
+        <Row>
+            {processes ? processes.map(process => <Col xs={12} lg={6}>
+                <div className={styles.pipeCard}>
+                    <Link className={styles.pipeLink} to={`./processes`}>
+                        <span className={styles.pipeCount}>
+                            <div style={{ display: 'grid', textAlign: 'center' }}>
+                                <span>
+                                    <b style={{ fontSize: 36 }}>{process.total_tasks}</b><span className={styles.pipeCountLabel}>tarefas</span>
+                                </span>
+                                <span>
+                                    {process.total_tasks - process.completed_tasks} pendentes
+                                </span>
+                                <span className={styles.pipeName}>
+                                    {process.name}
+                                </span>
+                            </div>
+                        </span>
+                    </Link>
+                </div>
+            </Col>) : null}            
+        </Row>
+        </div >
     );
 }
 

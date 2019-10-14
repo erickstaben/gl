@@ -6,6 +6,44 @@
 @sidebar-width: 280px;
 
 .layoutContainer{
+    .cardButton{
+        position: fixed;
+        bottom: 16px;
+        right: 96px;
+        .fab{
+            height: 64px;
+            width: 64px;
+            border-radius: 100%;
+            background-color: blue;
+            text-align:  center;
+            display: flex;
+            align-items: center;
+            i{
+                font-size: 36px;
+                width: 100%;
+                color: @primary-white-color;
+            }
+        }
+    }
+    .eventButton{
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        .fab{
+            height: 64px;
+            width: 64px;
+            border-radius: 100%;
+            background-color: red;
+            text-align:  center;
+            display: flex;
+            align-items: center;
+            i{
+                font-size: 36px;
+                width: 100%;
+                color: @primary-white-color;
+            }
+        }
+    }
     width: 100%;
     height: 100%;
     display: inline-flex;

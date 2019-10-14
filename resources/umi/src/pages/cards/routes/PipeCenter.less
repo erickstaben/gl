@@ -2,6 +2,13 @@
 @import '../../../utils/variables.less';
 
 .pipeCenterLayout{
+    .containerDisplay{
+        display: flex;
+        margin-bottom: 32px;
+        >:not(:first-child){
+        margin-left: @default-padding;
+        }
+    }
     margin: 20px 5% 40px 5%;
     .pipeCard{
         display: flex;

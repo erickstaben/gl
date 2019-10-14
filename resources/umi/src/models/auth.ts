@@ -70,7 +70,7 @@ const Model: ModelType = {
       if(response.data){
         localStorage.setItem('access-token', response.data.access_token)
         if(response.ok && response.data.access_token){
-          setAuthority(response.data.authority || 'admin')
+          setAuthority(response.data.authority || 'super')
           yield put({
             type: 'authUser',
             payload: response.data,

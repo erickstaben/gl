@@ -4,7 +4,7 @@ import ProLayout, {
     BasicLayoutProps as ProLayoutProps,
     Settings,
 } from '@ant-design/pro-layout';
-import React, { useEffect, ReactElement } from 'react';
+import React, { useEffect, ReactElement, useState } from 'react';
 import Link from 'umi/link';
 import { useDispatch, useSelector } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -22,6 +22,9 @@ import { router } from 'umi';
 import { getAuthority } from '@/utils/authority';
 import logo_gl from '@/assets/logo_gl.png';
 import only_logo from '@/assets/only_logo.png';
+import { MdPlusOne, MdEmail, MdBook } from 'react-icons/md';
+import NewEventModal from '@/pages/cards/components/NewEventModal/NewEvent';
+import { NewCardModal } from '@/pages/cards/components';
 
 const routes = config.routes;
 
@@ -95,9 +98,15 @@ const MainLayout = (props: Props) => {
             payload,
         })
     }
-    const handlers = (collapsed:boolean) => {console.log('collapse inside handlers'); return ({CHANGE_LAYOUT: () => handleMenuCollapse(!collapsed)})}
+    const [eventModal,setEventModal] = useState(false)
+    const [cardModal,setCardModal] = useState(false)
+    const handlers = (collapsed:boolean) => {console.log('collapse inside handlers'); return ({
+        CHANGE_LAYOUT: () => handleMenuCollapse(!collapsed),
+        OPEN_CARD_MODAL: () => setCardModal(!cardModal),
+        OPEN_EVENT_MODAL: () => setEventModal(!eventModal)
+    })}
     return (
-        <HotKeys allowChanges className={styles.layoutContainer} handlers={handlers(collapsed)} keyMap={{CHANGE_LAYOUT: 's'}}>
+        <HotKeys allowChanges className={styles.layoutContainer} handlers={handlers(collapsed)} keyMap={{CHANGE_LAYOUT: 's',OPEN_EVENT_MODAL: 'e', OPEN_CARD_MODAL: 'c'}}>
             {collapsed && <ReactTooltip type='info' effect={'solid'} delayHide={150}/>}
             <aside className={classnames(styles.sidebar, { [styles.sidebarCollapse]: collapsed },{ [styles.sidebarUncollapse]: !collapsed })}>
                 <div className={styles.sidebarHeader}>
@@ -128,6 +137,18 @@ const MainLayout = (props: Props) => {
             <div style={{ display: 'flex', width: `calc(100% - ${collapsed  ? 80 : 280}px)`,flexDirection: 'column'}}>
                 {children}
             </div>
+            <div className={styles.eventButton}>
+                <div onClick={() => setEventModal(true)} className={styles.fab}>
+                    <i><MdBook /></i>
+                </div>
+            </div>
+            <div className={styles.cardButton}>
+                <div onClick={() => setCardModal(true)} className={styles.fab}>
+                    <i><MdEmail /></i>
+                </div>
+            </div>
+            {eventModal && <NewEventModal isVisible={eventModal} toggleModal={setEventModal}/>}
+            {setCardModal && <NewCardModal isVisible={cardModal} toggleModal={setCardModal} />}
         </HotKeys>
     )
 };
