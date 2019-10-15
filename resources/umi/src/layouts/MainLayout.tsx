@@ -13,7 +13,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState, Dispatch } from '@/models/connect';
 import logo from '../assets/logo.svg';
-import { Icon } from 'antd';
+import { Icon, Statistic } from 'antd';
 import classnames from 'classnames';
 import config from '../../config/config';
 import ReactTooltip from 'react-tooltip';
@@ -25,6 +25,8 @@ import only_logo from '@/assets/only_logo.png';
 import { MdPlusOne, MdEmail, MdBook } from 'react-icons/md';
 import NewEventModal from '@/pages/cards/components/NewEventModal/NewEvent';
 import { NewCardModal } from '@/pages/cards/components';
+import moment from 'moment'
+import Timer from '@/components/Timer';
 
 const routes = config.routes;
 
@@ -67,6 +69,7 @@ const MainLayout = (props: Props) => {
         }
     }, []);
     const user = useSelector((state:any) => state.auth.user)
+    const timers = useSelector((state:ConnectState) => state.events.timers)
     if(!user.id && localStorage.getItem('access-token') == null){
         console.log('Redirecting on layout')
         router.push('/auth/login')
@@ -96,6 +99,23 @@ const MainLayout = (props: Props) => {
         dispatch({
             type: 'global/changeLayoutCollapsed',
             payload,
+        })
+    }
+
+    const pauseTimer = (id:string) => {
+        dispatch({
+            type: 'events/pauseTimer',
+            payload: {
+                path_id: [id],
+            }
+        })
+    }
+    const endTimer = (id:string) => {
+        dispatch({
+            type: 'events/endTimer',
+            payload: {
+                path_id: [id],
+            }
         })
     }
     const [eventModal,setEventModal] = useState(false)
@@ -147,10 +167,18 @@ const MainLayout = (props: Props) => {
                     <i><MdEmail /></i>
                 </div>
             </div>
+            <div className={styles.timersContainer}>
+                {timers.map(timer => {
+                    return (
+                        <Timer timer={timer} />
+                    )
+                })}
+            </div>
             {eventModal && <NewEventModal isVisible={eventModal} toggleModal={setEventModal}/>}
             {setCardModal && <NewCardModal isVisible={cardModal} toggleModal={setCardModal} />}
         </HotKeys>
     )
 };
+
 
 export default MainLayout

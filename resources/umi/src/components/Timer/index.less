@@ -1,0 +1,42 @@
+
+@import '../../utils/variables.less';
+
+
+.timerContainer{ 
+    border-radius: 5px;
+    padding: 8px 16px;
+    background-color: white;
+    margin-bottom: 8px;
+    .timerHeader{
+
+    }
+    .timerCounter{
+        font-size: 36px;
+    }
+    .timerFooter{
+        margin: 0px -8px;
+        display: flex;
+        button{
+            margin: 0px 4px;
+            flex-grow: 1;
+             margin-top: 2*@default-padding;
+            background-color: @primary-active-color;
+            border: none;
+            color: @primary-white-color;
+            border-radius: @default-border-radius;
+            padding: @default-padding;
+            flex-grow: 1;
+            i{
+                float: left;
+                font-size: 24px;
+                align-items: center;
+                display: flex;
+                height: 24px;
+            }
+        }
+        button:hover{
+            background-color: fade(@primary-active-color,80%);
+            cursor: pointer;
+        }
+    }
+}

@@ -1,5 +1,26 @@
 @import '../../../../utils/variables.less';
-
+.formContainer{
+    display: flex;
+    flex-direction: row;
+    margin: 0px -8px;
+    button{
+        margin-top: 2*@default-padding;
+        background-color: @primary-active-color;
+        margin: 16px 8px 0px 8px;
+        border: none;
+        color: @primary-white-color;
+        border-radius: @default-border-radius;
+        padding: @default-padding;
+        flex-grow: 1;
+        i{
+            float: left;
+            font-size: 24px;
+            align-items: center;
+            display: flex;
+            height: 24px;
+        }
+    }
+}
 .formInput{
     display: flex;
     flex-direction: column;
@@ -39,9 +60,17 @@
         color: @primary-white-color;
         border-radius: @default-border-radius;
         padding: @default-padding;
-        
+        flex-grow: 1;
+        i{
+            float: left;
+            font-size: 24px;
+            align-items: center;
+            display: flex;
+            height: 24px;
+        }
     }
     button:hover{
         background-color: fade(@primary-active-color,80%);
+        cursor: pointer;
     }
 }

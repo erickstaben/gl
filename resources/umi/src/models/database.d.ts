@@ -89,6 +89,15 @@ export interface TaskInterface {
     updated_at: Date;
 }
 
+export interface TimerInterface {
+    id: string;
+    company_id: number;
+    last_paused_at: number;
+    duration: number;
+    paused: boolean;
+    type: string;
+}
+
 export interface PhaseInterface {
     id: ID,
     pipe_id ?: ID,

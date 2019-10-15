@@ -14,4 +14,12 @@ const FormField = (props:Props) => {
     )
 }
 
+export const FormFieldContainer = (props:Props) => {
+    const { children } = props
+    return (
+        <div className={styles.formContainer}>
+            {children}
+        </div>
+    )
+}
 export default FormField 

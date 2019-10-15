@@ -12,6 +12,7 @@ import { PhasesModelState } from './phases';
 import { PipesModelState } from './pipes';
 import { CompaniesModelState } from './companies';
 import { ProcessModelState } from './processes';
+import { EventsModelState } from './events';
 
 export { GlobalModelState, SettingModelState, UserModelState };
 export interface RequestPayload {
@@ -45,6 +46,7 @@ export interface PayloadInterface {
 
 export interface ConnectState {
   processes: ProcessModelState;
+  events: EventsModelState;
   global: GlobalModelState;
   loading: Loading;
   companies: CompaniesModelState;
