@@ -50,8 +50,22 @@ const getAccessToken = () => localStorage.getItem('access-token')
  */
 
 let access_token = getAccessToken()
-
-const request = extend({
+export const updateAccessToken = () => {
+  access_token = getAccessToken()
+  request = extend({
+    errorHandler,
+    headers: access_token ? {
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    } : {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    prefix: `http://${window.location.host == 'localhost:8000' ? 'gl.test' : window.location.host}/api/${apiVersion}`,
+  });
+}
+let request = extend({
   errorHandler,
   headers: access_token ? {
     Authorization: `Bearer ${access_token}`,

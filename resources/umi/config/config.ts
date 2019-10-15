@@ -85,7 +85,7 @@ export default {
         },
         {
           path: '/processes',
-          name: 'Processos',
+          name: 'Processos e pipes',
           hideInMenu: true,
           routes: [
             {
@@ -101,7 +101,7 @@ export default {
           ],
         },{
           path: '/pipes',
-          name: 'Processos',
+          name: 'Processos e pipes',
           icon: 'snippets',
           routes: [ 
             {
