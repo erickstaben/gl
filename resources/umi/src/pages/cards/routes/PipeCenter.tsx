@@ -1,11 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'dva';
+import { useDispatch, useSelector, routerRedux } from 'dva';
 import styles from './PipeCenter.less';
 import { ConnectState } from '@/models/connect';
 import { ID } from '@/models/database';
 import { Modal, Spin, Row, Col,  Icon, Switch, Popconfirm } from 'antd';
+import { router } from 'umi';
 
 
 const PipeCenter = () => {
@@ -65,7 +66,7 @@ const PipeCenter = () => {
     const [modalVisible,setVisible] = useState(false)
     return (<div className={styles.pipeCenterLayout}>
         <div style={{textAlign:'center'}}>
-            <h2>Central de pipes</h2>
+            <h2>Central de atividades</h2>
         </div>
         <h3>Meus pipes</h3>
         <div className={styles.containerDisplay}>
@@ -129,8 +130,8 @@ const PipeCenter = () => {
             </Spin>
         </Modal>
         <h3>Meus processos</h3>
-        <Row>
-            {processes ? processes.map(process => <Col xs={12} lg={6}>
+        <div className={styles.containerDisplay}>
+            {processes ? processes.map(process => 
                 <div className={styles.pipeCard}>
                     <Link className={styles.pipeLink} to={`./processes`}>
                         <span className={styles.pipeCount}>
@@ -148,8 +149,22 @@ const PipeCenter = () => {
                         </span>
                     </Link>
                 </div>
-            </Col>) : null}            
-        </Row>
+            ) : null}  
+            <div className={styles.pipeCard} onClick={() => router.push('/processes/new/config')}>
+                <div className={styles.pipeLink}>
+                    <span className={styles.pipeCount}>
+                        <div style={{ display: 'grid' }}>
+                            <span style={{textAlign: 'center'}}>
+                                <Icon type={'plus'} style={{fontSize: 64}}/>
+                            </span>
+                            <span className={styles.pipeName}>
+                                Adicionar novo processo
+                            </span>
+                        </div>
+                    </span>
+                </div>
+            </div>          
+        </div>
         </div >
     );
 }

@@ -6,7 +6,7 @@ import { fAuthUser, fLogin } from '@/services/auth';
 import { UserInterface } from './database';
 import { Action, Reducer } from './connect';
 import { setAuthority } from '@/utils/authority';
-
+import { updateAccessToken } from '@/utils/request';
 export function getPageQuery(): {
   [key: string]: string;
 } {
@@ -93,18 +93,15 @@ const Model: ModelType = {
           payload: response.data,
         });
         if(window.location.pathname == '/auth/login'){
-          yield put(routerRedux.replace({
-            pathname: getPageQuery().redirect || '/',
-          }))
+          updateAccessToken()
+          window.location.href = window.location.origin
         }
       }
-      else{
+      else{        
+        updateAccessToken()
         yield put(
           routerRedux.replace({
             pathname: '/auth/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
           }),
         );
       }
