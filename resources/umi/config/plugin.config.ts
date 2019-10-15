@@ -50,7 +50,9 @@ export default (config: any) => {
       },
     ]);
   }
+  config.uglifyJSOptions = {
 
+  }
   // optimize chunks
   config.optimization
     // share the same chunks across different modules
