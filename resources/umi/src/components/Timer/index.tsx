@@ -29,7 +29,7 @@ const Timer = (props) => {
         return (
             <div className={styles.timerContainer}>
                 <div className={styles.timerHeader}>
-                    <span>{timer.type} para {timer.company_id}</span>
+                    <span>{timer.title}</span>
                 </div>
                 {timer.paused 
                 ? 

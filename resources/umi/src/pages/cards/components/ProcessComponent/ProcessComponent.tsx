@@ -5,6 +5,11 @@ import { router } from 'umi';
 import styles from './ProcessComponent.less'
 import { Collapse, Checkbox } from 'antd';
 import moment from 'moment';
+import TimerButton from "@/components/TimerButton";
+import { find } from 'lodash';
+import { useSelector } from "dva";
+import { ConnectState } from "@/models/connect";
+import ProcessesBoard from "../../routes/ProcessConfig";
 
 const Panel = Collapse.Panel
 
@@ -24,12 +29,26 @@ const ProcessComponent = (props:Props) => {
         }
         return false
     }
+    const checkProcessFinished = (process) => {
+        if (process.completed_activities == process.total_activities && process.total_activities !== 0 ){
+            return true
+        }
+        return false
+    }
     const { key, process, deleteProcess, updateTask, onlyRead = false } = props
     return (
         <Collapse>
             <Panel
                 key={key}
-                header={process.name}
+                style={checkProcessFinished(process) ? {
+                    backgroundColor: '#dfffdf'
+                } : {}}
+                header={<div style={{display: 'inline-flex'}}>
+                    <div className={styles.headerStyle}>
+                        {checkProcessFinished(process) && <i><MdCheck /></i>}
+                        <div>{process.name}</div>
+                    </div>
+                </div>}
                 extra={!onlyRead && <div style={{ display: 'inline-flex' }}>
                     <div className={styles.iconStyle} >
                         <i onClick={() => router.push(`/processes/${process.id}/config`)}>
@@ -71,6 +90,9 @@ const ProcessComponent = (props:Props) => {
                                                     {task.name}
                                                 </Checkbox>
                                             </div>
+                                            {task.is_complete == 0 && <div className={styles.activeTask}>
+                                                <TimerButton title={`Timer do(a) ${task.name}`} type={'TaskEvent'} company_id={process.company_id} reference_id={task.id} reference_model={'task'}/>
+                                            </div>}
                                             <div className={styles.nextTask}>
                                                 {task.is_complete == 0 ? <>
                                                     <i><MdTimer /></i>

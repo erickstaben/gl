@@ -50,15 +50,33 @@ const Model: ModelType = {
       });
     },
     *endTimer({ payload }, { call, put, select }) {
+           
       const timers = yield select((state:ConnectState) => state.events.timers)
       let timer = timers.filter((timer: TimerInterface) => timer.id == payload.path_id[0])[0]
-      console.log('oioio', timer)
+
+      if (timer.reference_id && timer.reference_model) {
+        yield put({
+          type: 'tasks/update',
+          payload: {
+            body: {
+              is_complete: true,
+            },
+            path_id: [timer.reference_id],
+            params: {
+              shouldLog: 0,
+            }
+          }
+        })
+      } 
+
       timer.duration = Date.now() - timer.last_paused_at
       timer.last_paused_at = Date.now()
       const response: DefaultResponseInterface = yield call(fNewEvent, {body: {
         company_id: timer.company_id,
         duration: Math.round(timer.duration/1000).toString(),
         type: timer.type,
+        reference_id: timer.reference_id,
+        reference_model: timer.reference_model,
       }});
       if (response.ok) {
         yield put({
@@ -88,6 +106,9 @@ const Model: ModelType = {
         paused: false,
         company_id: payload.company_id,
         type: payload.type,
+        title: payload.title,
+        reference_id: payload.reference_id || null,
+        reference_model: payload.reference_model || null,
       }
       return {
         ...state,

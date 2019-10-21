@@ -62,7 +62,7 @@ const Model: ModelType = {
                 message.error('Não foi possivel carregar!')
             }
         },
-        *update({ payload }, { call, put }) {
+        *update({ payload }, { call, put }) {            
             const response = yield call(fUpdate, payload);
             if (response.ok) {
                 yield put({type:'processes/index'})

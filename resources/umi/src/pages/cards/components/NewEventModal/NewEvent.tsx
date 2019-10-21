@@ -64,6 +64,7 @@ const NewEventModal = (props:Props) => {
                 params: {
                     company_id: data.company_id,
                     type: data.type,
+                    title: 'Contador de tempo de '+data.type
                 }
             }
         })

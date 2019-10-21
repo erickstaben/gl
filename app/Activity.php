@@ -25,6 +25,13 @@ class Activity extends Model
     public function getTotalTasksAttribute(){
         return $this->tasks()->count();
     }
+    public function isTasksCompleted(){
+        if($this->total_tasks == $this->completed_tasks && $this->total_tasks !== 0){
+            return true;
+        }
+        return false;
+    }
+
     public function getStatusAttribute(){
         $completed = $this->getCompletedTasksAttribute();
         $total = $this->getTotalTasksAttribute();

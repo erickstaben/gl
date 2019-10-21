@@ -26,8 +26,8 @@ class CreateEventsTable extends Migration
 
             $table->string('type');
             $table->string('duration')->nullable();
-            $table->string('description')->nullable();
-            $table->string('other')->default(null)->nullable();
+            $table->bigInteger('reference_id')->nullable();
+            $table->string('reference_model')->nullable();
 
             $table->timestamps();
         });

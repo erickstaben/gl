@@ -54,16 +54,49 @@ class TaskController extends Controller
     public function update(Request $request, $id)
     {
         $task = Task::findOrFail($id);
-        foreach($request->all() as $key => $req){
+        foreach($request->except(['shouldLog']) as $key => $req){
             $task[$key] = $req;
         }
         $task->save();
-        Event::create(array(
-            'type' => 'taskCompleted',
-            'duration' => null,
-            'user_id' => $request->user()->id,
-            'company_id' => $task->activity->process->company_id,
-        ));
+        $shouldLog = $request['shouldLog'] == 0 ? false : true;
+        if($shouldLog){
+            Event::create(array(
+                'type' => 'TaskEvent',
+                'duration' => null,
+                'user_id' => $request->user()->id,
+                'company_id' => $task->activity->process->company_id,
+                'reference_id' => $task->id,
+                'reference_model' => 'task',
+            ));
+        }
+        if($task->activity->isTasksCompleted()){
+            $activity = $task->activity;
+            $ids = $activity->tasks->pluck('id');
+            $duration_sum = Event::where('reference_model','task')->whereIn('reference_id',$ids)->sum('duration');
+            
+            Event::create(array(
+                'type' => 'ActivityEvent',
+                'duration' => $duration_sum,
+                'user_id' => $request->user()->id,
+                'company_id' => $task->activity->process->company_id,
+                'reference_id' => $activity->id,
+                'reference_model' => 'activity',
+            ));
+            if($activity->process->isActivitiesCompleted()){
+                $process = $activity->process;
+                $ids = $process->activities->pluck('id');
+                $duration_sum = Event::where('reference_model','activities')->whereIn('reference_id',$ids)->sum('duration');
+                
+                Event::create(array(
+                    'type' => 'ProcessEvent',
+                    'duration' => $duration_sum,
+                    'user_id' => $request->user()->id,
+                    'company_id' => $process->company_id,
+                    'reference_id' => $process->id,
+                    'reference_model' => 'process',
+                ));
+            }
+        }
         return response()->api($task->load('activity'));
     }
 

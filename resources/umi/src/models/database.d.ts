@@ -67,7 +67,9 @@ export interface ProcessInterface {
     name: string;
     user_id : ID;
     activities: ActivityInterface[];
-    company_id: ID;
+    total_activities: number;
+    completed_activities: number;
+    company_id: number;
     created_at: Date;
     updated_at: Date;
 }
@@ -81,6 +83,7 @@ export interface ActivityInterface{
 }
 
 export interface TaskInterface {
+    id: number;
     name: string;
     description: string;
     due_day: string;
@@ -96,6 +99,9 @@ export interface TimerInterface {
     duration: number;
     paused: boolean;
     type: string;
+    title: string;
+    reference_id: number;
+    reference_model: string;
 }
 
 export interface PhaseInterface {
