@@ -43,15 +43,38 @@ const Model: ModelType = {
         message.error('Erro ao tentar salvar')
       }
     },
-    *newTimer({ payload }, { call, put }) {
-      yield put({
-        type: 'rNewTimer',
-        payload: payload.params,
-      });
+    *newTimer({ payload }, { call, put, select, all }) {
+
+
+      const timers = yield select((state: ConnectState) => state.events.timers)
+      //Pausa se houver um timer ativo
+      const active_timers = timers.filter((timer: TimerInterface) => timer.paused == false)
+      console.log(active_timers)
+      if (active_timers.length > 0) {
+        yield put({
+          type: 'events/rPauseTimer',
+          payload: {
+            path_id: [active_timers[0].id]
+          }
+        })
+        yield put({
+          type: 'rNewTimer',
+          payload: {
+            ...payload.params,
+            on_finish_unpause: active_timers[0].id
+          },
+        });
+      }
+      else {
+        yield put({
+          type: 'rNewTimer',
+          payload: payload.params,
+        });
+      }
     },
     *endTimer({ payload }, { call, put, select }) {
-           
-      const timers = yield select((state:ConnectState) => state.events.timers)
+
+      const timers = yield select((state: ConnectState) => state.events.timers)
       let timer = timers.filter((timer: TimerInterface) => timer.id == payload.path_id[0])[0]
 
       if (timer.reference_id && timer.reference_model) {
@@ -68,6 +91,16 @@ const Model: ModelType = {
           }
         })
       } 
+
+      //Despausa o timer que ficou pendente se houver
+      if(timer.on_finish_unpause){
+        yield put({
+          type: 'rPauseTimer',
+          payload: {
+            path_id: timer.on_finish_unpause
+          }
+        })
+      }      
 
       timer.duration = Date.now() - timer.last_paused_at
       timer.last_paused_at = Date.now()
@@ -109,6 +142,7 @@ const Model: ModelType = {
         title: payload.title,
         reference_id: payload.reference_id || null,
         reference_model: payload.reference_model || null,
+        on_finish_unpause: payload.on_finish_unpause || null,
       }
       return {
         ...state,

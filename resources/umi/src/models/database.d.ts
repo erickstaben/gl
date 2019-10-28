@@ -102,6 +102,7 @@ export interface TimerInterface {
     title: string;
     reference_id: number;
     reference_model: string;
+    on_finish_unpause: number;
 }
 
 export interface PhaseInterface {
