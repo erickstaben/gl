@@ -31,7 +31,7 @@ const TimerButton = (props:Props) => {
     }    
     const timers = useSelector((state: ConnectState) => state.events.timers)
     return (
-        <div>
+        <div style={{float: 'right',marginRight: 8,}}>
             {find(timers,{
                 reference_id: reference_id,
                 reference_model: reference_model
