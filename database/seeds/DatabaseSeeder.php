@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             PhaseTableSeeder::class,
             CardTableSeeder::class,
             IntermediarySeeder::class,
-            EventsTableSeeder::class,
          ]);
     }
 }
