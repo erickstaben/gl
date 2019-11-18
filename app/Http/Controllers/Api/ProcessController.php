@@ -13,6 +13,12 @@ class ProcessController extends Controller
         $processes = $request->user()->processes->load(['activities.tasks']);
         return response()->api($processes);
     }
+
+    public function search(Request $request)
+    {
+        $processes = Process::get();
+        return response()->api($processes);
+    }
     
     public function store(Request $request)
     {

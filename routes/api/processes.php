@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth:api'], function() {
-
+    Route::get('/search', 'ProcessController@search');
     Route::get('/', 'ProcessController@index');
     Route::post('/', 'ProcessController@store');
     Route::get('/{process_id}', 'ProcessController@show');

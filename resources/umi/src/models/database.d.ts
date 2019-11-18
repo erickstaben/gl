@@ -20,6 +20,10 @@ export interface CardEventInterface{
     updated_at: Date;
 }
 
+export interface ReportInterface {
+    id: ID,
+    
+}
 export interface UserInterface {
     id: ID,
     name : string,

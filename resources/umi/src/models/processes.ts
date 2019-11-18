@@ -3,12 +3,13 @@ import { message } from 'antd';
 import { Effect } from 'dva';
 import { DefaultResponseInterface, ProcessInterface } from './database';
 import { Action, Reducer } from './connect';
-import { fIndex, fShow, fUpdate, fDestroy, fStore } from '@/services/processes';
+import { fIndex, fShow, fUpdate, fDestroy, fStore, fSearch } from '@/services/processes';
 import { findIndex } from 'lodash';
 
 export interface ProcessModelState {
     loaded: ProcessInterface,
     list: ProcessInterface[];
+    search: ProcessInterface[];
 }
 
 
@@ -20,10 +21,12 @@ export interface ModelType {
         show: Effect;
         update: Effect;
         destroy: Effect;
+        search: Effect;
         store: Effect;
     };
     reducers: {
         updateTask: Reducer<ProcessModelState, Action<any>>;
+        rSearch: Reducer<ProcessModelState, Action<any>>;
         rIndex: Reducer<ProcessModelState, Action<any>>;
         rShow: Reducer<ProcessModelState, Action<any>>;
         rUpdate: Reducer<ProcessModelState, Action<any>>;
@@ -38,9 +41,21 @@ const Model: ModelType = {
     state: {
         loaded: <ProcessInterface>{},
         list: [],
+        search: [],
     },
 
     effects: {
+        *search({ payload }, { call, put }) {
+            const response = yield call(fSearch, payload);
+            if (response.ok) {
+                yield put({
+                    type: 'processes/rSearch',
+                    payload: response.data,
+                });
+            } else {
+                message.error('Não foi possivel carregar!')
+            }
+        },
         *index({ payload }, { call, put }) {
             const response = yield call(fIndex, payload);
             if (response.ok) {
@@ -99,6 +114,12 @@ const Model: ModelType = {
         },
     },
     reducers: {
+        rSearch(state, { payload }: Action<any>) {
+            return {
+                ...state,
+                search: payload,
+            };
+        },
         rIndex(state, { payload }: Action<any>) {
             return {
                 ...state,

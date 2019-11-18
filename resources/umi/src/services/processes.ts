@@ -14,6 +14,12 @@ export async function fIndex(payload: Requests): Promise<UserInterface> {
     } : {});
 }
 
+export async function fSearch(payload: Requests): Promise<UserInterface> {
+    return request(`/processes/search`, payload ? {
+        method: 'GET',
+    } : {});
+}
+
 export async function fShow(payload: Requests): Promise<UserInterface> {
     return request(`/processes/${payload.path_id[0]}?${payload ? stringify(payload.params) : ''}`, payload ? {
         method: 'GET',

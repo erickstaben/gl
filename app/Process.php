@@ -49,4 +49,8 @@ class Process extends Model
         }
         return false;
     }
+
+    public function calculateTotalDuration(){
+        return $this->tasks->sum('duration');
+    }
 }

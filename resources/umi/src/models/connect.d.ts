@@ -7,12 +7,13 @@ import { GlobalModelState } from './global';
 import { DefaultSettings as SettingModelState } from '../../config/defaultSettings';
 import { UserModelState } from './user';
 import { AuthModelState } from './auth';
-import { ID, PhaseInterface } from './database';
+import { ID, PhaseInterface, ReportInterface } from './database';
 import { PhasesModelState } from './phases';
 import { PipesModelState } from './pipes';
 import { CompaniesModelState } from './companies';
 import { ProcessModelState } from './processes';
 import { EventsModelState } from './events';
+import { ReportsModelState } from './reports';
 
 export { GlobalModelState, SettingModelState, UserModelState };
 export interface RequestPayload {
@@ -46,6 +47,7 @@ export interface PayloadInterface {
 
 export interface ConnectState {
   processes: ProcessModelState;
+  reports: ReportsModelState;
   events: EventsModelState;
   global: GlobalModelState;
   loading: Loading;
