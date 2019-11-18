@@ -71,7 +71,10 @@ const PhaseLane = (props:Props):React.ReactElement => {
             </Menu.Item>
         </Menu>
     ) 
-    const filterCards = (cards,filter) => filter ? cards.filter(card => card.company ? card.company.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0 : false) : cards
+    const filterCards = (cards,filter) => {
+        const filtered = filter ? cards.filter(card => card.company ? card.company.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0 : false) : cards
+        return filtered.filter(card => !card.is_archived)
+    }
     const filteredCards = filterCards(cards,filter)
     const phases = useSelector((state:any) => state.pipes.loaded.phases)
     return ( <>
@@ -103,7 +106,7 @@ const PhaseLane = (props:Props):React.ReactElement => {
                                         snapshot.isDragging,
                                         provided.draggableProps.style
                                     )}>
-                                    <ActionCard {...phaseProps} toggleModal={toggleModal} card={card} />
+                                    <ActionCard {...phaseProps} is_final={is_final} toggleModal={toggleModal} card={card} />
                                 </div>
                             )}
                         </Draggable>

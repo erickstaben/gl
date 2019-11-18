@@ -8,6 +8,12 @@ interface PipeRequests {
   body: object,
 }
 
+export async function fArchiveCard(payload: PipeRequests): Promise<UserInterface> {
+  return request(`/cards/${payload.path_id[0]}/archive?${payload ? stringify(payload.params) : ''}`, payload ? {
+    method: 'GET',
+  } : {});
+}
+
 export async function fPipeFavorite(payload: PipeRequests): Promise<UserInterface> {
   return request(`/pipes/${payload.path_id[0]}/favorite?${payload ? stringify(payload.params) : ''}`, payload ? {
     method: 'PATCH',

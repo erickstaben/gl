@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Card extends Model
 {
     //
-    protected $fillable = ['due_date','title','company_id','phase_id','creator_id','is_finished'];
+    protected $fillable = ['due_date','is_archived','title','company_id','phase_id','creator_id','is_finished'];
 
     protected $hidden = ['company_id','phase_id','creator_id'];
 

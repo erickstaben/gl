@@ -1,6 +1,6 @@
 
 import { Effect } from 'dva';
-import { fNewCard, fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow, fCardMove, fSaveRecurrentCard, fSavePipeUser } from '@/services/pipes';
+import { fArchiveCard, fNewCard, fPipeFavorite, fPipeCreate, fPipeDelete, fPipesOverview, fPipeConfig, fPipeShow, fCardMove, fSaveRecurrentCard, fSavePipeUser } from '@/services/pipes';
 import { message } from 'antd';
 import { PipeInterface, ID } from './database';
 import { Action, Reducer, PayloadInterface } from './connect';
@@ -31,6 +31,7 @@ export interface ModelType {
   namespace: string;
   state: PipesModelState;
   effects: {
+    archiveCard: Effect;
     pipeCreate: Effect;
     pipeDelete: Effect;
     pipeFavorite: Effect;
@@ -44,6 +45,7 @@ export interface ModelType {
     newCard: Effect;
   };
   reducers: {
+    rArchiveCard: Reducer<PipesModelState,Action<any>>;
     rUpdatePipeList: Reducer<PipesModelState, Action<any>>;
     rPipeCreate: Reducer<PipesModelState, Action<any>>;
     rPipeDelete: Reducer<PipesModelState, Action<any>>;
@@ -173,6 +175,15 @@ const Model: ModelType = {
           payload: response.data,
         });
       }      
+    },
+    *archiveCard({ payload }, { call, put }) {
+      const response = yield call(fArchiveCard, payload);
+      if (response.ok) {
+        yield put({
+          type: 'rArchiveCard',
+          payload: payload,
+        });
+      }
     }
   },
   reducers: {
@@ -183,6 +194,21 @@ const Model: ModelType = {
         const newCards = newPhases[index].cards.push(payload)
         newPhases[index].cards = [...newCards, payload]
       }
+      return {
+        ...state,
+        loaded: {
+          ...state.loaded,
+          phases: newPhases,
+        }
+      };
+    },
+    rArchiveCard(state, { payload }: Action<any>) {
+      const newPhases = state.loaded.phases.map(phase => {
+        return ({
+          ...phase,
+          cards: phase.cards.filter(card => card.id != payload.path_id[0])
+        })
+      })
       return {
         ...state,
         loaded: {

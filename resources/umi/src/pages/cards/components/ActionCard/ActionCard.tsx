@@ -11,15 +11,16 @@ import ProgressBar, { uncompleted } from '../ProgressBar/ProgressBar'
 import { getFirstLetters } from '@/utils/utils';
 import { PhaseInnerProps } from '@/pages/cards/components/PhaseLane/PhaseLane';
 import { ConnectState } from '@/models/connect';
-import { MdRepeat, MdAssignmentTurnedIn } from 'react-icons/md';
+import { MdRepeat, MdAssignmentTurnedIn, MdArchive } from 'react-icons/md';
 
 type Props = {
     card: CardInterface,
+    is_final: boolean,
     toggleModal: (a:boolean) => void,
 } & PhaseInnerProps
 
 const ActionCard = (props:Props):React.ReactElement => {
-    const { card, toggleModal, phaseInfo, nextPhase, previousPhase } = props
+    const { card, toggleModal, phaseInfo, nextPhase, previousPhase, is_final } = props
     const { due_date, assigned_users = [], company, fields, id, is_finished, recurrent_card } = card
     const dispatch = useDispatch()
     
@@ -80,12 +81,13 @@ const ActionCard = (props:Props):React.ReactElement => {
         toggleModal(true)
     }
 
-    const deleteCard = () => {
+    const handleArchiveButton = (e) => {
+        e.stopPropagation()
         dispatch({
-            type: 'cards/delete',
+            type: 'pipes/archiveCard',
             payload: {
-                path_id: [card.id],
-            }
+                path_id: [card.id]
+            },
         })
     }
 
@@ -127,6 +129,9 @@ const ActionCard = (props:Props):React.ReactElement => {
                         <span className={styles.checkListShowCircle}>{uncompleted(fields)}</span>
                     </Dropdown>
                 </span>
+                {is_final ? <span onClick={(e) => handleArchiveButton(e)} className={styles.archiveBtn}>
+                    <i><MdArchive /></i>
+                </span> : null}
             </div>
             </Spin>
         </div>

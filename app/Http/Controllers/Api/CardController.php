@@ -164,6 +164,13 @@ class CardController extends Controller
         return response()->api($card);   
     }
 
+    public function archive(Request $request, $id){
+        $card = Card::findOrFail($id);
+        $card->is_archived = true;
+        $card->save();
+        return response()->api($card,'Arquivado com sucesso!');
+    }
+
     /**
      * Update the specified resource in storage.
      *

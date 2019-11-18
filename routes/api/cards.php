@@ -12,4 +12,5 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/{card_id}', 'CardController@show');
     Route::patch('/{card_id}', 'CardController@update');
     Route::delete('/{card_id}', 'CardController@destroy');
+    Route::get('/{card_id}/archive', 'CardController@archive');
 });

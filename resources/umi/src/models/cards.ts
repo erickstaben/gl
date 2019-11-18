@@ -58,6 +58,7 @@ const Model: ModelType = {
       }
     },
   },
+  
   reducers: {
     rShow(state: CardsModelState, { payload }: Action<any>) {      
       return {
