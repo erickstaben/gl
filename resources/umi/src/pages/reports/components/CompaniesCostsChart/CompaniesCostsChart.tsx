@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-    PieChart, Pie, Sector, Cell, Legend
+    PieChart, Pie, Sector, Cell, LineChart, ResponsiveContainer, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 import { useDispatch, useSelector } from 'dva';
 import { ConnectState } from '@/models/connect';
@@ -21,22 +21,28 @@ const CompaniesCostsChart = (props) => {
         dispatch({
             type: 'companies/index',
         })
+        
     },[])
 
-    const getCompanyReport = (id = null,actual = 1) => {
+    const getCompanyReport = (company = {value: 0},actual = 1) => {
         dispatch({
             type: 'reports/company',  
             payload: {
                 body: {
-                    company_id: id,
+                    company_id: company.value,
                     actual: actual
                 }
             }      
         })
+        dispatch({
+            type: 'reports/companyHistory',
+            payload: {
+                path_id: [company.value]
+            }
+        })
     }
 
     const renderCustomizedLabel = (payload) => {
-        console.log('ASDASD',payload)
         const {
             cx, cy, midAngle, innerRadius, outerRadius, percent, index, value
         } = payload
@@ -50,53 +56,103 @@ const CompaniesCostsChart = (props) => {
             </text>
         );
     };
+
+    const calcTotaisHistorico = (data) => {
+        let keys = [];
+        let total = [];
+        data.map(info => {
+            if(keys.indexOf(info.mes) >= 0){
+                total[keys.indexOf(info.mes)].value = total[keys.indexOf(info.mes)].value  + info.cost
+            }
+            else{
+                keys.push(info.mes)
+                total.push({value: info.cost, name: info.mes})
+            }
+        })
+        return total
+    }
     const companies = useSelector((state:ConnectState) => state.companies.list).map(company => ({value: company.id,label: company.name}))
 
     const [selectedCompany,setSelectedCompany] = useState(null)
     const [monthsBehind,setMonthsBehind] = useState(1)
     const companiesData = useSelector((state:ConnectState) => state.reports.company).map(company => ({value: company.cost,name: company.name}))
+    const historicData = calcTotaisHistorico(useSelector((state:ConnectState) => state.reports.companyHistory));
     
     return (
         <div>
-            <Select
-                options={companies}
-                defaultOptions
-                onChange={(newValue:any) => {
-                    setSelectedCompany(newValue)
-                    getCompanyReport(newValue)
-                }}
-            />
+            <div style={{display:'flex',alignItems: 'center'}}>
+                <div style={{flexGrow: 1}}>
+                    <Select
+                        options={companies}
+                        defaultOptions
+                        placeholder={'Selecione a empresa...'}
+                        onChange={(newValue: any) => {
+                            setSelectedCompany(newValue)
+                            getCompanyReport(newValue)
+                        }}
+                    />
+                </div>                
+                <div style={{ flexGrow: 1 }}>
+                    <ButtonGroup>
+                        <Button style={monthsBehind == 1 ? { backgroundColor: '#5490f2', color: 'white' } : {}} onClick={() => {
+                            setMonthsBehind(1)
+                            getCompanyReport(selectedCompany, 1)
+                        }}>Mês passado</Button>
+                        <Button style={monthsBehind == 0 ? { backgroundColor: '#5490f2', color: 'white' } : {}} onClick={() => {
+                            setMonthsBehind(0)
+                            getCompanyReport(selectedCompany, 0)
+                        }}>Esse mês</Button>
+                    </ButtonGroup>
+                </div>
+            </div>
+
             <div style={{marginTop: 16}}>
                 <h4>Custo total mensal da empresa </h4>
-                <ButtonGroup>
-                    <Button style={monthsBehind == 1 ? {backgroundColor: '#5490f2',color: 'white'} : {}} onClick={() => {
-                        setMonthsBehind(1)
-                        getCompanyReport(selectedCompany,1)
-                    }}>Mês passado</Button>
-                    <Button style={monthsBehind == 0 ? {backgroundColor: '#5490f2',color: 'white'} : {}} onClick={() => {
-                        setMonthsBehind(0)
-                        getCompanyReport(selectedCompany,0)
-                    }}>Esse mês</Button>
-                </ButtonGroup>
-                <h1>R${companiesData.reduce((total,num) => total + num.value,0).toFixed(2).replace('.',',')}</h1>
+                <h1>R${companiesData.reduce((total, num) => total + num.value, 0).toFixed(2).replace('.', ',')}</h1>
             </div>
-            <PieChart width={400} height={400}>
-                <Pie
-                    data={companiesData}
-                    cx={200}
-                    cy={200}
-                    labelLine={false}
-                    label={renderCustomizedLabel}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                >
-                    {
-                        companiesData.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
-                    }
-                </Pie>
-                <Legend />
-            </PieChart>
+            
+            <div style={{display:'flex'}}>
+                <div>
+                    <h3>Distribuição dos custos</h3>
+                        <PieChart width={400} height={400}>
+                        <Pie
+                            data={companiesData}
+                            cx={200}
+                            cy={200}
+                            labelLine={false}
+                            label={renderCustomizedLabel}
+                            outerRadius={100}
+                            fill="#8884d8"
+                            dataKey="value"
+                        >
+                            {
+                                companiesData.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                            }
+                        </Pie>
+                        <Legend />
+                    </PieChart>
+                </div>
+                <div>
+                    <h3>Tendência dos custos</h3>
+                    <LineChart
+                        width={600}
+                        height={400}
+                        data={historicData}
+                        margin={{
+                            top: 5, right: 30, left: 20, bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis dataKey="value" />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="value" stroke="#82ca9d" />
+                    </LineChart>
+                </div>
+                
+            </div>
+            
         </div>
     )
 }
